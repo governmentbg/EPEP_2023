@@ -1,0 +1,25 @@
+﻿@inject Microsoft.Extensions.Options.IOptions<RecaptchaOptions> rcOptions;
+@{
+    var recaptcha = rcOptions.Value;
+}
+<script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=onRecaptchaLoadCallback" async defer></script>
+<script>
+    var reCaptchaClientId = {};
+    function onRecaptchaLoadCallback() {
+        reCaptchaClientId = grecaptcha.render('rc-inline', {
+            'sitekey': '@(recaptcha.SiteKey)',
+            'badge': 'inline',
+            'size': 'invisible'
+        });
+    }
+    function checkBeforeSubmit(sender) {
+        grecaptcha.execute(reCaptchaClientId, {
+            action: 'submit'
+        })
+            .then(function (token) {
+                $('#reCaptchaToken').val(token);
+                $(sender).parents('form:first').submit();
+                //return true;
+            });
+    }
+</script>

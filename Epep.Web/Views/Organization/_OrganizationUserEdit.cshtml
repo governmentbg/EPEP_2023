@@ -1,0 +1,48 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserRegistrationVM
+@inject IUserContext userContext;
+@{
+    var operTitle = "Добавяне на потребител";
+    if (Model.Gid.HasValue)
+    {
+        operTitle = "Редакция на потребител";
+    }
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">Организация</div>
+                        <div class="list__output">@userContext.OrganizationName</div>
+                    </div>
+                </div>
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">&nbsp;</div>
+                        <div class="list__output">@operTitle</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("OrganizationUserEdit")">
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.Gid)
+                @Html.EditorFor(x=>x.UserType,"GenericDropDownInt")
+                @Html.EditorFor(x=>x.EGN)
+                @Html.EditorFor(x=>x.FullName)
+                @Html.EditorFor(x=>x.Email)
+                @Html.EditorFor(x=>x.IsActive)
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="addUserCallback">Добави</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

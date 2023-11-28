@@ -1,0 +1,21 @@
+.info-bubble {
+    &__container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $main-gutter/4;
+        margin: $main-gutter/2 0;
+    }
+
+    min-width: 250px;
+    width: calc(25% - 4px);
+    padding: $main-gutter/2;
+
+    border: 1px solid $primary-light;
+    border-radius: 4px;
+
+    &:hover,
+    &:focus {
+        background-color: $secondary-dark-10;
+        border-color: $secondary-dark-25;
+    }
+}

@@ -1,0 +1,164 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model FilterPricelistVM
+@{
+    ViewData["Title"] = "Тарифа";
+}
+
+@section offcanvasFilter{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на тарифи</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.Name,"String",new{container_class="col-12 mb-2"})
+            </div>
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.ActiveOnly,"Boolean",new{container_class="col-12 mb-2"})
+            </div>
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvPricelist');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+<main class="page-content">
+    <div class="container">
+
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilter" aria-controls="offcanvasMain">Търсене на тарифи</button>
+            </div>
+        </div>
+        <div>
+            <a href="#" onclick="requestOffcanvasSmall('@Url.Action("Add")',{});return false;" class="btn u-btn-gradient">Нова тарифа</a>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <div id="gvPricelist"></div>
+            </div>
+            <div class="col-lg-3">
+                <div style="position: sticky;top:0;">
+                    <div id="gvPriceValue"></div>
+                    <a href="#" id="btnAddValue" onclick="addPriceValue();return false;" class="btn u-btn-gradient float-end" style="display:none;">Нова стойност</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('.main-nav__item--lawyers').addClass('active');
+            $('#offcanvasFilter').addClass('off-small');
+            let gvPricelist = new GridView({
+                container: '#gvPricelist',
+                url: '@(Url.Action("LoadData"))',
+                data: function () {
+                    return {
+                        Name: $('#Name').val(),
+                        ActiveOnly: $('#ActiveOnly').is(':checked')
+                    };
+                },
+                template: '#gridViewPricelistItem'
+            });
+            let gvPriceValue = new GridView({
+                container: '#gvPriceValue',
+                url: '@(Url.Action("ValuesLoadData"))',
+                data: function () {
+                    return {
+                        id: $('#gvPriceValue').data('pricelist')
+                    };
+                },
+                template: '#gridViewPriceValueItems'
+            });
+        });
+
+        function editPricelist(id) {
+            requestOffcanvasSmall('@Url.Action("Edit")', { id: id }, function () {
+                let docids = $('#DocumentsIds').val().split(',');
+                $('#DocumentsList').val(docids).trigger('change');
+            });
+        }
+        function editPricelistBeforeSubmit() {
+            $('#DocumentsIds').val($('#DocumentsList').val().join(','));
+        }
+        function editPricelistCallback() {
+            hideOffcanvas();
+            gridViewLoadData('#gvPricelist');
+        }
+        function showPriceValues(id, sender) {
+            $('#gvPriceValue').data('pricelist', id);
+            $('#btnAddValue').show();
+            $('.case-card').removeClass('case-card--darken');
+            //debugger;
+            $(sender).parents('.case-card:first').addClass('case-card--darken');
+            gridViewLoadData('#gvPriceValue');
+        }
+        function addPriceValue() {
+            requestOffcanvasSmall('@Url.Action("AddValue")', { pricelistId: $('#gvPriceValue').data('pricelist') });
+        }
+        function editPriceValue(id) {
+            requestOffcanvasSmall('@Url.Action("EditValue")', { id: id });
+        }
+
+        function editPriceValueCallback() {
+            hideOffcanvas();
+            gridViewLoadData('#gvPriceValue');
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewPricelistItem">
+        <li class="list__item">
+                <div class="case-card {{#compare isActive false}}case-card--alert{{/compare}}">
+                    <div class="row">
+                        <div class="col-md-11 case-card__body ">
+                            <a href="#" onclick="showPriceValues('{{id}}',this);return false;" title="Преглед на стойности">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <span class="list__label">Наименование</span>
+                                        <div class="list__output">
+                                            {{name}}
+                                        </div>
+                                    </div>
+                                    <div class="col-md">
+                                        <span class="list__label">Съкратено</span>
+                                        <div class="list__output">{{shortName}}</div>
+                                    </div>
+                                    <div class="col-md">
+                                        <span class="list__label">Приложимо за</span>
+                                        <div class="list__output">{{#each documentsList}}{{this}};{{/each}}</div>
+                                    </div>
+                            </div>
+                        </a>
+                        </div>
+                         <div class="ms-auto col-md-1">
+                            <button onclick="editPricelist('{{id}}');return false;" class="btn u-btn-lupa"  title="Редакция"></button>
+                         </div>
+                    </div>
+                </div>
+
+        </li>
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewPriceValueItems">
+        <li class="list__item">
+            <a href="#" onclick="editPriceValue('{{id}}');return false;" class="case-card">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md">
+                            <span class="list__label">Вид</span>
+                            <div class="list__output">
+                                {{typeName}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Стойност</span>
+                            <div class="list__output">{{value}}{{#if procent}}{{procent}}%{{/if}}{{#if minValue}}(мин. {{minValue}}){{/if}} {{currencyCode}}</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </script>
+}

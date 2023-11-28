@@ -1,0 +1,17 @@
+.add-new-address {
+    padding: $main-gutter;
+    padding-right: 48px;
+
+    border: 1px dashed $primary-light;
+    text-align: left;
+    color: $primary-dark;
+
+    background: url(../images/general/plus-circle.svg) right 8px center no-repeat;
+    background-size: 32px;
+    background-color: $primary-light-10;
+
+    &:hover,
+    &:focus {
+        background-color: $primary-light-25;
+    }
+}

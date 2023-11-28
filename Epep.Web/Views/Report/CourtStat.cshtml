@@ -1,0 +1,111 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.Models;
+@using Epep.Core.ViewModels.Case
+@model FilterCaseVM
+@{
+    ViewData["Title"] = "Брой дела по съд";
+}
+
+@section offcanvasMain{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.CourtId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @Html.EditorFor(x=>x.RegYear,"GenericDropDownInt",new{container_class="mb-2"})
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+<main class="page-content">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="навигация пътечка">
+            <ul class="breadcrumbs__list">
+                <li><a asp-action="Desktop" asp-controller="Admin">Работен плот</a></li>
+            </ul>
+        </nav>
+        <div class="page-title__container row">
+            <div class="col-auto">
+                <h1 class="page-title">@ViewData["Title"]</h1>
+            </div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMain" aria-controls="offcanvasMain">Търсене</button>
+            </div>
+        </div>
+        <div id="gvFocusCases"></div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#offcanvasMain').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@Url.Action("CourtStatLoadData")',
+                data: function () {
+                    return {
+                        CourtId: $('#CourtId').val(),
+                        RegYear: $('#RegYear').val()
+                    };
+                },
+                xlsExport: true,
+                template: '#gridViewItems'
+            });
+        });
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewItems">
+        <li class="list__item">
+            <div class="case-card">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <span class="list__label">Съд</span>
+                            <div class="list__output">{{courtName}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Граждански</span>
+                            <div class="list__output">
+                                {{grd}}
+                            </div>
+                        </div>                        
+                        <div class="col-md">
+                            <span class="list__label">Наказателни</span>
+                            <div class="list__output">
+                                {{nkz}}
+                            </div>
+                        </div>                        
+                        <div class="col-md">
+                            <span class="list__label">Търговски</span>
+                            <div class="list__output">
+                                {{trg}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Фирмени</span>
+                            <div class="list__output">
+                                {{frm}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Административни</span>
+                            <div class="list__output">
+                                {{adm}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Общо</span>
+                            <div class="list__output">
+                                {{total}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+}

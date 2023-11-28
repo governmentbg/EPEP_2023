@@ -1,0 +1,111 @@
+﻿@using Epep.Core.ViewModels.Case
+@model FilterHearingVM
+@{
+    ViewData["Title"] = "Онлайн съдебни заседания";
+}
+
+@section offcanvasMain{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на заседания</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.CourtId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @Html.EditorFor(x=>x.CaseKindId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @*@Html.EditorFor(x=>x.DocNumber,"Int32",new{container_class="mb-2"})*@
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.RegNumber,"Int32",new{container_class="col-8 mb-2"})
+                @Html.EditorFor(x=>x.RegYear,"GenericDropDownInt",new{container_class="col-4 mb-2"})
+            </div>
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+            </div>
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+<main class="page-content">
+    <div class="container">
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMain" aria-controls="offcanvasMain">Търсене на заседание</button>
+            </div>
+        </div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#offcanvasMain').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@(Url.Action("OnlineHearingsLoadData"))',
+                data: function () {
+                    return {
+                        CourtId: $('#CourtId').val(),
+                        CaseKindId: $('#CaseKindId').val(),
+                        DocNumber: $('#DocNumber').val(),
+                        RegNumber: $('#RegNumber').val(),
+                        RegYear: $('#RegYear').val(),
+                        DateFrom: $('#DateFrom').val(),
+                        DateTo: $('#DateTo').val()
+                    };
+                },
+                template: '#gridViewItems'
+            });
+
+        });
+
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewItems">
+        <li class="list__item">
+           <div class="case-card">
+                 <div class="case-card d-flex">
+                    <div class="col-md-2">
+                        <h3 class="list__title mt-2">{{dateFormat date "DD MMMM, HH:mm"}} <span>{{dateFormat date "YYYY"}}</span></h3>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="case-card__body">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <span class="list__label">Вид заседание</span>
+                                    <div class="list__output">
+                                        {{hearingType}}
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="list__label">Съд</span>
+                                    <div class="list__output">{{courtName}}</div>
+                                </div>
+                                <div class="col-md-5">
+                                    <span class="list__label">Дело</span>
+                                    <div class="list__output">
+                                        <a href="@Url.Action("CaseDetail")/{{caseGid}}" title="Преглед на дело">
+                                        {{caseKindName}} № {{caseNumber}} от {{caseYear}} година
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="ms-auto col-auto">
+                                    <a href="{{{videoUrl}}}" target="_blank">
+                                        <button onclick="return true;" class="btn u-btn-lupa" title="Преглед на онлайн заседание"></button>
+                                    </a>
+                                </div>
+                            </div>
+
+
+
+
+        <div class="case-card__body">
+
+        </div>
+        </div>
+        </li>
+    </script>
+}

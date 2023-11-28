@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D1CC3879-494A-41B3-83F1-3EAB07416B8D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eCase.Domain</RootNamespace>
+    <AssemblyName>eCase.Domain</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test.Abbaty|AnyCPU'">
+    <OutputPath>bin\Test.Abbaty\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Production|AnyCPU'">
+    <OutputPath>bin\Summons.Production\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Abbaty|AnyCPU'">
+    <OutputPath>bin\Summons.Abbaty\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Epep.Admin|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Epep.Admin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BlobStorage\BlobContent.cs" />
+    <Compile Include="CaseKinds\CaseKind.Logic.cs" />
+    <Compile Include="Cases\Case.Logic.cs" />
+    <Compile Include="Core\DomainException.cs" />
+    <Compile Include="Core\DomainObjectNotFoundException.cs" />
+    <Compile Include="Core\DomainValidationException.cs" />
+    <Compile Include="Core\EventHandler.cs" />
+    <Compile Include="Core\IAggregateRoot.cs" />
+    <Compile Include="Core\IDomainEvent.cs" />
+    <Compile Include="Core\IEventEmitter.cs" />
+    <Compile Include="Core\IEventHandler.cs" />
+    <Compile Include="Core\IGidRoot.cs" />
+    <Compile Include="Courts\Court.Logic.cs" />
+    <Compile Include="DbConfiguration.cs" />
+    <Compile Include="DomainModule.cs" />
+    <Compile Include="Emails\Email.cs" />
+    <Compile Include="Emails\Email.Logic.cs" />
+    <Compile Include="Emails\EmailsModelDbConfiguration.cs" />
+    <Compile Include="Emails\EmailStatus.cs" />
+    <Compile Include="Entities\AttachedDocument.cs" />
+    <Compile Include="Entities\Act.cs" />
+    <Compile Include="Entities\ActKind.cs" />
+    <Compile Include="Entities\ActPreparator.cs" />
+    <Compile Include="Entities\Appeal.cs" />
+    <Compile Include="Entities\AppealKind.cs" />
+    <Compile Include="Entities\Assignment.cs" />
+    <Compile Include="Cases\Case.cs" />
+    <Compile Include="CaseKinds\CaseKind.cs" />
+    <Compile Include="Entities\CaseCode.cs" />
+    <Compile Include="Entities\BlobContentLocation.cs" />
+    <Compile Include="Entities\Blob.cs" />
+    <Compile Include="Entities\CaseRuling.cs" />
+    <Compile Include="Entities\CaseRulingKind.cs" />
+    <Compile Include="Entities\ConnectedCaseType.cs" />
+    <Compile Include="Entities\ConnectedCase.cs" />
+    <Compile Include="Entities\CaseType.cs" />
+    <Compile Include="Courts\Court.cs" />
+    <Compile Include="Entities\CourtType.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Hearing.cs" />
+    <Compile Include="Entities\HearingDocument.cs" />
+    <Compile Include="Entities\IncomingDocumentType.cs" />
+    <Compile Include="Entities\IncomingDocument.cs" />
+    <Compile Include="Entities\HearingParticipant.cs" />
+    <Compile Include="Entities\OutgoingDocumentType.cs" />
+    <Compile Include="Entities\OutgoingDocument.cs" />
+    <Compile Include="Entities\Subject.cs" />
+    <Compile Include="Entities\StatisticCode.cs" />
+    <Compile Include="Entities\Upgrade\DbContextExtensions.cs" />
+    <Compile Include="Entities\Upgrade\ElectronicDocument.cs" />
+    <Compile Include="Entities\Upgrade\ElectronicDocumentSide.cs" />
+    <Compile Include="Entities\Upgrade\ElectronicDocumentType.cs" />
+    <Compile Include="Entities\Upgrade\MoneyCurrency.cs" />
+    <Compile Include="Entities\Upgrade\MoneyPricelist.cs" />
+    <Compile Include="Entities\Upgrade\UserAssignment.cs" />
+    <Compile Include="Entities\Upgrade\UserAssignmentRole.cs" />
+    <Compile Include="Entities\Upgrade\UserOrganizationCase.cs" />
+    <Compile Include="Entities\Upgrade\UserRegistration.cs" />
+    <Compile Include="Entities\Upgrade\UserRegistrationBase.cs" />
+    <Compile Include="Entities\Upgrade\UserVacation.cs" />
+    <Compile Include="Entities\Upgrade\UserVacationType.cs" />
+    <Compile Include="Events\CaseAccessEvent.cs" />
+    <Compile Include="Events\ChangeCaseAccessEvent.cs" />
+    <Compile Include="Events\ChangeUserProfileEvent.cs" />
+    <Compile Include="Events\ChangeUserNameEvent.cs" />
+    <Compile Include="Events\FeedbackEvent.cs" />
+    <Compile Include="Events\SummonAccessDeactivationEvent.cs" />
+    <Compile Include="Events\SummonAccessActivationEvent.cs" />
+    <Compile Include="Lawyers\Lawyer.Logic.cs" />
+    <Compile Include="Lawyers\Lawyer.cs" />
+    <Compile Include="Entities\LawyerAssignment.cs" />
+    <Compile Include="Entities\LawyerRegistration.cs" />
+    <Compile Include="Entities\LawyerType.cs" />
+    <Compile Include="Entities\Log.cs" />
+    <Compile Include="Entities\Person.cs" />
+    <Compile Include="Entities\PersonAssignment.cs" />
+    <Compile Include="Entities\PersonRegistration.cs" />
+    <Compile Include="Entities\Reporter.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\ScannedFile.cs" />
+    <Compile Include="Entities\Side.cs" />
+    <Compile Include="Entities\SideInvolvementKind.cs" />
+    <Compile Include="Entities\Summon.cs" />
+    <Compile Include="Entities\SummonType.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\UserGroup.cs" />
+    <Compile Include="Events\ForgottenPasswordEvent.cs" />
+    <Compile Include="Events\NewRegistrationEvent.cs" />
+    <Compile Include="Events\SummonNotificationEvent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\Entities\AttachedDocument.cs" />
+    <Compile Include="Service\Entities\AssignmentFile.cs" />
+    <Compile Include="Service\Entities\ConnectedCase.cs" />
+    <Compile Include="Service\Entities\HearingDocument.cs" />
+    <Compile Include="Service\Entities\IncomingDocumentFile.cs" />
+    <Compile Include="Service\Entities\OutgoingDocument.cs" />
+    <Compile Include="Service\Entities\Act.cs" />
+    <Compile Include="Service\Entities\ActPreparator.cs" />
+    <Compile Include="Service\Entities\Appeal.cs" />
+    <Compile Include="Service\Entities\Case.cs" />
+    <Compile Include="Service\Entities\CaseRuling.cs" />
+    <Compile Include="Service\Entities\Entity.cs" />
+    <Compile Include="Service\Entities\Assignment.cs" />
+    <Compile Include="Service\Entities\Hearing.cs" />
+    <Compile Include="Service\Entities\HearingParticipant.cs" />
+    <Compile Include="Service\Entities\OutgoingDocumentFile.cs" />
+    <Compile Include="Service\Entities\PersonRegistration.cs" />
+    <Compile Include="Service\Entities\LawyerRegistration.cs" />
+    <Compile Include="Service\Entities\Lawyer.cs" />
+    <Compile Include="Service\Entities\LаwyerAssignment.cs" />
+    <Compile Include="Service\Entities\Person.cs" />
+    <Compile Include="Service\Entities\PersonAssignment.cs" />
+    <Compile Include="Service\Entities\IncomingDocument.cs" />
+    <Compile Include="Service\Entities\PrivateActFile.cs" />
+    <Compile Include="Service\Entities\PrivateMotiveFile.cs" />
+    <Compile Include="Service\Entities\PrivateProtocolFile.cs" />
+    <Compile Include="Service\Entities\PublicProtocolFile.cs" />
+    <Compile Include="Service\Entities\PublicActFile.cs" />
+    <Compile Include="Service\Entities\PublicMotiveFile.cs" />
+    <Compile Include="Service\Entities\Reporter.cs" />
+    <Compile Include="Service\Entities\ScannedDocument.cs" />
+    <Compile Include="Service\Entities\Side.cs" />
+    <Compile Include="Service\Entities\Summon.cs" />
+    <Compile Include="Service\Entities\SummonFile.cs" />
+    <Compile Include="Service\Entities\Upgrade\ElectronicDocumentFile.cs" />
+    <Compile Include="Service\Entities\Upgrade\MoneyObligation.cs" />
+    <Compile Include="Service\Entities\Upgrade\ElectronicDocumentSide.cs" />
+    <Compile Include="Service\Entities\Upgrade\EpepConstants.cs" />
+    <Compile Include="Service\Entities\Upgrade\SummonReadTimeResult.cs" />
+    <Compile Include="Service\Entities\Upgrade\ElectronicDocument.cs" />
+    <Compile Include="Service\Entities\Upgrade\UserAssignment.cs" />
+    <Compile Include="Service\Entities\Upgrade\UserRegistration.cs" />
+    <Compile Include="Service\Entities\UserRegistrationInfo.cs" />
+    <Compile Include="Service\IeCaseService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\eCase.Common\eCase.Common.csproj">
+      <Project>{fc959f6f-52a5-4e8c-a281-91bac3b1854c}</Project>
+      <Name>eCase.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,25 @@
+﻿@using Microsoft.AspNetCore.Http.Features
+
+@{
+    var consentFeature = Context.Features.Get<ITrackingConsentFeature>();
+    var showBanner = !consentFeature?.CanTrack ?? false;
+    var cookieString = consentFeature?.CreateConsentCookie();
+}
+
+@if (showBanner)
+{
+    <main class="page-content consent">
+        <div class="container">
+            <div id="cookieConsent" class="alert alert-consent alert-dismissible fade show" role="alert">
+                Този портал използва бисквитки с цел нормалната му работа. <a class="consent-link" asp-page="/Privacy">Научете повече за това тук</a>.
+                <a href="#" onclick="consent(this);return false;" class="accept-policy consent-link close float-end" data-dismiss="alert" aria-label="Close" data-cookie-string="@cookieString">Разреши</a>
+            </div>
+        </div>
+    </main>
+    <script>
+        function consent(sender) {
+            document.cookie = sender.dataset.cookieString;
+            $('main.consent').hide();
+        }        
+    </script>
+}

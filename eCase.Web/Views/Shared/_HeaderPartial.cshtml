@@ -1,0 +1,26 @@
+﻿<header class="clearfix">
+    <a class="logo" href="https://portal.justice.bg/" title="">
+        <img src="@(Url.Content(Links.Content.img.gerb_jpg))" alt="" />
+    </a>
+
+    <button type="button" role="button" class="lines-button x menu hidden-lg">
+        <label>Меню</label>
+        <span class="lines"></span>
+    </button>
+
+    <div class="title">
+        @if (Statics.IsSummonsPortal)
+        {
+            <strong>Електронно съобщаване и призоваване</strong>
+        }
+        else
+        {
+            <strong>Електронни съдебни дела</strong>
+        }
+        <span>Република България</span>
+    </div>
+
+    @Html.Partial(MVC.Shared.Views._LoginPartial)
+
+    <div class="clear"></div>
+</header>

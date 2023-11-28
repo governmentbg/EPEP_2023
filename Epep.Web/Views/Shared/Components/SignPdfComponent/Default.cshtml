@@ -1,0 +1,57 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model SignDocumentVM
+
+<div id="signMessageContainer" style="display:none">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="alert alert-danger no-margin-bottom">
+                <button class="close sign-close">×</button>
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span id="signErrorMessage"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<object data="@(Model.PdfUrl)#toolbar=1&navpanes=1" type="application/pdf" width="100%" style="height:70vh;">
+    <embed src="@(Model.PdfUrl)#toolbar=1&navpanes=1" type="application/pdf" width="100%" style="height:70vh;" />
+</object>
+<form action="@Url.Action("SignPdf", "PDF", new { area = String.Empty })" method="post" class="pdfSigner">
+    @Html.HiddenFor(m => m.PdfId)
+    @Html.HiddenFor(m => m.FileName)
+    @Html.HiddenFor(m => m.SuccessUrl)
+    @Html.HiddenFor(m => m.ErrorUrl)
+    @Html.HiddenFor(m => m.BlobKey)
+    @Html.HiddenFor(m => m.FileId)
+    @Html.HiddenFor(m => m.ClientCode)
+    @* @Html.HiddenFor(m => m.SourceType)
+    @Html.HiddenFor(m => m.SignerName)
+    @Html.HiddenFor(m => m.SignerUic)
+    @Html.HiddenFor(m => m.FileTitle)
+
+    @Html.HiddenFor(m => m.SignituresCount)
+
+    *@
+    @Html.HiddenFor(m => m.PdfHash, new { disabled = "disabled" })
+    <input name="Signature" id="Signature" type="hidden" />
+    <input name="ErrorCode" id="ErrorCode" type="hidden" />
+    <a href="@Model.CancelUrl" class="btn">Назад</a>
+    <button type="button" class="btn u-btn-gradient float-end submit" disabled>Подпиши</button>
+</form>
+
+
+<script>
+    $(function () {
+        $('form.pdfSigner').submit(function () {
+            $('#ClientCode').val(Date.now());
+        });
+    });
+    function checkError(errorCode) {
+        $.get('@Url.Action("CheckLSMErrorCode", "pdf", new { area = String.Empty })' + '?errorCode=' + errorCode)
+            .then(function (data) {
+                showSignError(data.errorMessage);
+            });
+    }
+</script>
+<script defer src="~/js/prod/sign.min.js" asp-append-version="true"></script>

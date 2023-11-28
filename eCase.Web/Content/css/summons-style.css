@@ -1,0 +1,151 @@
+a.btn.orange-btn {
+    background-color: #5f73ad;
+}
+
+.main-menu a:hover, .main-menu a.active, .main-menu .dropdown.open > a {
+    background-color: #5f73ad;
+}
+
+nav .dropdown-menu > li > a:hover, nav .dropdown-menu > li > a:focus {
+    background-color: #5f73ad;
+}
+
+input.search-submit {
+    background: #5f73ad;
+}
+
+.tooltip-inner {
+    background-color: #5f73ad;
+}
+
+.tooltip.left .tooltip-arrow {
+    border-left-color: #5f73ad;
+}
+
+.tooltip.right .tooltip-arrow {
+    border-right-color: #5f73ad;
+}
+
+.tooltip.top .tooltip-arrow {
+    border-top-color: #5f73ad;
+}
+
+.tooltip.bottom .tooltip-arrow {
+    border-bottom-color: #5f73ad;
+}
+
+.info-box {
+    border-left: 8px solid #5f73ad;
+}
+
+.home-login a.home-login-btn {
+    background-color: #5f73ad;
+}
+
+.modal-header {
+    border-bottom: 4px solid #5f73ad;
+}
+
+
+@media only screen and (max-width: 1022px) {
+    .main-menu a.active {
+        background-color: #5f73ad;
+    }
+
+    .results-table {
+        border-top: 1px solid #283b71;
+    }
+
+    .results-row {
+        border-bottom: 1px solid #283b71;
+    }
+}
+
+.main-menu {
+    background-color: #283b71; /* @lightgray */
+}
+
+nav .dropdown-menu {
+    background-color: #283b71;
+}
+
+.search-form input {
+    border: 2px solid #283b71;
+}
+
+.search-form textarea {
+    border: 2px solid #283b71;
+}
+
+.select2-container .select2-choice {
+    border: 2px solid #283b71;
+}
+
+    .select2-container .select2-choice .select2-arrow b {
+        border-top: 8px solid #283b71;
+    }
+
+.select2-drop, .select2-drop-active {
+    border: 2px solid #283b71;
+}
+
+.select2-results .select2-highlighted {
+    background: #283b71;
+}
+
+.results-table {
+    border-bottom: 1px solid #283b71;
+}
+
+    .results-thead, .results-row .results-cell {
+        border-bottom: 1px solid #283b71;
+    }
+
+        .results-thead .results-cell {
+            border-bottom: 1px solid #283b71;
+        }
+
+.datepicker table tr td.active:hover, .datepicker table tr td.active:hover:hover, .datepicker table tr td.active.disabled:hover, .datepicker table tr td.active.disabled:hover:hover, .datepicker table tr td.active:focus, .datepicker table tr td.active:hover:focus, .datepicker table tr td.active.disabled:focus, .datepicker table tr td.active.disabled:hover:focus, .datepicker table tr td.active:active, .datepicker table tr td.active:hover:active, .datepicker table tr td.active.disabled:active, .datepicker table tr td.active.disabled:hover:active, .datepicker table tr td.active.active, .datepicker table tr td.active:hover.active, .datepicker table tr td.active.disabled.active, .datepicker table tr td.active.disabled:hover.active, .open .dropdown-toggle.datepicker table tr td.active, .open .dropdown-toggle.datepicker table tr td.active:hover, .open .dropdown-toggle.datepicker table tr td.active.disabled, .open .dropdown-toggle.datepicker table tr td.active.disabled:hover {
+    background-color: #283b71;
+    border-color: #283b71;
+}
+
+.information-links {
+    background-color: #283b71;
+}
+
+.inner-page-bg {
+    background-color: #f8f6f2;
+    border-top: 1px solid #283b71;
+    border-bottom: 1px solid #283b71;
+}
+
+.inner-page-table {
+    background-color: #f8f6f2;
+    border-top: 1px solid #283b71;
+    border-bottom: 1px solid #283b71;
+}
+
+.section-separator {
+    border-bottom: 1px solid #283b71;
+}
+
+.error-main-menu {
+    background-color: #283b71;
+}
+
+    .error-main-menu a:hover, .error-main-menu a.active, .error-main-menu .dropdown.open > a {
+        background-color: #5f73ad;
+    }
+
+header button.menu{
+    background-image: url('../img/icons/blue-circle.png');
+}
+
+.modal-header .close{
+    background-image: url('../img/icons/blue-circle-close.png');
+}
+
+.gototop{
+	background-image: url('../img/blue-gototop.png');
+}

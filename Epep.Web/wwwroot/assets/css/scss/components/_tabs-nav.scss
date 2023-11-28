@@ -1,0 +1,133 @@
+.tabs-nav {
+    padding: 4px;
+    flex: 1;
+    // width: calc(100% - 150px);
+
+    background-color: $secondary-dark;
+    border-radius: 4px;
+
+    &__list {
+        list-style: none;
+        margin-bottom: 0;
+        padding-left: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+
+        li {
+            display: inline-block;
+            flex: 1 0 fit-content;
+        }
+    }
+
+    &__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        color: white;
+        font-size: 1.125rem;
+        width: 100%;
+
+        &.active,
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: $secondary-dark-25;
+            border-radius: 2px;
+            color: $secondary-dark;
+            font-weight: 400;
+        }
+        &--flag {
+            position: relative;
+            background-color: $primary-dark;
+            background-repeat: no-repeat;
+            background-size: 32px;
+            width: 49px;
+            height: 49px;
+            flex: 0 0 64px;
+
+            transition: none;
+
+            background-position: center;
+            background-size: 58px;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-color: $primary-dark-25;
+            }
+
+            &:after {
+                display: none;
+                content: attr(aria-label);
+                justify-content: flex-start;
+                align-items: center;
+                position: absolute;
+                bottom: calc(100% - 1px);
+
+                left: -1px;
+                width: 49px;
+                height: 120px;
+
+                color: $primary-dark;
+                font-weight: 600;
+                font-size: 0.9rem;
+
+                border: 1px solid $primary-dark-25;
+                border-radius: 0 0 4px 4px;
+                writing-mode: vertical-lr;
+                transform: rotate(180deg);
+
+                background-color: $primary-dark-25;
+            }
+
+            &:hover {
+                &:after {
+                    display: flex;
+                }
+            }
+        }
+
+        &--chrono {
+            background-image: url(../images/cases/timeline-white.svg);
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-image: url(../images/cases/timeline.svg);
+            }
+        }
+
+        &--conn {
+            background-image: url(../images/cases/related-cases.svg);
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-image: url(../images/cases/related-cases-hover.svg);
+            }
+        }
+
+        &--team {
+            background-image: url(../images/cases/case-users-normal.svg);
+            background-size: 22px;
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-image: url(../images/cases/case-users-active.svg);
+            }
+        }
+
+        &--briefcase {
+            background-image: url(../images/main-menu/normal/lawyers-3.svg);
+
+            &:hover,
+            &:focus,
+            &:active {
+                background-image: url(../images/main-menu/hover/lawyers-1.svg);
+            }
+        }
+    }
+}

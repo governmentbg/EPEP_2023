@@ -1,0 +1,60 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    Layout = "~/Views/EmailTemplates/MailLayout.cshtml";
+    string portalUrl = (string)ViewData["portalUrl"];
+    string portalFeedback = (string)ViewData["feedbackUrl"];
+    string userName = (string)Model["userName"];
+    string orgName = (string)Model["orgName"];
+    bool isComfirmed = (bool)Model["isComfirmed"];
+    string deniedReason = (string)Model["deniedReason"];
+
+    var header = "Единен портал за електронно правосъдие (Регистрация)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var inMessage = "В ";
+    var deleteMessage = "Ако заявката не е направена от Вас, моля, изтрийте този имейл.";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @inMessage<strong style="color: #444444;">@eCase</strong>
+    @if (!string.IsNullOrEmpty(userName))
+    {
+        <text>
+            беше получена заявка за потвърждаване на нов потребителски профил като представляващ.
+            <br />
+            Име:
+            <strong style="color: #444444;">@userName</strong>
+            <br />
+            Юридическо лице: <strong style="color: #444444;">@orgName</strong>
+        </text>
+    }
+    else
+    {
+        <text>
+            беше получена заявка за потвърждаване на нов потребителски профил на Юридическо лице.
+            <br />
+            Наименование:
+            <strong style="color: #444444;">@orgName</strong>
+        </text>
+    }
+    <br />
+    Профилът Ви е:
+    @if (isComfirmed)
+    {
+        <strong style="color: #444444;">потвърден</strong>
+        <br />
+    }
+    else
+    {
+        <strong style="color: #444444;">отказан</strong>
+
+        <br />
+        <text>Основание:</text>
+        <strong style="color: #444444;">@deniedReason</strong>
+
+        <br />
+    }
+</p>

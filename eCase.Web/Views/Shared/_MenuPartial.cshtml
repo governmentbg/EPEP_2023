@@ -1,0 +1,56 @@
+﻿@{
+    string actionName = ViewContext.RouteData.Values["action"] as string;
+    string controllerName = ViewContext.RouteData.Values["controller"] as string;
+    var menuItem = MenuManager.GetCurrentMenuItem(actionName, controllerName, Request.IsAuthenticated);
+
+    var caseSearchMenuTitle = "Съдебни дела";
+    var caseSearchHref = Url.Action(MVC.Case.ActionNames.Search, MVC.Case.Name);
+
+    if (Request.IsAuthenticated && (CurrentUser.IsLawyer || CurrentUser.IsPerson))
+    {
+        caseSearchMenuTitle = "Мои дела";
+        //caseSearchHref = Url.Action(MVC.Case.ActionNames.Search, MVC.Case.Name, new { ShowResults = true });
+    }
+}
+
+<nav class="main-menu clearfix">
+    <a href="@(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name))" class="@((menuItem.Equals(MenuItems.Home) ? " active" : ""))" title="Начало">Начало</a>
+
+    <a href="@caseSearchHref" class="@((menuItem.Equals(MenuItems.Cases) ? " active" : ""))" title="@caseSearchMenuTitle">@caseSearchMenuTitle</a>
+    @if (Request.IsAuthenticated)
+    {
+        if (ShowSummons)
+        {
+            <a href="@(Url.Action(MVC.Summon.ActionNames.Search, MVC.Summon.Name))"
+               class="@((menuItem.Equals(MenuItems.Summons) ? " active" : ""))"
+               title="Съобщения"
+               style="@(SummonsCount > 0 ? "font-weight: bold;" : "")">
+                Съобщения @(SummonsCount > 0 ? String.Format("({0})", SummonsCount) : "")
+            </a>
+        }
+
+        if (CurrentUser.IsSuperAdmin)
+        {
+            <a href="@(Url.Action(MVC.Home.ActionNames.CourtsList, MVC.Home.Name))" class="@((menuItem.Equals(MenuItems.CourtsList) ? " active" : ""))" title="Списък съдилища">Списък съдилища</a>
+            <a href="@(Url.Action(MVC.User.ActionNames.Search, MVC.User.Name))" class="@((menuItem.Equals(MenuItems.Users) ? " active" : ""))" title="Потребители">Потребители</a>
+            <a href="@(Url.Action(MVC.Lawyer.ActionNames.Search, MVC.Lawyer.Name))" class="@((menuItem.Equals(MenuItems.Lawyers) ? " active " : ""))" title="Регистър адвокати">Регистър адвокати</a>
+            <a href="@(Url.Action(MVC.Statistics.ActionNames.Cases, MVC.Statistics.Name))" class="@((menuItem.Equals(MenuItems.CasesCount) ? " active" : ""))" title="Брой дела">Брой дела</a>
+        }
+    }
+
+    @if (Request.IsAuthenticated && CurrentUser.IsCourtAdmin)
+    {
+        <a href="@(Url.Action(MVC.CourtUser.ActionNames.Search, MVC.CourtUser.Name))" class="@((menuItem.Equals(MenuItems.CourtUser) ? " active" : ""))" title="Списък потребители">Списък потребители</a>
+    }
+
+    @if (!(Request.IsAuthenticated && CurrentUser.IsSuperAdmin))
+    {
+        <a href="@(Url.Action(MVC.Home.ActionNames.CourtsList, MVC.Home.Name))" class="@((menuItem.Equals(MenuItems.CourtsList) ? " active" : ""))" title="Списък съдилища">Списък съдилища</a>
+        if (!Statics.IsSummonsPortal)
+        {
+            <a href="@(Url.Action(MVC.Home.ActionNames.ElectronicCasesAccessRules, MVC.Home.Name))" class="@((menuItem.Equals(MenuItems.AccessRules) ? " active" : ""))" title="Правила за достъп">Правила за достъп</a>
+        }
+        <a href="@(Url.Action(MVC.Feedback.ActionNames.Index, MVC.Feedback.Name))" class="@((menuItem.Equals(MenuItems.Feedback) ? " active" : ""))" title="Обратна връзка">Обратна връзка</a>
+    }
+    
+</nav>

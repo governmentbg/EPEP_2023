@@ -1,0 +1,721 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.Case
+@model CaseVM
+@inject IUserContext userContext;
+@{
+    var isOrganizationRepresentative = userContext.UserType == NomenclatureConstants.UserTypes.OrganizationRepresentative;
+    var isOrganizationUser = userContext.UserType == NomenclatureConstants.UserTypes.OrganizationUser;
+    var isAccessedByPerson = NomenclatureConstants.UserTypes.PersonTypes.Contains(userContext.UserType);
+    var canRequestAccess = NomenclatureConstants.UserTypes.CanRequestAccess.Contains(userContext.UserType);
+    var isUserAccess = (bool)ViewBag.isUserAccess;
+    var isGlobalAccess = (bool)ViewBag.isGlobalAccess;
+    DateTime UpgradeEpepDateStart = (DateTime)ViewBag.UpgradeEpepDateStart;
+    var elDocEnabled = ((UpgradeEpepDateStart <= Model.FormationDate) || (Model.SystemCode == NomenclatureConstants.SystemCodes.EISS)) && Model.HasElectronicDocuments;
+    var elPaymentEnabled = elDocEnabled && Model.HasElectronicPayments;
+    var hasScannedFiles = (ViewBag.hasScannedFiles == true);
+}
+
+<main class="page-content page-with-heading">
+    <div class="heading">
+        <div class="container">
+            <nav class="breadcrumbs" aria-label="навигация пътечка">
+                <ul class="breadcrumbs__list">
+                    @if (userContext.IsAuthenticated && isUserAccess)
+                    {
+                        <li><a asp-action="myCases">Моите дела</a></li>
+                    }
+                    <li><a asp-action="Index">Съдебни дела</a></li>
+                </ul>
+            </nav>
+            <h1 class="page-title">
+                Дело № @Model.RegNumber <span class="page-title__right">@Model.RegYear</span>
+            </h1>
+            <div class="heading__subheading">
+                <h2>@Model.CaseKindName</h2>
+                @if (userContext.IsAuthenticated)
+                {
+                    <a href="@Url.Action("ToggleFocus",new{gid = Model.Gid})">
+                        @if (Model.FocusCase)
+                        {
+                            <div class="cta-star btn" aria-checked="true" title="Премахни от дела на фокус">
+                                <span class="visually-hidden" aria-hidden="true">премахни от любими</span>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="cta-star btn" aria-checked="false" title="Добави в дела на фокус">
+                                <span class="visually-hidden" aria-hidden="true">добави в любими</span>
+                            </div>
+                        }
+                    </a>
+                    @if (isUserAccess)
+                    {
+                        <a href="@Url.Action("ToggleArchive",new{gid = Model.Gid})">
+                            @if (Model.ArchiveCase)
+                            {
+                                <button class="u-archive u-archive--selected btn" title="Разархивирай делото"></button>
+                            }
+                            else
+                            {
+                                <button class="u-archive btn" title="Архивирай делото"></button>
+                            }
+                        </a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    <div class="heading heading--light">
+        <div class="container">
+            <div class="case__assets">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="list__cell">
+                            <div class="list__label">
+                                Инициираща страна
+                                @if (Model.SideLeftCount > 0)
+                                {
+                                    <button class="btn u-btn-more float-end" onclick="$('#tabID7').trigger('click');">и още @Model.SideLeftCount</button>
+                                }
+                            </div>
+                            <div class="d-flex">
+                                <div class="list__output">@Model.SideLeft</div>
+                            </div>
+                        </div>
+                        <div class="list__cell">
+                            <div class="list__label">
+                                Ответна страна
+                                @if (Model.SideRightCount > 0)
+                                {
+                                    <button class="btn u-btn-more float-end" onclick="$('#tabID7').trigger('click');">и още @Model.SideRightCount</button>
+                                }
+                            </div>
+                            <div class="list__output">@Model.SideRight</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="list__cell">
+                            <div class="list__label">Съд</div>
+                            <div class="list__output">@Model.CourtName</div>
+                        </div>
+                        <div class="list__cell">
+                            <div class="list__label">Съдия докладчик</div>
+                            <div class="list__output">@Model.JudgeReporter</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="list__cell">
+                            <div class="list__label">Дата на образуване</div>
+                            <div class="list__output">@Model.FormationDate.ToString("dd.MM.yyyy")</div>
+                        </div>
+                        <div class="list__cell">
+                            <div class="list__label">Входящ номер</div>
+                            <div class="list__output">
+                                @if (Model.IncommingNumber > 0)
+                                {
+                                    <text>@Model.IncommingNumber</text>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="list__cell">
+                            <div class="list__label">Съдебен състав</div>
+                            <div class="list__output">@Model.DepartmentName @Model.PanelName</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="case__controls">
+                <nav class="case-tabs row g-1">
+                    <div class="tabs-nav">
+                        <ul class="tabs-nav__list">
+                            @if (isUserAccess || isGlobalAccess)
+                            {
+                                <li><button id="tabID1" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabDocuments" aria-expanded="true" aria-controls="caseTabDocuments">Документи</button></li>
+                            }
+                            <li><button id="tabID7" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabSides" aria-expanded="false" aria-controls="caseTabSides">Страни</button></li>
+                            <li><button id="tabID2" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabAssignments" aria-expanded="false" aria-controls="caseTabAssignments">Разпределения</button></li>
+                            @if (isUserAccess && isAccessedByPerson)
+                            {
+                                <li><button id="tabID4" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabSummons" aria-expanded="false" aria-controls="caseTabSummons">Призовки</button></li>
+                            }
+                            <li><button id="tabID5" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabHearings" aria-expanded="false" aria-controls="caseTabHearings">Заседания</button></li>
+                            <li><button id="tabID6" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#caseTabActs" aria-expanded="false" aria-controls="caseTabActs">Актове</button></li>
+                        </ul>
+                    </div>
+                    <div class="col-auto"><button id="tabID7" class="btn tabs-nav__btn tabs-nav__btn--flag tabs-nav__btn--chrono" onclick="loadChronology();return false;" type="button" data-bs-target="#caseChronology" aria-expanded="false" aria-controls="caseChronology" aria-label="Хронология"></button></div>
+                    <div class="col-auto"><button id="tabID8" class="btn tabs-nav__btn tabs-nav__btn--flag tabs-nav__btn--conn gv-loader-tab" type="button" data-bs-target="#caseConnectedCase" aria-expanded="false" aria-controls="caseConnectedCase" aria-label="Свързани дела"></button></div>
+                    @if (isOrganizationRepresentative)
+                    {
+                        <div class="col-auto"><button id="tabID9" class="btn tabs-nav__btn tabs-nav__btn--flag tabs-nav__btn--briefcase gv-loader-tab" type="button" data-bs-target="#caseUsersForCase" aria-expanded="false" aria-controls="caseUsersForCase" aria-label="Юристи"></button></div>
+                    }
+                    @if ((isUserAccess && isAccessedByPerson) || isGlobalAccess)
+                    {
+                        <div class="col-auto"><button id="tabID9" class="btn tabs-nav__btn tabs-nav__btn--flag tabs-nav__btn--team gv-loader-tab" type="button" data-bs-target="#caseUsersWithAccess" aria-expanded="false" aria-controls="caseUsersWithAccess" aria-label="Достъп"></button></div>
+                    }
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="case-tabs__container">
+            @if (isUserAccess || isGlobalAccess)
+            {
+                <div class="case-tabs__info" id="caseTabDocuments">
+                    @if (isUserAccess && elDocEnabled)
+                    {
+                        <div class="form-group">
+                            <a href="@Url.Action("Add","Document",new{caseGid=Model.Gid})" class="btn u-btn-gradient">Нов съпровождащ документ</a>
+                        </div>
+                    }
+                    @if (hasScannedFiles)
+                    {
+                        <div class="page-title__container row">
+                            <div class="col-lg-12">
+                                <button onclick="showDetails(@(NomenclatureConstants.SourceTypes.CaseScannedFiles),'@Model.Gid');return false;" class="btn u-btn-gradient float-end">Сканирани документи</button>
+                            </div>
+                        </div>
+                    }
+                    <div id="gvDocuments"></div>
+                </div>
+            }
+            <div class="case-tabs__info" id="caseTabAssignments">
+                <div id="gvAssignments"></div>
+            </div>
+            <div class="case-tabs__info" id="caseTabSides">
+                <div id="gvSides"></div>
+            </div>
+            <div class="case-tabs__info" id="caseTabAssignments">
+                <div id="gvAssignments"></div>
+            </div>
+            @if (isUserAccess)
+            {
+                <div class="case-tabs__info" id="caseTabSummons">
+                    <div id="gvSummons"></div>
+                </div>
+            }
+            <div class="case-tabs__info" id="caseTabHearings">
+                <div id="gvHearings"></div>
+            </div>
+            <div class="case-tabs__info" id="caseTabActs">
+                <div id="gvActs"></div>
+            </div>
+            <div class="case-tabs__info" id="caseChronology">
+                <div id="gvChronology"></div>
+            </div>
+            <div class="case-tabs__info" id="caseConnectedCase">
+                <div id="gvConnectedCase"></div>
+            </div>
+            @if (isOrganizationRepresentative)
+            {
+                <div class="case-tabs__info" id="caseUsersForCase">
+                    <div class="page-title__container row">
+                        <div class="col-lg-12">
+                            <button onclick="addUserUserForCase();return false;" class="btn u-btn-gradient float-end">Добави юрист по делото</button>
+                        </div>
+                    </div>
+                    <div id="gvUsersForCase"></div>
+                </div>
+            }
+            @if ((isUserAccess && isAccessedByPerson) || isGlobalAccess)
+            {
+                <div class="case-tabs__info" id="caseUsersWithAccess">
+                    <div id="gvUsersWithAccess"></div>
+                </div>
+            }
+        </div>
+    </div>
+</main>
+
+
+@section Scripts{
+    <script>
+        let loader = {
+            gid: '@(Model.Gid)',
+            public: '@(!isUserAccess)'
+        };
+        $(function () {
+            setTimeout(function () { $('.tabs-nav__btn:first').trigger('click'); }, 100);
+
+
+            let gvAssignments = new GridView({
+                container: '#gvAssignments',
+                url: '@(Url.Action("AssignmentsLoadData"))',
+                data: function () {
+                    return loader;
+                },
+                autoload: false,
+                template: '#gvItemAssignment'
+            });
+            let gvSides = new GridView({
+                container: '#gvSides',
+                url: '@(Url.Action("SidesLoadData"))',
+                data: function () {
+                    return loader;
+                },
+                autoload: false,
+                template: '#gvItemSide'
+            });
+
+            let gvHearings = new GridView({
+                container: '#gvHearings',
+                url: '@(Url.Action("HearingsLoadData"))',
+                data: function () {
+                    return loader;
+                },
+                autoload: false,
+                template: '#gvItemHearing'
+            });
+
+            let gvActs = new GridView({
+                container: '#gvActs',
+                url: '@(Url.Action("ActsLoadData"))',
+                data: function () {
+                    return loader;
+                },
+                autoload: false,
+                template: '#gvItemAct'
+            });
+
+            let gvConnectedCase = new GridView({
+                container: '#gvConnectedCase',
+                url: '@(Url.Action("ConnectedCaseLoadData"))',
+                data: function () {
+                    return loader;
+                },
+                autoload: false,
+                template: '#gvItemConnectedCase'
+            });
+
+        @if (isUserAccess || isGlobalAccess)
+        {
+            <text>
+                    let gvDocuments = new GridView({
+                        container: '#gvDocuments',
+                        url: '@(Url.Action("DocumentsLoadData"))',
+                        data: function () {
+                            return loader;
+                        },
+                        autoload: false,
+                        template: '#gvItemDocument'
+                    });
+
+            </text>
+            if (isAccessedByPerson)
+            {
+                <text>
+                        let gvSummons = new GridView({
+                            container: '#gvSummons',
+                            url: '@(Url.Action("SummonsCaseLoadData"))',
+                            data: function () {
+                                return loader;
+                            },
+                            autoload: false,
+                            template: '#gvItemSummon'
+                        });
+                </text>
+            }
+        }
+        @if (isOrganizationRepresentative)
+        {
+            <text>
+
+                    let gvUsersForCase = new GridView({
+                        container: '#gvUsersForCase',
+                        url: '@(Url.Action("OrganizationCaseLoadData", "Organization"))',
+                        data: function () {
+                            return loader;
+                        },
+                        autoload: false,
+                        template: '#gvItemUsersForCase'
+                    });
+
+            </text>
+        }
+        @if ((isUserAccess && isAccessedByPerson) || isGlobalAccess)
+        {
+            <text>
+
+                    let gvUsersWithAccess = new GridView({
+                        container: '#gvUsersWithAccess',
+                        url: '@(Url.Action("UsersWithAccessLoadData"))',
+                        data: function () {
+                            return loader;
+                        },
+                        autoload: false,
+                        template: '#gvItemUsersWithAccess'
+                    });
+
+            </text>
+        }
+                                                                                                                                                });
+        function readSummonCallback() {
+            let actionMode = $('#ActionMode').val();
+            if (actionMode == 'reload-summon') {
+                gridViewLoadData('#gvSummons');
+            }
+        }
+        function loadChronology() {
+            if ($('#gvChronology').data('loaded')) {
+                return false;
+            }
+            requestContent('@Url.Action("ChronologyTimelineByCase","Case")', loader, function (data) {
+                $('#gvChronology').data('loaded', 'loaded');
+                $('#gvChronology').html(data);
+                initTimeline();
+            });
+        }
+        @if (isOrganizationRepresentative)
+        {
+            <text>
+                function addUserUserForCase() {
+                    requestOffcanvasSmall('@Url.Action("OrganizationCaseAdd","Organization")', { gid: '@Model.Gid' });
+                }
+            function editUserForCase(gid) {
+                requestOffcanvasSmall('@Url.Action("OrganizationCaseEdit","Organization")', { gid: gid });
+            }
+            function editUserForCaseCallback() {
+                hideOffcanvas();
+                gridViewLoadData('#gvUsersForCase');
+            }
+            </text>
+        }
+        @if (userContext.IsAuthenticated && isAccessedByPerson)
+        {
+            <text>
+                function manageUserAccess(sideGid) {
+                    requestOffcanvasSmall('@Url.Action("UserAccess")', { gid: sideGid });
+                }
+            function userAccessCallback(data) {
+                hideOffcanvas();
+                if (data && data.result) {
+                    document.location.href = '@Url.Action("Edit","Document")/' + data.objectId;
+                }
+            }
+            </text>
+        }
+    </script>
+
+    <script type="text/x-handlebars-template" id="gvItemSide">
+        <li class="list__item">
+            <div class="case-card case-card--darken">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md">
+                            <span class="list__label">Име</span>
+                            <div class="list__output">{{subjectName}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Качество</span>
+                            <div class="list__output">{{sideInvolvementKindName}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Адвокати</span>
+                            <div class="list__output">
+                                {{#each lawyers}}
+                                <span>{{this}}</span>
+                                {{/each}}
+                                </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Процесуално качество</span>
+                            <div class="list__output">{{proceduralRelation}}</div>
+                        </div>
+        @if (userContext.IsAuthenticated && canRequestAccess && elDocEnabled)
+        {
+            <text>
+                                <div class="ms-auto col-auto">
+                                             <button class="btn u-btn-lupa" onclick="manageUserAccess('{{gid}}');return false;"></button>
+                                        </div>
+            </text>
+        }
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemAssignment">
+        <li class="list__item">
+            <a href="#" class="case-card case-card--darken" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Assignment),'{{gid}}');return false;">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md-1">
+                           <span class="list__label">Дата</span>
+                           <div class="list__output">{{dateFormat date "DD.MM.YYYY HH:mm"}}</div>
+                        </div>
+                        <div class="col-md-4">
+                            <span class="list__label">Съдия</span>
+                            <div class="list__output">{{judgeName}}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="list__label">Тип</span>
+                            <div class="list__output">{{type}}</div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="list__label">Разпределил</span>
+                            <div class="list__output">{{assignor}}</div>
+                        </div>
+                        <div class="ms-auto col-auto">
+                            <button class="btn u-btn-lupa" onclick="return false;"></button>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </li>
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemHearing">
+        <li class="list__item">
+            <a href="#" onclick="showDetails(@NomenclatureConstants.SourceTypes.Hearing,'{{gid}}');return false;" class="case-card case-card--darken">
+                 <div class="case-card d-flex">
+                    <div class="col-md-2">
+                        <h3 class="list__title mt-2">{{dateFormat date "DD MMMM"}} <span>{{dateFormat date "YYYY"}}</span></h3>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="case-card__body">
+                            <div class="row">
+                                <div class="col-md">
+                                    <span class="list__label">Начало</span>
+                                    <div class="list__output">{{dateFormat date "DD.MM.YYYY HH:mm"}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Вид</span>
+                                    <div class="list__output">{{hearingType}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Резултат</span>
+                                    <div class="list__output">{{hearingResult}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Секретар</span>
+                                    <div class="list__output">{{secretaryName}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Прокурор</span>
+                                    <div class="list__output">{{prosecutorName}}</div>
+                                </div>
+                                <div class="ms-auto col-auto">
+                                    <button onclick="return false;" class="btn u-btn-lupa" data-bs-toggle="offcanvas" data-bs-target="#docDetail1" aria-controls="docDetail1" aria-labelledby="преглед свързани документи" title="Преглед"></button>
+                                </div>
+                            </div>
+                        </div>
+                     </div>
+                 </div>
+            </a>
+        </li>
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemAct">
+         <li class="list__item">
+             <div class="case-card d-flex">
+                 <div class="col-md-1" title="Дата на постановяване">
+                     <h3 class="list__title mt-2">{{dateFormat dateSigned "DD MMMM"}} <span>{{dateFormat dateSigned "YYYY"}}</span></h3>
+                 </div>
+                 <div class="col-md-11">
+                     <div class="case-card__body">
+                         <a href="#" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Act),'{{gid}}');return false;">
+                            <div class="row">
+                                 <div class="col-md-2">
+                                     <span class="list__label">Вид</span>
+                                     <div class="list__output">{{actKindName}}</div>
+                                 </div>
+                                 <div class="col-md">
+                                     <span class="list__label">Номер</span>
+                                     <div class="list__output">{{number}}</div>
+                                 </div>
+                                 <div class="col-md">
+                                     <span class="list__label">В сила от</span>
+                                     <div class="list__output">{{dateFormat dateInPower "DD.MM.YYYY"}}</div>
+                                 </div>
+                                 <div class="col-md">
+                                     <span class="list__label">Съдебен състав</span>
+                                     <div class="list__output">
+                                         {{#each this.preparators}}
+                                         <div class="list__sublist">{{judgeName}} - {{judgeRole}}</div>
+                                         {{/each}}</div>
+                                 </div>
+
+                                 <div class="ms-auto col-auto">
+                                     <button onclick="return false;" class="btn u-btn-lupa" data-bs-toggle="offcanvas" data-bs-target="#docDetail1" aria-controls="docDetail1" aria-labelledby="преглед свързани документи" title="Преглед"></button>
+                                 </div>
+                            </div>
+                         </a>
+                     </div>
+                 </div>
+             </div>
+        </li>
+    </script>
+    @if (isUserAccess || isGlobalAccess)
+    {
+        <script type="text/x-handlebars-template" id="gvItemDocument">
+            <li class="list__item">
+            <a href="#" class="case-card" {{#if hasFiles}}onclick="showDetails({{type}},'{{gid}}');return false;"{{/if}}>
+            <div class="case-card__body">
+            <div class="row">
+            <div class="col-md-1">
+            <span class="list__label">Номер</span>
+            <div class="list__output">{{number}}</div>
+            </div>
+            <div class="col-md-1">
+            {{#compare direction 1}}
+            <div class="case__direction case__direction--inbox" title="Входящ документ"><span class="visually-hidden">Статус: Вътрешен</span></div>
+            {{/compare}}
+            {{#compare direction 2}}
+            <div class="case__direction case__direction--outbox" title="Изходящ документ"><span class="visually-hidden">Статус: Вътрешен</span></div>
+            {{/compare}}
+            </div>
+            <div class="col-md-2">
+            <span class="list__label">Дата и час</span>
+            <div class="list__output"><span class="d-block">{{dateFormat date "DD.MM.YYYY"}}</span><span>{{dateFormat date "HH:mm"}}</span></div>
+            </div>
+            <div class="col-md">
+            <span class="list__label">Вид</span>
+            <div class="list__output">{{typeName}}</div>
+            </div>
+            <div class="col-md">
+            <span class="list__label">Кореспондент</span>
+            <div class="list__output">{{subjectName}}</div>
+            </div>
+            {{#if hasFiles}}
+            <div class="ms-auto col-md-1 text-end">
+            <button class="btn u-btn-lupa" onclick="showFiles({{type}},'{{gid}}');return false;"></button>
+            </div>
+            {{else}}
+            <div class="ms-auto col-md-1">
+            </div>
+            {{/if}}
+            </div>
+            </div>
+            </a>
+            </li>
+
+        </script>
+        @if (isAccessedByPerson)
+        {
+            <script type="text/x-handlebars-template" id="gvItemSummon">
+                    <li class="list__item">
+                    <a href="#" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}',readSummonCallback);return false;" class="case-card case-card--darken">
+                        <div class="case-card__body">
+                            <div class="row">
+                                <div class="col-md-1">
+                                   <span class="list__label">Дата</span>
+                                   <div class="list__output">{{dateFormat dateCreated "DD.MM.YYYY HH:mm"}}</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="list__label">Тип</span>
+                                    <div class="list__output">{{summonType}}</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="list__label">Вид</span>
+                                    <div class="list__output">{{summonKind}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="list__label">Получател</span>
+                                    <div class="list__output">{{subject}}</div>
+                                </div>
+                                {{#if isRead}}
+                                    <div class="col-md-1">
+                                        <button onclick="return false;" class="float-end btn u-btn-lupa" data-bs-toggle="offcanvas" data-bs-target="#docDetail1" aria-controls="docDetail1" aria-labelledby="преглед свързани документи" title="Преглед"></button>
+                                    </div>
+                                {{else}}
+                                    <div class="col-md-1"><div data-link="2" class="cta-active btn">Прочети</div></div>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            </script>
+        }
+    }
+    <script type="text/x-handlebars-template" id="gvItemConnectedCase">
+        <li class="list__item">
+            <a href="#" onclick="showDetails(@NomenclatureConstants.SourceTypes.Case,'{{gid}}');" class="case-card case-card--darken">
+                 <div class="case-card__body">
+                      <div class="row">
+                           <div class="col-md-3">
+                              <span class="list__label">Съд</span>
+                              <div class="list__output">{{courtName}}</div>
+                           </div>
+                           <div class="col-md">
+                               <span class="list__label">Вид</span>
+                               <div class="list__output">{{caseKideName}}</div>
+                           </div>
+                           <div class="col-md">
+                               <span class="list__label">Номер</span>
+                               <div class="list__output">{{number}}</div>
+                           </div>
+                           <div class="col-md">
+                               <span class="list__label">Година</span>
+                               <div class="list__output">{{year}}</div>
+                           </div>
+                       </div>
+                 </div>
+            </a>
+        </li>
+    </script>
+
+    @if (isOrganizationRepresentative)
+    {
+        <text>
+            <script type="text/x-handlebars-template" id="gvItemUsersForCase">
+                <li class="list__item">
+                    {{#if isRepresentative}}
+                    <div class="case-card case-card--darken">
+                    {{else}}
+                    <a href="#" onclick="editUserForCase('{{organizationUserGid}}');return false;" class="case-card case-card--darken">
+                    {{/if}}
+                        <div class="case-card__body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <span class="list__label">Имена</span>
+                                    <div class="list__output">{{fullName}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="list__label">Роля</span>
+                                    <div class="list__output">
+                                        {{userTypeName}}
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="list__label">Получава известия</span>
+                                    <div class="list__output">{{#if notificateUser}}Да{{/if}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    {{#if isRepresentative}}
+                    </div>
+                    {{else}}
+                    </a>
+                    {{/if}}
+                </li>
+            </script>
+        </text>
+    }
+    @if ((isUserAccess && isAccessedByPerson) || isGlobalAccess)
+    {
+        <text>
+            <script type="text/x-handlebars-template" id="gvItemUsersWithAccess">
+                <li class="list__item">
+                    <div class="case-card case-card--darken">
+                        <div class="case-card__body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <span class="list__label">Имена</span>
+                                    <div class="list__output">{{userName}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="list__label">Страна</span>
+                                    <div class="list__output">{{sideName}}</div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="list__label">Качество</span>
+                                    <div class="list__output">{{sideKindName}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </script>
+        </text>
+    }
+}

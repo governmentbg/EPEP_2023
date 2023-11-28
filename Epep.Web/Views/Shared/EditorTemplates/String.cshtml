@@ -1,0 +1,17 @@
+﻿@model string
+@{
+    var containerClass = ViewData["container_class"] ?? "form-group";
+    var placeholder = ViewData["placeholder"] ?? "";
+}
+<div class="@containerClass">
+    @if (ViewData["label"] != null)
+    {
+        <label class="form-label">@ViewData["label"]</label>
+    }
+    else
+    {
+        <label asp-for="@Model" class="form-label"></label>
+    }
+    @Html.TextBoxFor(model => model, new { @class = "form-control",placeholder=placeholder })
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

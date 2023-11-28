@@ -1,0 +1,36 @@
+﻿[
+  {
+    "outputFileName": "wwwroot/css/prod/site.min.css",
+    "inputFiles": [
+      "wwwroot/lib/gridview/gridview.css",
+      "wwwroot/lib/datetimepicker6/css/tempus-dominus.css",
+      "wwwroot/lib/select2/css/select2.css",
+      "wwwroot/lib/select2-bs5/select2-bootstrap-5-theme.css",
+      "wwwroot/css/site.css"
+    ],
+    "minify": {
+      "enabled": true    
+    }
+  },
+  {
+    "outputFileName": "wwwroot/js/prod/site.min.js",
+    "inputFiles": [
+      "wwwroot/lib/moment-locale.min.js",
+      "wwwroot/lib/handlebars.js",
+      "wwwroot/lib/datetimepicker6/locales/bg.js",
+      //"wwwroot/lib/datetimepicker6/js/tempus-dominus.js",
+      "wwwroot/lib/datetimepicker6/js/jQuery-provider.js",
+      "wwwroot/lib/datetimepicker6/js/popper.min.js",
+      "wwwroot/lib/datetimepicker6/plugins/customDateFormat.js",
+      "wwwroot/lib/datetimepicker6/plugins/fa-five.js",
+      "wwwroot/lib/select2/js/select2.js",
+      "wwwroot/js/handlebars-ext.js",
+      "wwwroot/js/site.js"
+    ],
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    "sourceMap": true
+  }
+]

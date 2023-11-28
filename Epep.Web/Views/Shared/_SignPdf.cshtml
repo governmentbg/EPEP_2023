@@ -1,0 +1,30 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model SignDocumentVM
+@inject IConfiguration configuration;
+@{
+    ViewData["Title"] = "Подписване на документ";
+    var signToolsPath = configuration.GetValue<string>("SignToolsPath") ?? "https://sign.uslugi.io/java/stampitls-eiss.jnlp";
+}
+
+<main class="page-content">
+    <div class="container">
+        <section class="section">
+            <div class="section-header">
+                <div class="row">
+                    <div class="col-auto"><h2 class="section-title">@ViewData["Title"]</h2></div>
+                </div>
+            </div>
+            <div class="section-body">
+                @await Component.InvokeAsync(nameof(Epep.Web.Components.SignPdfComponent), new { info = Model })
+            </div>
+        </section>
+    </div>
+</main>
+
+
+
+@section Scripts{
+    <script>
+        var signToolsPath = '@Html.Raw(signToolsPath)';
+    </script>
+}

@@ -1,0 +1,5 @@
+﻿@foreach (var c in VSS.Portal.Models.CourtMetadata.CourtsList)
+{
+    <div>update Courts set PostCode='@c.Postcode',CourtCity=N'@c.City',[Address]=N'@c.Address',[Phone]=N'@c.Phone',[Email]=N'@c.Email',Lat='@c.Latitude',Lon='@c.Longitude',[Url]=N'@c.HttpWebsite' where Code = '@c.CourtCode'</div>
+    <div>GO</div>
+}

@@ -1,0 +1,36 @@
+﻿<div class="inner-top-head"> </div>
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Помощ")
+
+<div class="text-page help-page clearfix">
+    <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+        <h1>Помощ</h1>
+        <h2>ЕДИНЕН ПОРТАЛ ЗА ЕЛЕКТРОННО ПРАВОСЪДИЕ</h2>
+
+        <h2>Технически изисквания</h2>
+        <p>
+            За правилната работа на системата е необходимо в браузъра да е разрешено изпълнението на JavaScript. За подробности относно включването и изключването на тази функционалност вижте потребителската документация на използвания от Вас браузър.
+        </p>
+        <p>
+            Системата е разработена и тествана за работа със следните видове браузъри:
+        </p>
+
+        <ul class="browsers">
+            <li><a target="_blank" title="Internet Explorer" href="http://windows.microsoft.com/bg-bg/internet-explorer/ie-9-worldwide-languages"><img src="@(Url.Content(Links.Content.img.icons.browsers.ie_png))" alt="">Microsoft Internet Explorer 9 или по-нов;</a></li>
+            <li><a target="_blank" title="Mozilla Firefox" href="http://www.mozilla.org/bg/firefox/new/"><img src="@(Url.Content(Links.Content.img.icons.browsers.mozilla_png))" alt="">Mozilla Firefox 15 или по-нов;</a></li>
+            <li><a target="_blank" title="Google Chrome" href="https://www.google.com/intl/bg/chrome/browser/"><img src="@(Url.Content(Links.Content.img.icons.browsers.chrome_png))" alt="">Google Chrome 25 или по-нов;</a></li>
+            <li><a target="_blank" title="Safari" href="https://www.apple.com/safari/"><img src="@(Url.Content(Links.Content.img.icons.browsers.safari_png))" alt="">Safari 7 или по-нов;</a></li>
+            <li><a target="_blank" title="Opera" href="http://www.opera.com/bg/computer/windows"><img src="@(Url.Content(Links.Content.img.icons.browsers.opera_png))" alt="">Opera 15 или по-нов;</a></li>
+        </ul>
+
+        <p>
+            В момента по наши наблюдения от проведените тестове, системата работи най-добре и бързо с браузъра  <a target="_blank" title="Google Chrome" href="https://www.google.com/intl/bg/chrome/browser/">Google Chrome</a>.
+        </p>
+        <p>
+            Препоръката ни е винаги да се стремите да използвате съвременни и по-мощни компютри, както и винаги да работите с последна актуална версия на използвания от Вас браузър.
+        </p>
+    </div>
+</div>

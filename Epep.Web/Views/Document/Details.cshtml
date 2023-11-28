@@ -1,0 +1,183 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model DocumentListVM
+<main class="page-content">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="навигация пътечка">
+            <ul class="breadcrumbs__list">
+                <li><a asp-action="Index">Моите документи</a></li>
+            </ul>
+        </nav>
+        <div class="row mt-3 mb-4 g-2">
+            <div class="col-md-auto">
+                <div class="msg-note">
+                    <p class="msg-note__label">Дължима такса</p>
+                    @if (Model.TaxAmount > 0M)
+                    {
+                        <p class="msg-note__output"><span>@Model.TaxAmount.Value.ToString("N2")</span>лв.</p>
+                    }
+                    else
+                    {
+                        <p class="msg-note__output"><span>-.--</span>лв.</p>
+                    }
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-counter step-counter--3">
+                    <div class="step-counter__title">Данни за документ</div>
+                    @if (string.IsNullOrEmpty(Model.NumberApply))
+                    {
+                        <div class="step-counter__counter">част <span class="step-number">3</span> от <span>3</span></div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3 class="section-title section-title--xs mb-2">Данни за документа</h3>
+                @if (Model.DateApply != null)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x=>x.NumberApply,"obj",new{container_class="mb-2"})
+                        </div>
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x=>x.DateApply,"datetime",new{container_class="mb-2"})
+                        </div>
+                    </div>
+                }
+                @Html.DisplayFor(x=>x.CourtName,"obj",new{container_class="mb-2"})
+                <div class="row">
+                    <div class="col-md-6">
+                        @Html.DisplayFor(x=>x.DocumentTypeName,"obj",new{container_class="mb-2"})
+                    </div>
+                    @if (Model.BaseAmount > 0.001M)
+                    {
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x=>x.BaseAmount,"obj",new{container_class="mb-2"})
+                        </div>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(Model.Description))
+                {
+                    @Html.DisplayFor(x=>x.Description,"obj",new{container_class="mb-2"})
+                }
+                @if (Model.DocInfo != null)
+                {
+                    <div class="row">
+                        <div class="col-md-6">
+                            @Html.DisplayFor(x=>x.DocInfo.TypeName,"obj",new{label="Регистриран в съд като", container_class="mb-2"})
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DisplayFor(x=>x.DocInfo.Number,"obj",new{label="Регистриран под номер",container_class="mb-2"})
+                        </div>
+                        <div class="col-md-3">
+                            @Html.DisplayFor(x=>x.DocInfo.Date,"date",new{label="Дата",container_class="mb-2"})
+                        </div>
+                    </div>
+                }
+                @if (Model.CaseInfo != null)
+                {
+                    <a href="#" title="Преглед на дело" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Case),'@Model.CaseInfo.Gid');return false;">
+                        <div class="row">
+                            <div class="col-md-6">
+                                @Html.DisplayFor(x=>x.CaseInfo.TypeName,"obj",new{label="Свързано дело", container_class="mb-2"})
+                            </div>
+                            <div class="col-md-3">
+                                @Html.DisplayFor(x=>x.CaseInfo.Number,"obj",new{label="Номер",container_class="mb-2"})
+                            </div>
+                            <div class="col-md-3">
+                                @Html.DisplayFor(x=>x.CaseInfo.Year,"obj",new{label="Година",container_class="mb-2"})
+                            </div>
+                        </div>
+                    </a>
+                }
+                @Html.DisplayFor(x=>x.StatusDescription,"obj",new{container_class="mb-2"})
+
+            </div>
+            <div class="col-md-6">
+                <h3 class="section-title section-title--xs mb-2">Свързани лица</h3>
+                <ul class="u-list u-list--briefcase">
+                    @foreach (var side in Model.Sides)
+                    {
+                        <li><span>@side.FullName</span>&nbsp;<span>@side.SideInvolvementKindName</span></li>
+                    }
+                </ul>
+
+                @if (Model.Files.Any())
+                {
+                    <br />
+                    <br />
+                    <h3 class="section-title section-title--xs mb-2">Прикачени файлове</h3>
+                    <ul class="u-list-file">
+                        @foreach (var file in Model.Files)
+                        {
+                            <li><a href="@Url.Action("Download","File",new{fileKey=file.BlobKey})">@file.FileName</a></li>
+                        }
+                    </ul>
+                }
+                @if (Model.HasDocumentFiles)
+                {
+                    <br />
+                    <br />
+                    <h3 class="section-title section-title--xs mb-2">Свързани документи</h3>
+                    <ul class="u-list-file">
+                        @if (Model.DocumentApplyBlobKey.HasValue)
+                        {
+                            <li>
+                                <a href="@Url.Action("Download","File",new{fileKey=Model.DocumentApplyBlobKey})">Електронен пакет</a>
+                                &nbsp;
+                                <a href="@Url.Action("PreviewPdf","File",new{fileKey=Model.DocumentApplyBlobKey})" target="_blank">преглед</a>
+                            </li>
+                        }
+                        @if (Model.TimeApplyBlobKey.HasValue)
+                        {
+                            <li><a href="@Url.Action("Download","File",new{fileKey=Model.TimeApplyBlobKey})">Удостоверение за време</a></li>
+                        }
+                    </ul>
+                }
+                @if (Model.Obligations.Any())
+                {
+                    <br />
+                    <br />
+                    <h3 class="section-title section-title--xs mb-2">Задължения</h3>
+                    <ul class="u-list-file">
+                        @foreach (var obligation in Model.Obligations)
+                        {
+                            <li>
+                                @obligation.ObligationTypeName
+                                &nbsp;
+
+                                <span>
+                                    <b>@obligation.MoneyAmount.ToString("N2") @obligation.CurrencyName</b>
+                                </span>
+                                @if (obligation.PaymentDate == null)
+                                {
+                                    <a href="@Url.Action("Payment",new{gid=obligation.Gid})" class="btn u-btn-gradient">Плати</a>
+                                }
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            @if (Model.DateApply == null)
+            {
+                <div class="col-md-auto ms-auto row g-2">
+                    <div class="col-md-auto"><a class="btn u-btn--grey cta-back h-100 w-100" style="line-height: 2.3rem;" href="@Url.Action("Correct",new{gid=Model.Gid})">Редактирай</a></div>
+                    <div class="col-md-auto"><div class="col-md-auto"><a href="@Url.Action("SignDocument",new{gid=Model.Gid})" class="btn u-btn-gradient">Подпиши</a></div></div>
+                </div>
+            }
+            else
+            {
+                if (Model.DatePaid == null && false)
+                {
+                    <div class="col-md-auto ms-auto row g-2">
+                        <div class="col-md-auto"><div class="col-md-auto"><a href="@Url.Action("Payment",new{gid=Model.Gid})" class="btn u-btn-gradient">Плати</a></div></div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</main>

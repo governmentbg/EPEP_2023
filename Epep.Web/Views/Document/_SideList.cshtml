@@ -1,0 +1,11 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model List<ElectronicDocumentSideVM>
+<ul class="u-list u-list--briefcase">
+    @if (Model != null)
+    {
+        foreach (var side in Model)
+        {
+            <li><span>@side.FullName</span>&nbsp;<span>@side.SideInvolvementKindName</span><button class="btn u-btn-pen" aria-label="редактирай свързано лице" onclick="editSide('@side.SideGid');return false;"></button><button onclick="removeSide('@side.SideGid');return false;" class="btn u-btn-delete" aria-label="изтрий файл"></button></li>
+        }
+    }
+</ul>

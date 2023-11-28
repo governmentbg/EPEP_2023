@@ -1,0 +1,58 @@
+﻿@using Epep.Core.Contracts
+@inject IUserContext userContext;
+@if (NomenclatureConstants.UserTypes.AdministratorTypes.Contains(userContext.UserType))
+{
+    <partial name="_LeftAsideAdmin" />
+}
+else
+{
+    <aside id="sidebar" class="sidebar">
+        <nav id="mainNav" class="main-nav" aria-label="Основно меню">
+            <ul class="main-nav__list">
+                <li class="main-nav__item">
+                    <a role="button" id="navToggler" class="main-nav__toggler btn" aria-expanded="false"><span>Съдържание</span></a>
+                </li>
+                @if (userContext.IsAuthenticated)
+                {
+                    <partial name="_LeftAsideProfile" />
+                }
+                @if (userContext.IsAuthenticated)
+                {
+                    <li class="main-nav__item main-nav__item--dashboard active">
+                        <a class="main-nav__link" href="@Url.Action("Desktop","Case")"><span>Работен плот</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--documents">
+                        <a class="main-nav__link" href="@Url.Action("Index","Document")"><span>Документи</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--msg">
+                        <a class="main-nav__link main-nav__link--indicator" href="@Url.Action("Index","Summon")"><span>Съобщения</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--mycases">
+                        <a class="main-nav__link" href="@Url.Action("MyCases","Case")"><span>Моите дела</span></a>
+                    </li>
+                }
+                <li class="main-nav__item main-nav__item--cases">
+                    <a class="main-nav__link" href="@Url.Action("Index","Case")"><span>Съдебни дела</span></a>
+                </li>
+                @if (userContext.IsAuthenticated)
+                {
+
+                    <li class="main-nav__item main-nav__item--calendar">
+                        <a class="main-nav__link" href="@Url.Action("Calendar","Case")"><span>Календар</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--hearings">
+                        <a class="main-nav__link" href="@Url.Action("OnlineHearings","Case")"><span>Онлайн съдебни заседания</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--payments">
+                        <a class="main-nav__link main-nav__link--indicator" href="@Url.Action("Index","Money")"><span>Плащания</span></a>
+                    </li>
+                }
+                <li class="main-nav__item main-nav__item--courts">
+                    <a class="main-nav__link" href="@Url.Action("Courts","Home")"><span>Съдилища</span></a>
+                </li>
+                <li><a class="main-nav__link" href="#"></a></li>              
+
+            </ul>
+        </nav>
+    </aside>
+}

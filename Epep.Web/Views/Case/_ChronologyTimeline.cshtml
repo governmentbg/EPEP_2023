@@ -1,0 +1,74 @@
+﻿@using Epep.Core.ViewModels.Case;
+@model IList<CaseElementVM>
+@{
+    var years = Model.Select(x => x.Date.Year).Distinct().OrderByDescending(y => y).ToArray();
+}
+
+<div class="row">
+    <div class="col-md-2">
+        <nav class="timeline__nav" aria-label="Хронология">
+            <ul class="timeline__list">
+                @for (var i = 0; i < years.Length; i++)
+                {
+                    var year = years[i];
+                    var activeLastYear = (i == 0) ? "active" : "";
+                    <li><button id="timelineBtn@(year)" class="timeline__btn btn @activeLastYear" type="button" data-bs-target="#timeline@(year)" aria-expanded="false" aria-controls="timeline@(year)">@(year)</button></li>
+                }
+            </ul>
+        </nav>
+    </div>
+    <div class="col-md-10 timeline">
+        @for (var i = 0; i < years.Length; i++)
+        {
+            var year = years[i];
+            var activeLastYear = (i == 0) ? "active" : "";
+            var dates = Model.Where(x => x.Date.Year == year).Select(d => d.Date.Date).Distinct().OrderByDescending(d => d);
+            <div id="timeline@(year)" class="timeline__container @activeLastYear">
+                @foreach (var date in dates)
+                {
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="timeline__date">
+                                <div class="list__title">@date.ToString("dd MMMM")<span>@year</span></div>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            @foreach (var caseElement in Model.Where(x => x.Date.Date == date))
+                            {
+                                <div class="case-card__body" onclick="showDetails(@caseElement.Type,'@caseElement.Gid');return false;">
+                                    <div class="row">
+                                        <div class="col-2 col-md-2 col-xl-1"><div class="timeline__icon @caseElement.TypeIcon"></div></div>
+                                        <div class="col-3 col-md-3 col-xl-1">
+                                            <span class="list__label">Час</span>
+                                            @if (caseElement.Date.Hour == 0 && caseElement.Date.Minute == 0)
+                                            {
+                                                <div class="list__output">--:--</div>
+                                            }
+                                            else
+                                            {
+                                                <div class="list__output">@caseElement.Date.ToString("HH:mm")</div>
+                                            }
+                                        </div>
+                                        <div class="col-7 col-md-7 col-xl-4">
+                                            <span class="list__label">Вид</span>
+                                            <div class="list__output">@caseElement.TypeName</div>
+                                        </div>
+                                        <div class="col-12 col-md-12 col-xl-5">
+                                            <span class="list__label">@caseElement.DetailTitle</span>
+                                            <div class="list__output">@caseElement.Detail</div>
+                                        </div>
+                                        <div class="col-2 col-md-auto ms-auto">
+                                            <button class="btn u-btn-lupa" aria-labelledby="преглед свързани документи" title="Преглед"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                }
+            </div>
+        }
+    </div>
+</div>

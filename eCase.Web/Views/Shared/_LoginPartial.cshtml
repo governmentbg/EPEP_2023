@@ -1,0 +1,14 @@
+﻿@if (Request.IsAuthenticated)
+{
+    <div class="user">
+        <span>Потребител: <strong>@(CurrentUser.Name)</strong></span>
+        <a class="" href="@(Url.Action(MVC.Account.ActionNames.ChangePassword, MVC.Account.Name))" title="">Смяна на парола</a>
+        <a class="" href="@(Url.Action(MVC.Account.ActionNames.Logout, MVC.Account.Name))" title="">Изход</a>
+    </div>
+}
+else
+{
+    <div class="user" style="min-width: 150px; margin-bottom: 10px;">
+        <a class="" href="@(Url.Action(MVC.Account.ActionNames.Login, MVC.Account.Name))">Вход</a>
+    </div>
+}

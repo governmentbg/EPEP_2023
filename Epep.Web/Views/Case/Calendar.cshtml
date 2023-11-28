@@ -1,0 +1,175 @@
+﻿@using Epep.Core.ViewModels.User;
+@{
+    ViewData["Title"] = "Календар";
+    var nextVacations = (UserVacationVM[])ViewBag.nextVacations;
+}
+<main class="page-content">
+    <div class="container">
+        <h1 class="page-title">Календар</h1>
+        <div class="row epep-calendar__container">
+            <div class="col-md-4 epep-calendar__agenda">
+                <section class="section" id="divToday">
+                </section>
+                <section class="section" id="divDateEvents">
+                </section>
+
+
+                @if (nextVacations != null && nextVacations.Length > 0)
+                {
+                    <section class="section">
+                        <h2 class="section-title section-title--xs">Предстоящи отсъствия</h2>
+                        <ul class="list">
+                            @foreach (var vacation in nextVacations)
+                            {
+                                <li class="list__item">
+                                    <a href="#" class="event-card event-card--leave" data-leave-from="2022-11-27" data-leave-to="2022-11-30">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span class="list__label list__label--bold">От дата</span>
+                                                <div class="list__output">@vacation.DateFrom.ToString("dd MMMM yyyy")</div>
+                                                <div class="list__label list__label--grey">@vacation.VacationType</div>
+                                            </div>
+
+                                            <div class="col-md-6 text-md-end">
+                                                <span class="list__label">до дата</span>
+                                                <div class="list__output">@vacation.DateTo.ToString("dd MMMM yyyy")</div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </section>
+
+                }
+
+                @*<div class="my-3"><button class="btn u-btn cta-add ms-auto">Добави отсъствие</button></div>*@
+            </div>
+            <div class="col-md-8"><div id="calendar" class="epep-calendar"></div></div>
+        </div>
+    </div>
+</main>
+
+@section Head{
+    <link rel="stylesheet" href="~/assets/css/calendar.css" />
+}
+@section Scripts{
+    <script src="~/assets/scripts/calendar.js"></script>
+    <script src="~/assets/scripts/locales/bg.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var calendarEl = document.getElementById("calendar");
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: "dayGridMonth",
+                locale: 'bg',
+                //initialDate: "2022-11-07",
+                timezone: "local",
+                navLinks: false,
+                height: 650,
+                headerToolbar: {
+                    left: "today prev,next",
+                    center: "title",
+                    right: "dayGridMonth,timeGridWeek"
+                },
+                views: {
+                    dayGridMonth: {
+                        // title: "BLAAAAAAAAAAAAAAH",
+                        // titleFormat: {
+                        //     year: "numeric",
+                        //     // month: "2-digit",
+                        //     day: "2-digit"
+                        // }
+                        // other view-specific options here
+                    },
+                    dayGrid: {
+                        dayHeaders: true,
+                        dayHeaderFormat: { weekday: "long" }
+                    },
+                    timeGrid: {
+                        // options apply to timeGridWeek and timeGridDay views
+                    },
+                    week: {
+                        // options apply to dayGridWeek and timeGridWeek views
+                    },
+                    day: {
+                        // options apply to dayGridDay and timeGridDay views
+                    }
+                },
+
+                // eventDisplay: "background",
+                displayEventTime: false,
+
+                eventClick: function (a, b, c) {
+                    //alert(`a=${a}; b=${b}; c=${c}`);
+                },
+                dateClick: function (info) {
+                    //if ($(a.dayEl).find('.fc-event').length > 0) {
+                    //    showDateEvents(a.dateStr);
+                    //    //alert(a.date);
+                    //}
+                    showDateEvents(info.dateStr);
+
+                    const dayElements = document.querySelectorAll(".fc-daygrid-day");
+                    Array.prototype.slice.call(dayElements).map(td => {
+                        td.classList.contains("epep-calendar__clicked") ? td.classList.remove("epep-calendar__clicked") : "";
+                        td === info.dayEl ? td.classList.add("epep-calendar__clicked") : "";
+                    });
+                },
+
+                events: {
+                    url: '@Url.Action("LoadCalendar", "Case")'
+                }
+            });
+
+            calendar.render();
+
+            const cell = document.querySelector(".fc-daygrid-day-frame"); if (cell) { const cellHeight = cell.offsetHeight; const styleTag = document.querySelector("style"); styleTag.innerHTML = `:root {--cellHeight: ${cellHeight}px;}  `; }
+        });
+    </script>
+    <script>
+        let today = '@DateTime.Now.ToString("yyyy-MM-dd")';
+        $(function () {
+            requestDataForTemplate('#divToday', '#calDate', '@Url.Action("GetCalendarDate")', { date: today });
+        });
+        function showDateEvents(date) {
+            //debugger;
+            if (date.toString() == today) {
+                $('#divDateEvents').html('');
+                return;
+            }
+            requestDataForTemplate('#divDateEvents', '#calDate', '@Url.Action("GetCalendarDate")', { date: date });
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="calDate">
+        {{#if isToday}}
+        <h2 class="section-title section-title--xs">Днес</h2>
+        {{else}}
+        <h2 class="section-title section-title--xs">{{dateFormat date "DD MMMM YYYY"}}</h2>
+        {{/if}}
+        {{#if events}}
+        <ul class="list">
+            {{#each events}}
+            <li class="list__item">
+                <a href="#" class="event-card event-card--calendar">
+                    <div class="row">
+                        <div class="col-md-6" title="Преглед заседание" onclick="showDetails({{type}},'{{gid}}');return false;">
+                            <span class="list__label list__label--bold">{{dateFormat date "DD MMMM YYYY"}} | {{dateFormat date "HH:mm"}}</span>
+                            <div class="list__output">{{title}}</div>
+                            <div class="list__label list__label--grey">{{courtName}}</div>
+                        </div>
+
+                        <div class="col-md-6 text-md-end"  title="Преглед дело"  onclick="showDetails(@NomenclatureConstants.SourceTypes.Case,'{{caseGid}}');return false;">
+                            <span class="list__label">№ на дело</span>
+                            <div class="list__output">{{caseInfo}}</div>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            {{/each}}
+        </ul>
+        {{else}}
+        Няма насрочени заседания.
+        {{/if}}
+    </script>
+}

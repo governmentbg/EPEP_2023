@@ -1,0 +1,18 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.Extensions;
+@inject IUserContext userContext;
+<li class="main-nav__item user-profile__container">
+    <div class="user-profile">        
+        <div class="user-profile__short">
+            <span class="visually-hidden">Потребител:&nbsp;</span>
+            <span>@userContext.FullName.GetInitials()</span>
+        </div>
+        <div class="user-profile__block">
+            <span class="user-profile__title">@userContext.FullName</span>
+            <ul class="user-profile__nav">
+                <li><a asp-controller="User" asp-action="Profile" class="user-profile__link user-profile__link--settings">Профил</a></li>
+                <li><a asp-controller="User" asp-action="LogOff" class="user-profile__link user-profile__link--logout">Изход</a></li>
+            </ul>
+        </div>
+    </div>
+</li>

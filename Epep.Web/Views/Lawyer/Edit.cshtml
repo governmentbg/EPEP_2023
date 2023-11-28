@@ -1,0 +1,43 @@
+﻿@using Epep.Core.Models;
+@model Lawyer
+@{
+    var title = "Преглед на адвокат";
+    if (Model.LawyerId == 0)
+    {
+        title = "Добавяне на адвокат";
+    }
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label"></div>
+                        <div class="list__output">@title</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" @*data-url="@Url.Action("Edit")"*@>
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.LawyerId)
+                @Html.HiddenFor(x=>x.Gid)
+
+                @Html.EditorFor(x=>x.LawyerTypeId,"GenericDropDown")
+
+                @Html.EditorFor(x=>x.Number)
+                @Html.EditorFor(x=>x.Name)
+                @Html.EditorFor(x=>x.College)
+                @Html.EditorFor(x=>x.Uic)
+            </form>
+            @*<button type="button" class="cta-active btn form-submit" data-callback="editLawyerCallback">Запис</button>*@
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

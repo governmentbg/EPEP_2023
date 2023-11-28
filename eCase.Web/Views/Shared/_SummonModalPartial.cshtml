@@ -1,0 +1,35 @@
+﻿@if (ShowSummons && SummonsCount > 0 && TempData[Constants.IsFromLoginKey] != null && (Boolean)TempData[Constants.IsFromLoginKey])
+{
+    <!-- MODAL -->
+    <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header clearfix">
+                    <img class="logo" src="@(Url.Content(Links.Content.img.gerb_jpg))" alt="" />
+                    <div class="title">
+                        <strong>Електрони съдебни дела</strong>
+                        <span>ВСС Република България</span>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Затвори">Затвори</button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-align-center">
+                        <img src="@(Url.Content(Links.Content.img.icons.ico_new_message_png))" alt="" />
+                        <span class="big-message">
+                            Имате
+                            @if(SummonsCount == 1)
+                            {
+                                <strong>@SummonsCount ново</strong> <text>съобщение</text>
+                            }
+                            else
+                            {
+                                <strong>@SummonsCount нови</strong> <text>съобщения</text>
+                            }
+                        </span>
+                        @Html.ActionLink("Преглед", MVC.Summon.ActionNames.Search, MVC.Summon.Name, null, new { @class = "btn orange-btn" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

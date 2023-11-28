@@ -1,0 +1,68 @@
+﻿@model eCase.Web.Models.Summon.SummonDetailsVM
+
+@{
+    string messageText = "съобщение";
+    if (Model.Summon.SummonType.Code == eCase.Common.Enums.SummonTypeNomenclature.Hearing.Code)
+    {
+        messageText = "призовка";
+    }
+}
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.Summon.ActionNames.Search, MVC.Summon.Name), "Съобщения")
+}, "Данни за " + messageText)
+
+@*DESCRIPTION*@
+<h2 class="text-align-center">Данни за @messageText</h2>
+<div class="inner-page-table">
+    <div class="tr">
+        <div class="lbl">Съд:</div>
+        <div class="vl">@Model.Summon.Side.Case.Court.Name</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Относно:</div>
+        <div class="vl">@Model.Summon.Subject</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Вид:</div>
+        <div class="vl">@Model.Summon.SummonKind</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Дата на създаване:</div>
+        <div class="vl">@Html.DisplayFor(m => m.Summon.DateCreated)</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Адресат:</div>
+        <div class="vl">@Model.Summon.Addressee</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Summon.Address))
+    {
+        <div class="tr">
+            <div class="lbl">Адрес:</div>
+            <div class="vl">@Model.Summon.Address</div>
+        </div>
+    }
+
+    @if (Model.HasPermissions && Model.HasSummonFile)
+    {
+        <div class="tr">
+            <div class="lbl">Съдържание:</div>
+            <div class="vl">
+                @Html.ActionLink("Изтегли", MVC.Summon.ActionNames.GetSummonFile, MVC.Summon.Name, new { summonGid = Model.Summon.Gid }, new { target = "_blank" })
+            </div>
+        </div>
+    }
+
+    @*@if (Model.HasPermissions)
+    {
+        <div class="tr">
+            <div class="lbl">Отчет за доставено съобщение по електронен път:</div>
+            <div class="vl">
+                @Html.ActionLink("Изтегли", MVC.Summon.ActionNames.GetSummonReportFile, MVC.Summon.Name, new { summonGid = Model.Summon.Gid }, new { target = "_blank" })
+            </div>
+        </div>
+    }*@
+
+</div>

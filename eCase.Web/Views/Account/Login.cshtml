@@ -1,0 +1,64 @@
+﻿@model eCase.Web.Models.Account.LoginVM
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Вход")
+
+<div class="login">
+    <div class="locker text-align-center">
+        <img src="@(Url.Content(Links.Content.img.icons.login_locker_png))" alt="" />
+        <span class="title">Вход в системата</span>
+    </div>
+    <div class="login-form">
+        <span class="title">Вход в системата</span>
+        <form class="search-form" method="post">
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    @Html.ValidationSummary()
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Потребителско име:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Email, new { @autofocus = "" })
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Парола:</div>
+                <div class="vl">
+                    @Html.PasswordFor(m => m.Password)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Код за сигурност:</div>
+                <div class="vl">
+                    @Html.CaptchaImage(31, 150)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"> </div>
+                <div class="vl">
+                    <div class="col-xs-6 no-padding">
+                        @Html.TextBox("Captcha", null, new { @autocomplete = "off", @maxlength = "5" })
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="ВХОД">
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    @Html.ActionLink("Забравена парола", MVC.Account.ActionNames.ForgotPassword, MVC.Account.Name)
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{41AE1D1E-8FD3-4FF7-8A8A-8F592DC5D996}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eCase.Data</RootNamespace>
+    <AssemblyName>eCase.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test.Abbaty|AnyCPU'">
+    <OutputPath>bin\Test.Abbaty\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Production|AnyCPU'">
+    <OutputPath>bin\Summons.Production\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Abbaty|AnyCPU'">
+    <OutputPath>bin\Summons.Abbaty\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Epep.Admin|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Epep.Admin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extras.Attributed">
+      <HintPath>..\packages\Autofac.Extras.Attributed.3.3.0\lib\net40\Autofac.Extras.Attributed.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Integration.Mef">
+      <HintPath>..\packages\Autofac.Mef.3.0.3\lib\net40\Autofac.Integration.Mef.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Core\UnitOfWork.cs" />
+    <Compile Include="Nomenclatures\CaseCodeRepository.cs" />
+    <Compile Include="Nomenclatures\StatistyicCodeRepository.cs" />
+    <Compile Include="Nomenclatures\IncomingDocumentTypeRepository.cs" />
+    <Compile Include="Nomenclatures\OutgoingDocumentTypeRepository.cs" />
+    <Compile Include="Nomenclatures\ConnectedCaseTypeRepository.cs" />
+    <Compile Include="Nomenclatures\SummonTypeRepository.cs" />
+    <Compile Include="Repositories\BlobStorageRepository.cs" />
+    <Compile Include="Repositories\HearingDocumentRepository.cs" />
+    <Compile Include="Repositories\OutgoingDocumentRepository.cs" />
+    <Compile Include="Repositories\IncomingDocumentRepository.cs" />
+    <Compile Include="Repositories\AttachedDocumentRepository.cs" />
+    <Compile Include="Repositories\SubjectRepository.cs" />
+    <Compile Include="Repositories\ConnectedCaseRepository.cs" />
+    <Compile Include="Repositories\AssignmentRepository.cs" />
+    <Compile Include="Repositories\LawyerRegistrationRepository.cs" />
+    <Compile Include="Repositories\ActPreparatorRepository.cs" />
+    <Compile Include="Repositories\ActRepository.cs" />
+    <Compile Include="Repositories\AppealRepository.cs" />
+    <Compile Include="Repositories\CaseRulingRepository.cs" />
+    <Compile Include="Repositories\CaseRepository.cs" />
+    <Compile Include="Core\AggregateRepository.cs" />
+    <Compile Include="Core\DataException.cs" />
+    <Compile Include="Core\DataObjectNotFoundException.cs" />
+    <Compile Include="Core\DataUpdateConcurrencyException.cs" />
+    <Compile Include="Core\IAggregateRepository.cs" />
+    <Compile Include="Core\IRepository.cs" />
+    <Compile Include="Core\IUnitOfWork.cs" />
+    <Compile Include="Core\LoggingDbCommandInterceptor.cs" />
+    <Compile Include="Core\LoggingDbContext.cs" />
+    <Compile Include="Core\Nomenclatures\EntityCodeNomsRepository.cs" />
+    <Compile Include="Core\Nomenclatures\EntityCodeNomVO.cs" />
+    <Compile Include="Core\Nomenclatures\EntityNomsRepository.cs" />
+    <Compile Include="Core\Nomenclatures\EntityNomVO.cs" />
+    <Compile Include="Core\Nomenclatures\IEntityCodeNomsRepository.cs" />
+    <Compile Include="Core\Nomenclatures\IEntityNomsRepository.cs" />
+    <Compile Include="Core\Nomenclatures\IEntitySuggestionsRepository.cs" />
+    <Compile Include="Core\Repository.cs" />
+    <Compile Include="DataModule.cs" />
+    <Compile Include="Repositories\EntityRepository.cs" />
+    <Compile Include="Repositories\HearingParticipantRepository.cs" />
+    <Compile Include="Repositories\HearingRepository.cs" />
+    <Compile Include="Repositories\LawyerRepository.cs" />
+    <Compile Include="Linq\EnumerableExtensions.cs" />
+    <Compile Include="Linq\ExpressionExpanderExtensions.cs" />
+    <Compile Include="Linq\ExpressionExtensions.cs" />
+    <Compile Include="Linq\ExpressionHelper.cs" />
+    <Compile Include="Linq\ExpressionParameterRebinder.cs" />
+    <Compile Include="Linq\PredicateBuilder.cs" />
+    <Compile Include="Linq\QueryableExtensions.cs" />
+    <Compile Include="Repositories\LawyerAssignmentRepository.cs" />
+    <Compile Include="Repositories\MailRepository.cs" />
+    <Compile Include="Nomenclatures\ActKindRepository.cs" />
+    <Compile Include="Nomenclatures\AppealKindRepository.cs" />
+    <Compile Include="Nomenclatures\CaseKindRepository.cs" />
+    <Compile Include="Nomenclatures\CaseRulingKindRepository.cs" />
+    <Compile Include="Nomenclatures\CaseTypeRepository.cs" />
+    <Compile Include="Nomenclatures\CourtRepository.cs" />
+    <Compile Include="Nomenclatures\SideInvolvementKindRepository.cs" />
+    <Compile Include="Repositories\PersonAssignmentRepository.cs" />
+    <Compile Include="Repositories\PersonRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\PersonRegistrationRepository.cs" />
+    <Compile Include="Repositories\ReporterRepository.cs" />
+    <Compile Include="Repositories\ScannedFileRepository.cs" />
+    <Compile Include="Repositories\SideRepository.cs" />
+    <Compile Include="Repositories\SummonRepository.cs" />
+    <Compile Include="Repositories\UserRepository.cs" />
+    <Compile Include="Upgrade\Contracts\IUpgradeRepository.cs" />
+    <Compile Include="Upgrade\Contracts\UpgradeRepository.cs" />
+    <Compile Include="Upgrade\UpgradeEpepConstants.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\eCase.Common\eCase.Common.csproj">
+      <Project>{fc959f6f-52a5-4e8c-a281-91bac3b1854c}</Project>
+      <Name>eCase.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\eCase.Domain\eCase.Domain.csproj">
+      <Project>{d1cc3879-494a-41b3-83f1-3eab07416b8d}</Project>
+      <Name>eCase.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Upgrade\Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

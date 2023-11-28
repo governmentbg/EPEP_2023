@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fb2ee348-ba42-4256-9607-f66ed6ea0a43" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:21316/eCaseService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="eCaseService.wsdl" MetadataType="Wsdl" ID="8b20f838-e221-4edd-b592-c9809f520bf9" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="eCaseService.xsd" MetadataType="Schema" ID="35d537ae-c9eb-4ee4-b34e-457d2eb5aefe" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?xsd=xsd2" />
+    <MetadataFile FileName="eCaseService1.xsd" MetadataType="Schema" ID="53ae9071-e32b-44bf-83d0-4c34666eb954" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?xsd=xsd0" />
+    <MetadataFile FileName="eCaseService.disco" MetadataType="Disco" ID="a290e5ab-f936-4074-b5f1-a25d7cc6e11c" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?disco" />
+    <MetadataFile FileName="eCaseService3.xsd" MetadataType="Schema" ID="1398f7bb-a254-4211-ad41-ac92d618ef38" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?xsd=xsd3" />
+    <MetadataFile FileName="eCaseService1.wsdl" MetadataType="Wsdl" ID="9788d5b5-15bf-40a6-ab9a-071647e9959a" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?wsdl" />
+    <MetadataFile FileName="eCaseService4.xsd" MetadataType="Schema" ID="7dce33e6-0a92-4865-89f0-2b39473eb8a2" SourceId="1" SourceUrl="http://localhost:21316/eCaseService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

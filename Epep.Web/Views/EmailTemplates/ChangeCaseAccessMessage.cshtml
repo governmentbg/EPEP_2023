@@ -1,0 +1,55 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    Layout = null;
+    string portalUrl = (string)ViewData["portalUrl"];
+    string portalFeedback = (string)ViewData["feedbackUrl"];
+    string email = (string)Model["email"];
+    string caseAbbr = (string)Model["caseAbbr"];
+    string courtName = (string)Model["courtName"];
+
+    var header = "Единен портал за електронно правосъдие (Промяна на права за достъп до дело)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var eAccessMessage = "Във връзка с Ваше писмено заявление за промяна на права за електронен достъп чрез информационната система на ";
+    var caseAccessMessage = " са променени правата за достъп до дело ";
+    var sideMessage = ", по което сте страна или представител.";
+    var profileMessage = "Профилът, за който се отнася тази промяна, е асоцииран с имейл адрес: {0}";
+    var dbCourtMessage = "Моля да имате предвид, че правата за достъп до електронните копия на съдебни дела в портала се определят и управляват от съответния съд, компетентен по Вашето дело.";
+    var gapsMessage = "Ако има въпроси, претенции или проблеми, конкретно към това дело, моля да потърсите съдействие от ";
+    var competenceMessage = ", компетентен по него.";
+    var gretting = "Поздрави, ";
+    var team = "Екипът на Единния портал за електронно правосъдие";
+    var answerMessage = "Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.";
+    var helpMessage = "При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на ";
+    var form = " или формата за ";
+    var feedback = "Обратна връзка";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @eAccessMessage <strong style="color: #444444;">@courtName</strong> @caseAccessMessage <strong style="color: #444444;">@caseAbbr</strong>@sideMessage
+</p>
+
+<p style="margin-bottom: 15px;">
+    @string.Format(profileMessage, email)
+</p>
+
+<p style="margin-bottom: 15px;">
+    @dbCourtMessage
+</p>
+
+<p style="margin-bottom: 15px;">
+    @gapsMessage <strong style="color: #444444;">@courtName</strong> @competenceMessage
+</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    @gretting <br />
+    @team
+</p>
+
+<p style="font-size: 13px; margin-top: 0px;">
+    @answerMessage<br />
+    @helpMessage<a href="@portalUrl">@eCase</a>@form<a href="@portalFeedback">@feedback</a>.
+</p>

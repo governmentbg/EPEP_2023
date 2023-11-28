@@ -1,0 +1,66 @@
+﻿@model IEnumerable<eCase.Domain.Entities.Summon>
+
+@if (Model != null && Model.Count() > 0)
+{
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Дата</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Страна</div>
+            <div class="results-cell">Съд</div>
+            <div class="results-cell">Дело</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var summon in Model)
+        {
+            <div class="results-row @(!summon.IsRead ? "unread" : "")">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата:</span>
+                    <span class="label">
+                        @Html.DisplayFor(m => summon.DateCreated)
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">
+                        @if (summon.SummonType != null)
+                        {
+                            <text>@summon.SummonType.Name</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Страна:</span>
+                    <span class="label">@summon.Addressee</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съд:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null && summon.Side.Case.Court != null)
+                        {
+                            <text>@summon.Side.Case.Court.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Дело:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null)
+                        {
+                            <text>@summon.Side.Case.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Summon.ActionNames.Details, MVC.Summon.Name, new { gid = summon.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+

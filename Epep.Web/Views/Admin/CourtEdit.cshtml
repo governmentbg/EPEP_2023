@@ -1,0 +1,47 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.Models;
+@model Court
+@{
+    var title = "Редакция на съдилище";
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+           @* <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">@title</div>
+                        <div class="list__output">@Model.FullName</div>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.OrgFullName))
+                {
+                    <div class="col-md">
+                        <div class="list__cell">
+                            <div class="list__label">@Model.UIC</div>
+                            <div class="list__output">@Model.OrgFullName</div>
+                        </div>
+                    </div>
+                }
+            </div>*@
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("CourtEdit")">
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.CourtId)
+                @Html.EditorFor(x=>x.Name)
+                @Html.EditorFor(x=>x.Url)
+                @Html.EditorFor(x=>x.IsActive)
+                @Html.EditorFor(x=>x.IsIntegrated)
+                @Html.EditorFor(x=>x.ForElectronicDocument,"BoolNull")
+                @Html.EditorFor(x=>x.ForElectronicPayment,"BoolNull")
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="editCourtCallback">Запис</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+﻿@using Epep.Core.Contracts
+@using Epep.Core.Constants;
+@using Epep.Core.ViewModels.Common;
+@using Microsoft.Extensions.Options;
+@inject IUserContext userContext;
+@inject IConfiguration configuration;
+@inject IOptions<SMTPConfigModel> smtpConfig;
+@{
+    bool showMenu = true;
+    if ((bool?)ViewData["HideAside"] == true)
+    {
+        showMenu = false;
+    }
+    string helpFilePath = Url.Content("~/help/epep-manual-public.pdf");
+    string adminClass = "";
+    if (configuration.GetValue<bool>("AdminMode", false))
+    {
+        adminClass = "admin-mode";
+        helpFilePath = Url.Content("~/help/epep-manual-admin.pdf");
+    }
+    var HelpEmail = smtpConfig?.Value.HelpEmail;
+    var certCheckPath = configuration.GetValue<string>("Authentication:StampIT:CertCheckPath") ?? "https://id.stampit.org/certno/";
+    var certCheckInterval = configuration.GetValue<int>("Authentication:StampIT:CertCheckInterval", 60);
+    var testApplication = configuration.GetValue<bool>("TestApplication", false);
+    if (userContext.UserId == 0)
+    {
+        certCheckPath = "";
+    }
+}
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] :: ЕПЕП</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="~/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="~/assets/favicon/site.webmanifest" />
+    <link rel="shortcut icon" href="~/assets/favicon/favicon.ico" />
+    <meta name="msapplication-TileColor" content="#462255" />
+    <meta name="msapplication-config" content="~/assets/favicon/browserconfig.xml" />
+    <meta name="theme-color" content="#ddd9df" />
+    <script>
+        var rootDir = '@Url.Content("~/")';
+        var certCheckPath = '@Html.Raw(certCheckPath)';
+        var certNo = '@(userContext.CertificateNumber)';
+        var signOutUrl = '@Url.Action("LogOff", "User")';
+    </script>
+    <script src="~/assets/scripts/jquery.min.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/css/main.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/prod/site.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/assets/accessibility/accessibility.css" asp-append-version="true" />
+    @await RenderSectionAsync("Head", required: false)
+</head>
+<body class="page-wrapper @adminClass">
+    @if (showMenu)
+    {
+        <partial name="_LeftAside" />
+    }
+    <partial name="_Messages" />
+    <div class="page-body">
+        <header class="page-header ">
+            <div class="container-fluid">
+                <a href="@Url.Action("Index","Home")" class="brand">
+                    <span>Единен портал за електронно правосъдие на Р България</span>
+                    @if (testApplication)
+                    {
+                        <span><b>Тестова среда</b> - Електронни съдебни дела</span>
+                    }
+                    else
+                    {
+                        <span>Електронни съдебни дела</span>
+                    }
+                </a>
+                @if (!userContext.IsAuthenticated)
+                {
+                    <a class="exit" asp-controller="User" asp-action="Login">вход</a>
+
+                }
+                else
+                {
+                    <div class="page-header__role @userContext.UserTypeNameClass">
+                        <small>Вие сте</small>@userContext.UserTypeName
+                    </div>
+                }
+            </div>
+        </header>
+
+
+        @RenderBody()
+        <partial name="_CookieConsentPartial" />
+
+        <footer class="page-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h3 class="footer__title">Помощ и поддръжка</h3>
+                        <nav aria-label="футър меню">
+                            <ul class="footer-nav">
+                                <li class="footer-nav__item"><span class="list__label">Теми</span><a href="@Url.Action("FAQ","Home")">Често задавани въпроси</a></li>
+                                @if (!string.IsNullOrEmpty(adminClass))
+                                {
+                                    <li class="footer-nav__item"><span class="list__label">Е-мейл</span><a href="mailto:@(HelpEmail)">@(HelpEmail)</a></li>
+                                }
+                                <li class="footer-nav__item">
+                                    <span class="list__label">
+                                        Помощ
+                                    </span>
+                                    <a href="@Html.Raw(helpFilePath)" target="_blank">Ръководство</a>
+                                    |
+                                    <a href="https://www.youtube.com/playlist?list=PL9AceseCP05wVfTjR3KzsN4hJ-EIOlWUB" target="_blank">Видео уроци</a>
+                                </li>
+                                <li class="footer-nav__item">
+                                    <span class="list__label">
+                                        Други
+                                    </span>
+                                    <a href="@Url.Action("Feedback","Home")">Обратна връзка </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    @* <div class="col-md-4">
+                    <h3 class="footer__title payment__title">Методи за разплащане</h3>
+                    <ul class="payment__list">
+                    <li>
+                    <a class="payment payment--mastercard" href="#" target="_blank" rel="noreferrer"><span class="visually-hidden">Mastercard</span></a>
+                    </li>
+                    <li>
+                    <a class="payment payment--maestro" href="#" target="_blank" rel="noreferrer"><span class="visually-hidden">Maestro</span></a>
+                    </li>
+                    <li>
+                    <a class="payment payment--visa" href="#" target="_blank" rel="noreferrer"><span class="visually-hidden">Visa</span></a>
+                    </li>
+                    <li>
+                    <a class="payment payment--visa-electron" href="#" target="_blank" rel="noreferrer"><span class="visually-hidden">Visa Electron</span></a>
+                    </li>
+                    </ul>
+                    </div>*@
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p class="copyrights">© Висш съдебен съвет. Всички права запазени.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <nav>
+                            <ul class="footer-nav footer-nav--small">
+                                <li><a href="@Url.Action("AccessibilityPolicy","Home")">Политика за достъпност</a></li>
+                                <li><a href="@Url.Action("AboutUs","Home")">За системата</a></li>
+                                @if (!string.IsNullOrEmpty(adminClass))
+                                {
+                                    <li><a href="#">Версия 1.1</a></li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div class="details offcanvas offcanvas-end" tabindex="-1" id="offcanvasFilter" aria-labelledby="offcanvasFilter">
+        @await RenderSectionAsync("offcanvasFilter", required: false)
+    </div>
+    <div class="details offcanvas offcanvas-end" tabindex="-1" id="offcanvasMain" aria-labelledby="offcanvasMain">
+        @await RenderSectionAsync("offcanvasMain", required: false)
+    </div>
+
+    <script src="~/assets/scripts/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/assets/scripts/index.js" asp-append-version="true"></script>
+    <script src="~/lib/datetimepicker6/js/tempus-dominus.min.js" asp-append-version="true"></script>
+    <script src="~/js/prod/site.min.js" asp-append-version="true"></script>
+    <script src="~/lib/gridview/gridview-compact.js" asp-append-version="true"></script>
+    <script src="~/assets/accessibility/accessibility.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script type="text/javascript">
+        @if (userContext.IsAuthenticated)
+        {
+            <text>attachCertificateCheck(@(certCheckInterval)); </text>
+        }
+    </script>
+
+</body>
+</html>

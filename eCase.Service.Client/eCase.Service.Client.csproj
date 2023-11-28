@@ -1,0 +1,275 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7A3FD169-4580-4044-A48B-8328838DA21E}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>eCase.Service.Client</RootNamespace>
+    <AssemblyName>eCase.Service.Client</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test.Abbaty|AnyCPU'">
+    <OutputPath>bin\Test.Abbaty\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\Production\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Production|AnyCPU'">
+    <OutputPath>bin\Summons.Production\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Summons.Abbaty|AnyCPU'">
+    <OutputPath>bin\Summons.Abbaty\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Epep.Admin|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Epep.Admin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ActDataGenerator.cs" />
+    <Compile Include="ConnectedCaseDataGenerator.cs" />
+    <Compile Include="AssignmentFileDataGenerator.cs" />
+    <Compile Include="IncomingDocumentFileDataGenerator.cs" />
+    <Compile Include="OutgoingDocumentDataGenerator.cs" />
+    <Compile Include="Nomenclatures.cs" />
+    <Compile Include="IncomingDocumentDataGenerator.cs" />
+    <Compile Include="ActPreparatorDataGenerator.cs" />
+    <Compile Include="AppealDataGenerator.cs" />
+    <Compile Include="AssignmentDataGenerator.cs" />
+    <Compile Include="CaseAssignor.cs" />
+    <Compile Include="CaseDataGenerator.cs" />
+    <Compile Include="CaseRulingDataGenerator.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DataGenerator.cs" />
+    <Compile Include="HearingDataGenerator.cs" />
+    <Compile Include="HearingParticipantDataGenerator.cs" />
+    <Compile Include="ICaseAssignor.cs" />
+    <Compile Include="IDataGenerator.cs" />
+    <Compile Include="IRandomDataGenerator.cs" />
+    <Compile Include="LawyerAssignmentDataGenerator.cs" />
+    <Compile Include="OutgoingDocumentFileDataGenerator.cs" />
+    <Compile Include="PersonAssignmentDataGenerator.cs" />
+    <Compile Include="PersonRegistrationDataGenerator.cs" />
+    <Compile Include="PrivateActFileDataGenerator.cs" />
+    <Compile Include="PrivateMotiveFileDataGenerator.cs" />
+    <Compile Include="PublicProtocolFileDataGenerator.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PrivateProtocolFileDataGenerator.cs" />
+    <Compile Include="PublicActFileDataGenerator.cs" />
+    <Compile Include="PublicMotiveFileDataGenerator.cs" />
+    <Compile Include="RandomDataGenerator.cs" />
+    <Compile Include="LawyerRegistrationDataGenerator.cs" />
+    <Compile Include="ReporterDataGenerator.cs" />
+    <Compile Include="ScannedDocumentDataGenerator.cs" />
+    <Compile Include="Service References\eCaseService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="SideDataGenerator.cs" />
+    <Compile Include="SummonDataGenerator.cs" />
+    <Compile Include="SummonFileDataGenerator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Properties\DataSources\eCase.Domain.Service.Entities.Lawyer.datasource" />
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Act.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.ActPreparator.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Appeal.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Assignment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.AssignmentFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Case.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.CaseRuling.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.ConnectedCase.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Hearing.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.HearingParticipant.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.IncomingDocument.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.IncomingDocumentFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Lawyer.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.LawyerAssignment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.LawyerRegistration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.OutgoingDocument.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.OutgoingDocumentFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PersonAssignment.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PersonRegistration.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PrivateActFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PrivateMotiveFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PrivateProtocolFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PublicActFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PublicMotiveFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.PublicProtocolFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Reporter.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.ScannedDocument.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Side.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.Summon.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCase.Service.Client.eCaseService.SummonFile.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\eCaseService\eCaseService.wsdl" />
+    <None Include="Service References\eCaseService\eCaseService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\eCaseService\eCaseService1.wsdl" />
+    <None Include="Service References\eCaseService\eCaseService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\eCaseService\eCaseService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\eCaseService\eCaseService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="TestContent\PrivateContent\TestContent.doc" />
+    <None Include="TestContent\PrivateContent\TestContent.pdf" />
+    <None Include="TestContent\PublicContent\TestContent.doc" />
+    <None Include="TestContent\PublicContent\TestContent.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\eCaseService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\eCaseService\eCaseService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\eCaseService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\eCaseService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\eCaseService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestContent\PrivateContent\TestContent.html" />
+    <Content Include="TestContent\PublicContent\TestContent.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,16 @@
+﻿@model ErrorViewModel
+@inject IConfiguration configuration;
+@{
+    ViewData["Title"] = "Грешка";
+    var detailError = configuration.GetValue<bool>("DetailError", false);
+}
+<main class="page-content">
+    <div class="container">
+        <h1 class="text-danger">@ViewData["Title"]</h1>
+        @if (detailError)
+        {
+            <h2 class="text-danger">@Model.Message</h2>
+            <p>@Model.InnerException</p>
+        }        
+    </div>
+</main>

@@ -1,0 +1,66 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+
+@using System.Configuration
+@using eCase.Common.Helpers
+
+@{
+    string portalUrl = ConfigurationManager.AppSettings["eCase.Web:DomainUrl"];
+    string portalFeedback = string.Format("{0}Feedback", portalUrl);
+    string isActivated = (string)Model["isActivated"];
+    string email = (string)Model["email"];
+    string courtName = (string)Model["courtName"];
+    string username = (string)Model["name"];
+
+    var header = "Единен портал за електронно правосъдие (Промяна на потребителски профил)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var profileMessage = "Вашият потребителски профил в ";
+    var changedMessage = "беше променен, новите данни и настройки за него са:";
+    var name = "Име:";
+    var court = "Съд:";
+    var profileActivation = "Профил:";
+    var deactivated = "Деактивиран";
+    var activated = "Активен";
+    var gretting = "Поздрави, ";
+    var team = "Екипът на Единния портал за електронно правосъдие";
+    var answerMessage = "Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.";
+    var helpMessage = "При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на ";
+    var form = " или формата за ";
+    var feedback = "Обратна връзка";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @profileMessage <strong style="color: #444444;">@eCase</strong> @changedMessage
+</p>
+
+<p style="margin-bottom: 15px;">
+    @name <strong style="color: #444444;">@username</strong><br />
+    @if (!string.IsNullOrWhiteSpace(courtName))
+    {
+        @court <strong style="color: #444444;">@courtName</strong><br />
+    }
+    @profileActivation 
+    <strong style="color: #444444;">
+        @if (isActivated == "True")
+        {
+            @activated
+        }
+        else
+        {
+            @deactivated
+        }
+    </strong>
+</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    @gretting <br />
+    @team
+</p>
+
+<p style="font-size: 13px; margin-top: 0px;">
+    @answerMessage<br />
+    @helpMessage<a href="@portalUrl">@eCase</a>@form<a href="@portalFeedback">@feedback</a>.
+</p>

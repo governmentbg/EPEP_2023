@@ -1,0 +1,64 @@
+﻿@model  eCase.Web.Models.Statistics.CasesCountVM
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Брой дела")
+
+<div class="nomenklaturi">
+
+    <form method="post">
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-1" style="padding-top:10px;">Година:</div>
+            <div class="col-md-2">
+                @Html.DropDownList("year", Model.Years, "Всички", new { @class = "select2", onchange = "this.form.submit()" })
+            </div>
+        </div>
+    </form>
+    <h3>
+        Общ брой съдебни дела: <strong>@(Model.TotalCount == 0 ? "0" : Model.TotalCount.ToString("# ### ### ### ###"))</strong><br />
+        Брой на съдебните дела по съдилища
+        @if (Model != null && Model.Year.HasValue)
+        {
+            <text>за @Model.Year.Value година</text>
+        }
+    </h3>
+    <div class="clearfix">
+        @if (Model != null && Model.Courts != null && Model.Courts.Count > 0)
+        {
+            int count = Model.Courts.Count;
+            int halfCount = count / 2;
+            if (count % 2 == 1)
+            {
+                halfCount++;
+            }
+            <div class="col-sm-6">
+                <div class="search-form logged-form act-count auto-width-cells">
+                    @for (int i = 0; i < halfCount; i++)
+                    {
+                        <div class="rw">
+                            <div class="lbl">@Model.Courts[i].CourtName:</div>
+                            <div class="vl">
+                                <strong style="white-space:nowrap">@(Model.Courts[i].CasesCount == 0 ? "0" : Model.Courts[i].CasesCount.ToString("# ### ### ### ###"))</strong>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="col-sm-6 dela">
+                <div class="search-form logged-form act-count auto-width-cells">
+                    @for (int i = halfCount; i < count; i++)
+                    {
+                        <div class="rw">
+                            <div class="lbl">@Model.Courts[i].CourtName:</div>
+                            <div class="vl">
+                                <strong style="white-space:nowrap">@(Model.Courts[i].CasesCount == 0 ? "0" : Model.Courts[i].CasesCount.ToString("# ### ### ### ###"))</strong>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+</div>

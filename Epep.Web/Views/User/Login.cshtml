@@ -1,0 +1,29 @@
+﻿@model LoginVM
+@{
+    ViewData["Title"] = "Вход в ЕПЕП";
+}
+<main class="page-content">
+    <div class="container">
+        <form action="@Url.Action("Login")" method="post">
+            <span class="text-danger">@ViewBag.errorMessage</span>
+            <span class="text-info">@ViewBag.successMessage</span>
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(x=>x.LoginUserType,new{@class="form-label"})
+                <select id="LoginUserType" name="LoginUserType" class="form-control">
+                    <option value="@NomenclatureConstants.UserTypes.Person">Лице</option>
+                    <option value="@NomenclatureConstants.UserTypes.Lawyer">Адвокат</option>
+                    <option value="@NomenclatureConstants.UserTypes.Organization">Организация</option>
+                    <option value="@NomenclatureConstants.UserTypes.Administrator">Администратор</option>
+                </select>
+            </div>
+            @Html.EditorFor(x=>x.UIC)
+            @Html.EditorFor(x=>x.OrganizationUIC)
+            <div class="form-group">
+                <input type="submit" value="ВХОД" class="btn btn-primary" />
+                &nbsp;
+                <a asp-action="Registration">Регистрация</a>
+            </div>
+        </form>
+    </div>
+</main>

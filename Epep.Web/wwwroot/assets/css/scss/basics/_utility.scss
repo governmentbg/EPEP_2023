@@ -1,0 +1,275 @@
+.u-btn {
+    background-color: $secondary-dark;
+    color: white;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 1.4;
+    display: block;
+    padding: $main-gutter/1.5;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: white;
+        background-color: darken($secondary-dark, 5);
+    }
+
+    &-gradient {
+        padding: $main-gutter/1.5;
+        background-image: $button-gradient;
+        background-color: $primary-dark;
+        color: white;
+        font-size: 1.125rem;
+        font-weight: 600;
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: white;
+            background-image: none;
+        }
+    }
+
+    &-green {
+        background-color: $success;
+        color: white;
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: white;
+            background-image: none;
+        }
+    }
+
+    &-pill {
+        min-width: 280px;
+        border-radius: 40px;
+        padding: $main-gutter 80px;
+    }
+
+    &--grey {
+        background-color: $primary-light;
+        color: $primary-dark;
+
+        &:hover,
+        &:focus,
+        &:active {
+            color: $primary-dark;
+            background-color: darken($primary-light, 5);
+        }
+    }
+
+    &-more {
+        color: $secondary-dark;
+        padding: 0 $main-gutter/4;
+        text-decoration: underline;
+    }
+    &-back {
+        width: 32px;
+        height: 32px;
+        background: url(../images/general/arrow-white-left.svg) center no-repeat;
+        background-size: 24px;
+    }
+
+    &-lupa {
+        width: 36px;
+        height: 36px;
+        background-image: url(../images/general/open-doc.svg);
+        background-size: 36px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    &-chevron-down {
+        width: 36px;
+        height: 36px;
+        background-image: url(../images/general/chevron-down.svg);
+        background-size: 20px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+    &-download {
+        width: 36px;
+        height: 36px;
+
+        background-image: url(../images/general/download.svg);
+        background-size: 24px;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        margin-left: 5px;
+    }
+
+    &-delete {
+        background-color: $secondary-dark;
+        min-height: 32px;
+        min-width: 32px;
+        align-self: stretch;
+
+        background: url(../images/general/delete.svg) center no-repeat;
+        background-size: 32px;
+    }
+
+    &-send-doc {
+        background-color: $secondary-dark;
+        min-height: 32px;
+        min-width: 32px;
+        align-self: stretch;
+
+        background: url(../images/general/send-doc.svg) center no-repeat;
+        background-size: 18px;
+    }
+
+    &-border {
+        color: $primary-dark;
+        font-weight: 700;
+        background-color: white;
+        border: 1px solid $primary-dark-25;
+        border-radius: 4px;
+    }
+
+    &-close {
+        min-height: 32px;
+        min-width: 32px;
+        align-self: stretch;
+        border-radius: 4px;
+
+        background: url(../images/general/close-btn-red.svg) center no-repeat;
+        background-size: cover;
+    }
+
+    &-pen {
+        min-height: 32px;
+        min-width: 32px;
+        align-self: stretch;
+
+        background: url(../images/general/pen-green.svg) center no-repeat;
+        background-size: 32px;
+    }
+}
+
+.u-form {
+    &-cell {
+        display: flex;
+        gap: 10px;
+
+        align-items: center;
+
+        label,
+        small {
+            color: $pp-black-75;
+            font-size: 1rem;
+            flex: 0 0 auto;
+        }
+    }
+}
+
+.u-list {
+    list-style: none;
+    margin-bottom: 0;
+    padding-left: 0;
+
+    li {
+        list-style: none;
+        margin-bottom: 0;
+        padding-left: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: 700;
+
+        padding: 6px 0;
+        // padding-left: 32px;
+        // background: url(../images/documents/attach.svg) left center no-repeat;
+        background-size: 18px;
+
+        box-shadow: 0px 1px 0px #e4e7ee, inset 0px 1px 0px #e4e7ee;
+    }
+
+    &-file {
+        list-style: none;
+        margin-bottom: 0;
+        padding-left: 0;
+
+        li {
+            list-style: none;
+            margin-bottom: 0;
+            padding-left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+
+            padding: 6px 0;
+            padding-left: 32px;
+            background: url(../images/documents/attach.svg) left center no-repeat;
+            background-size: 18px;
+
+            box-shadow: 0px 1px 0px #e4e7ee, inset 0px 1px 0px #e4e7ee;
+        }
+    }
+
+    // &--courts {
+    //     li {
+    //         padding: 6px 0;
+    //         padding-left: 0;
+    //         padding-right: 0px;
+    //         background: none;
+    //         background-size: 18px;
+
+    //         box-shadow: 0px 1px 0px #e4e7ee, inset 0px 1px 0px #e4e7ee;
+    //     }
+    // }
+
+    &--briefcase {
+        li {
+            gap: $main-gutter/4;
+            justify-content: flex-start;
+            background: url(../images/general/briefcase.svg) left center no-repeat;
+            background-size: 18px;
+            padding-left: 32px;
+
+            span {
+                margin-right: auto;
+            }
+
+            span:first-child {
+                flex: 0 0 40%;
+            }
+
+            span:nth-child(2) {
+                flex: 1 1 40%;
+                font-weight: 400;
+            }
+        }
+    }
+
+    &--map {
+        li {
+            gap: $main-gutter/4;
+            justify-content: flex-start;
+            background: url(../images/general/map-pin.svg) left center no-repeat;
+            background-size: 18px;
+
+            span {
+                margin-right: auto;
+            }
+
+            span:first-child {
+                flex: 0 0 40%;
+            }
+
+            span:nth-child(2) {
+                flex: 1 1 40%;
+                font-weight: 400;
+            }
+        }
+    }
+}
+
+.u-truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}

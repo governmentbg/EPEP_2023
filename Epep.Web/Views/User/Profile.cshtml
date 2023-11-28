@@ -1,0 +1,104 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserRegistrationVM
+@inject IUserContext userContext;
+@{
+    Model.UserType = userContext.UserType;
+    Model.FullName = userContext.FullName;
+}
+@section Head{
+    <style>
+        .page-title__right {
+            font-size: 1.5rem;
+        }
+    </style>
+}
+<main class="page-content page-with-heading">
+    <div class="heading">
+        <div class="container">
+            <h1 class="page-title">
+                Профил  <span class="page-title__right">@Model.FullName</span>
+            </h1>
+        </div>
+        <div class="container">
+            <div class="case__controls">
+                <nav class="case-tabs row g-1">
+                    <div class="tabs-nav">
+                        <ul class="tabs-nav__list">
+                            <li><button id="tabID5" class="btn tabs-nav__btn active" type="button" data-bs-target="#profileData" aria-expanded="false" aria-controls="profileData">Лична информация</button></li>
+                            @if (Model.UserType == NomenclatureConstants.UserTypes.OrganizationRepresentative)
+                            {
+                                <li><button id="tabID6" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#profileOrgUsers" aria-expanded="false" aria-controls="profileOrgUsers">@userContext.OrganizationName</button></li>
+                            }
+                            @if (Model.UserType == NomenclatureConstants.UserTypes.Lawyer)
+                            {
+                                <li><button id="tabID6" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#userVacations" aria-expanded="false" aria-controls="userVacations">Отсъствия</button></li>
+                            }
+                            @*<li><button id="tabID6" class="btn tabs-nav__btn gv-loader-tab" type="button" data-bs-target="#profilePayments" aria-expanded="false" aria-controls="profilePayments">Плащания и фактури</button></li>*@
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div class="container">
+        <div class="case-tabs__container">
+            <div class="case-tabs__info active" id="profileData">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h2 class="section-title section-title--xs">Лични данни</h2>
+                        <hr />
+                        @if (!string.IsNullOrEmpty(Model.CourtName))
+                        {
+                            @Html.DisplayFor(x=>x.CourtName,"obj")
+                        }
+                        @Html.DisplayFor(x=>x.FullName,"obj")
+                        @Html.DisplayFor(x=>x.EGN,"obj")
+                        @Html.DisplayFor(x=>x.Email,"obj")
+                        @if (!string.IsNullOrEmpty(Model.NotificationEmail))
+                        {
+                            @Html.DisplayFor(x=>x.NotificationEmail,"obj")
+                        }
+                        @if (Model.UserType == NomenclatureConstants.UserTypes.OrganizationRepresentative)
+                        {
+                            @Html.DisplayFor(x=>x.IsComfirmed,"objBool")
+                        }
+                        <button type="button" class="btn u-btn-gradient" onclick="requestOffcanvasSmall('@Url.Action("ProfileData")',{});">Промени</button>
+                    </div>
+                </div>
+
+            </div>
+            @if (Model.UserType == NomenclatureConstants.UserTypes.OrganizationRepresentative)
+            {
+                <div class="case-tabs__info" id="profileOrgUsers">
+                    <partial name="~/Views/Organization/_OrganizationUsers.cshtml" />
+                </div>
+            }
+            @if (Model.UserType == NomenclatureConstants.UserTypes.Lawyer)
+            {
+                <div class="case-tabs__info" id="userVacations">
+                    <partial name="~/Views/Lawyer/_UserVacations.cshtml" />
+                </div>
+            }
+            @*<div class="case-tabs__info" id="profilePayments">
+            <div class="row">
+            <div class="col-md-4">
+            <h2 class="section-title section-title--xs">Плащания</h2>
+            </div>
+            </div>
+
+            </div>*@
+        </div>
+    </div>
+</main>
+
+@section Scripts{
+    <script>
+        function editProfileCallback() {
+            document.location.href = document.location.href;
+        }
+    </script>
+
+}

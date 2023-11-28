@@ -1,0 +1,13 @@
+﻿@model bool
+<div class="form-check">
+    @Html.CheckBoxFor(model => model, new { @class = "form-check-input" })
+    @if (ViewData["label"] != null)
+    {
+        <label class="form-check-label">@ViewData["label"]</label>
+    }
+    else
+    {
+        <label asp-for="@Model" class="form-check-label"></label>
+    }
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

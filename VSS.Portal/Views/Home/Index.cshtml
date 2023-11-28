@@ -1,0 +1,186 @@
+﻿
+<div class="home-courts">
+    <div class="map-search-init">
+        <button>
+            Търсене на съд
+            <img src="/Content/img/arrow-right.png" alt="" />
+        </button>
+    </div>
+    <div class="map-container">
+        <button class="close_map"><span>ЗАТВОРИ КАРТАТА</span></button>
+        <div id="map"></div>
+        <div class="map-search">
+            <select name="marker" class="select2" id="type" onchange="filterMarkers(this.value);">
+                <option value="0">Моля, изберете съд:</option>
+                @foreach (var court in VSS.Portal.Models.CourtMetadata.CourtsList.OrderBy(e => e.Name))
+                {
+                    <option value="@court.CourtCode">@court.Name</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+
+@{
+    var jsonMarkers = Newtonsoft.Json.JsonConvert.SerializeObject(VSS.Portal.Models.CourtMetadata.CourtsList.Select(e => e.ToObjectList()));
+}
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAZvXYaJvd0cqlQ1t2D9cnnwBfcQ1cOWP4&language=bg"></script>
+<script type="text/javascript" src="~/Scripts/oms.min.js"></script>
+
+<script type="text/javascript">
+    window.onload = function () {
+        var markers = @(Html.Raw(jsonMarkers));
+        var gmarkers = [];
+        var gm = google.maps;
+        var mapOptions = {
+            panControl: true,
+            zoom: 7,
+            scrollwheel: true,
+            panControl: true,
+            mapTypeControl: false
+        };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        //map styles
+        var styles = [{
+            "stylers": [{
+                "hue": "#0088ff"
+            }, {
+                "saturation": -85
+            }]
+        }, {
+            "featureType": "road",
+            "stylers": [{
+                "hue": "#ff8800"
+            }, {
+                "saturation": 87
+            }]
+        }];
+        map.setOptions({
+            styles: styles
+        });
+        var iw = new gm.InfoWindow();
+        var oms = new OverlappingMarkerSpiderfier(map, {
+            markersWontMove: true,
+            markersWontHide: true
+        });
+
+        var usualColor = '@Links.Content.img.markers.marker01_png';
+        var spiderfiedColor = '@Links.Content.img.markers.marker02_png';
+
+        oms.addListener('click', function (marker) {
+            iw.setContent(marker.desc);
+            iw.open(map, marker);
+        });
+        oms.addListener('spiderfy', function (markers) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setIcon(spiderfiedColor);
+            }
+            iw.close();
+        });
+        oms.addListener('unspiderfy', function (markers) {
+            for (var i = 0; i < markers.length; i++) {
+                markers[i].setIcon(usualColor);
+            }
+        });
+
+        var bounds = new gm.LatLngBounds();
+
+        for (i = 0; i < markers.length; i++) {
+            addMarker(markers[i]);
+        }
+
+        function addMarker(marker) {
+            var category = marker[4];
+            var title = marker[6];
+            var pos = new google.maps.LatLng(marker[2], marker[3]);
+            var content = marker[1];
+            var icon = marker[5];
+
+            bounds.extend(pos);
+
+            marker1 = new google.maps.Marker({
+                title: title,
+                position: pos,
+                category: category,
+                map: map,
+                desc: content,
+                icon: icon
+            });
+
+            gmarkers.push(marker1);
+            oms.addMarker(marker1);
+        }
+
+        map.fitBounds(bounds);
+
+        // filterMarkers function:
+        filterMarkers = function (category) {
+            for (i = 0; i < markers.length; i++) {
+                marker = gmarkers[i];
+                // If is same category or category not picked
+                if (marker.category == category) {
+                    map.panTo(marker.position);
+                    map.setZoom(18);
+                    google.maps.event.trigger(marker, 'click');
+                    google.maps.event.trigger(marker, 'click');
+                }
+            }
+        }
+
+        $(".map-container .close_map").click(function(){
+            setTimeout(function(){
+                map.fitBounds(bounds);
+                iw.close();
+                $(".map-search .select2").select2("val", "");
+            }, 500);
+
+        });
+    }
+</script>
+
+<h1 class="text-align-center">Електронни услуги</h1>
+
+<div class="clearfix">
+    <a href="http://ecase.justice.bg/" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-1.png');"> </span> <strong>Електронни съдебни дела</strong>
+        <p>В портала за електронни съдебни дела с помощта на потребителско име и парола, предоставени Ви от съответния съд, имате възможност да влезете и да видите движението по Вашето дело.</p>
+    </a>
+    <a href="http://legalacts.justice.bg" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-2.png');"> </span> <strong>Актове със заличени лични данни</strong>
+        <p>В портала за публикуване на съдебни актове със заличени лични данни можете да видите публикуваните от съдилищата съдебни решения. За достъп до портала не се изисква потребителско име и парола.</p>
+    </a>
+    <a href="http://evote.justice.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/e-vote.png');"> </span> <strong>Избори за членове на ВСС</strong>
+        <p>Порталът се използва за провеждане на избори за членове на Висшия съдебен съвет от квотата на съдиите, прокурорите и следователите и електронно дистанционно гласуване.</p>
+    </a>
+
+
+
+    <a href="http://portalextensions.justice.bg/" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-1.png');"> </span> <strong>Подаване на заявление по реда на чл. 410 от ГПК</strong>
+        <p>Електронна услуга за подаване на заявления по реда на чл.410 ГПК. Подаването се извършва с електронен подпис.</p>
+    </a>
+    <a href="https://crr.mjs.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-3.png');"> </span> <strong>Свидетелство за съдимост</strong>
+        <p>Електронна услуга за издаване на електронно свидетелство за съдимост.</p>
+    </a>
+    <a href="http://anticorruption.justice.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-4.png');"> </span> <strong>Сигнали за корупция в съдебната система </strong>
+        <p>Система за приемане и обработване на жалби и сигнали за корупция в съдебната система. Тук имате възможност да съобщите и изпратите сигнал за корупция в съдебната система.</p>
+    </a>
+
+
+    <a href="http://webrand.justice.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-5.png');"> </span> <strong>Случайно разпределение</strong>
+        <p>От тук имате възможност да достъпите информация за начина, по който всяко едно дело е било разпределено, както и да прегледате Протокола от случайното разпределение на всяко дело.</p>
+    </a>
+    <a href="https://epro.justice.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-8.png');"> </span> <strong>Електронен публичен регистър на отводите</strong>
+        <p>Регистърът съдържа информация за произнасянето на съда по исканите от страни по делата отводи и отводи по инициатива на съда (самоотводи).</p>
+    </a>
+    <a href="https://www.jurors.justice.bg/" target="_blank" class="home-service col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <span class="service-ico" style="background-image: url('/Content/img/icons/home-service-9.png');"> </span> <strong>Единен регистър на съдебните заседатели</strong>
+        <p>Регистърът съдържа информация за съдебните заседатели, техните специалности, мандат, за който са избрани и участие в съдебни дела.</p>
+    </a>
+</div>

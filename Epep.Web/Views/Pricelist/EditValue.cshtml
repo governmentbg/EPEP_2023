@@ -1,0 +1,48 @@
+﻿@using Epep.Core.Models;
+@model MoneyPricelistValue
+@{
+    var title = "Редакция на стойност";
+    if (Model.Id == 0)
+    {
+        title = "Добавяне на стойност";
+    }
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label"></div>
+                        <div class="list__output">@title</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("EditValue")">
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.Id)
+                @Html.HiddenFor(x=>x.MoneyPricelistId)
+
+                @Html.EditorFor(x=>x.Type,"GenericDropDownInt",new{container_class="mb-2"})
+                @Html.EditorFor(x=>x.Value,new{container_class="mb-2"})
+                <div class="row g-2">
+                    @Html.EditorFor(x=>x.Procent,new{container_class="col-6 mb-2"})
+                    @Html.EditorFor(x=>x.MinValue,new{container_class="col-6 mb-2"})
+                </div>
+                @Html.EditorFor(x=>x.MoneyCurrencyId,"GenericDropDown",new{container_class="mb-2"})
+                <div class="row g-2">
+                    @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                    @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+                </div>
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="editPriceValueCallback">Запис</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

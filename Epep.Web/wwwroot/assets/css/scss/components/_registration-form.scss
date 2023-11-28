@@ -1,0 +1,80 @@
+.registration {
+    &__form {
+        margin: $main-gutter * 2 0;
+
+        &__section {
+            margin: $main-gutter * 1.5 0;
+
+            .section-title {
+                margin-bottom: $main-gutter;
+            }
+        }
+    }
+    &__header {
+        display: flex;
+        margin: $main-gutter 0;
+        width: 100%;
+        gap: 3px;
+
+        input {
+            display: none;
+
+            &:checked {
+                & + .registration__role-btn {
+                    background-color: $secondary-dark;
+                    color: white;
+                }
+            }
+        }
+    }
+
+    &__role-btn {
+        background-color: $secondary-dark-50;
+        color: $secondary-dark;
+        flex: 1 1 33.33%;
+        padding: $main-gutter;
+
+        text-align: center;
+        font-weight: 700;
+
+        background-repeat: no-repeat;
+        background-size: 48px;
+
+        &--fl {
+            padding-left: 55px;
+            background-position: left 4px center;
+            background-image: url(../images/registration/fizichesko-lice.svg);
+        }
+
+        &--ul {
+            padding-right: 55px;
+            background-position: right 4px center;
+            background-image: url(../images/registration/juridichesko-lice2.svg);
+        }
+
+        &:first-of-type {
+            border-radius: 4px 0 0 4px;
+        }
+
+        &:last-of-type {
+            border-radius: 0 4px 4px 0;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: $secondary-dark;
+            color: white;
+        }
+    }
+
+    &__msg {
+        padding-top: 200px;
+        background: url(../images/registration/signature-bckgrnd.svg) center top 120px no-repeat;
+        background-size: 72px;
+    }
+}

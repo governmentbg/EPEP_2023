@@ -1,0 +1,289 @@
+﻿@model eCase.Web.Models.Case.CaseSearchVM
+@using PagedList
+@using PagedList.Mvc;
+@using eCase.Common.Captcha
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Съдебни дела")
+
+@{
+    var queryString = Request.QueryString;
+}
+
+@if (!Request.IsAuthenticated)
+{
+    <div class="info-box-wrapper">
+        <div class="info-box" style="text-align: justify">
+            <p>В момента се намирате в публичната част на Единния портал за електронно правосъдие, в която се съдържа информация за съдебните дела на всички съдилища, свързани с Единния портал. Информацията в публичната част е със заличени лични данни и с ограничен обхват. За да видите в цялост електронните копия на Вашите съдебни дела, е необходимо да се влезете във Вашия потребителски профил като изберете „@Html.ActionLink("Вход", MVC.Account.ActionNames.Login, MVC.Account.Name)” и въведете Вашите потребителско име и парола. За повече информация вижте разделите @Html.ActionLink("Правила за достъп", MVC.Home.ActionNames.ElectronicCasesAccessRules, MVC.Home.Name) и @Html.ActionLink("Помощ", MVC.Home.ActionNames.Help, MVC.Home.Name).</p>
+        </div>
+    </div>
+}
+
+<!-- SEARCH PANEL -->
+<div class="search-panel clearfix">
+    <div class="title">
+        <span>Търсене на</span>
+        @if (Request.IsAuthenticated && (CurrentUser.IsLawyer || CurrentUser.IsPerson))
+        {
+            <strong>мое съдебно</strong>
+        }
+        else
+        {
+            <strong>съдебно</strong>
+        }
+        <strong>дело</strong>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="post">
+            @if (!ViewContext.ViewData.ModelState.IsValid)
+            {
+                <!-- VALIDATION -->
+                <div class="rw">
+                    <div class="lbl"></div>
+                    <div class="vl">
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="rw">
+                <div class="lbl">Съд:</div>
+                <div class="vl">
+                    <div class="col-sm-10 no-padding" style="width: 87.5%;">
+                        @if (Request.IsAuthenticated && CurrentUser.IsCourtAdmin)
+                        {
+                            @Html.DropDownListFor(m => m.CourtCode, Model.Courts, new { @class = "select2" })
+                        }
+                        else
+                        {
+                            @Html.DropDownListFor(m => m.CourtCode, Model.Courts, "Всички", new { @class = "select2" })
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Вид дело:</div>
+                <div class="vl">
+                    <div class="col-sm-10 no-padding" style="width: 87.5%;">
+                        @Html.DropDownListFor(m => m.CaseKindId, Model.CaseKinds, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Входящ №:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-10 no-padding">
+                        @Html.TextBoxFor(m => m.IncomingNumber)
+
+                    </div>
+                    <div class="separator"> <img data-content="Входящият номер на иницииращия производството документ" data-placement="right" src="@(Links.Content.img.icons.info_png)" class="info-icon" data-toggle="popover" data-trigger="hover" /></div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Дело № / Година:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-7 no-padding">
+                        @Html.TextBoxFor(m => m.Number)
+                    </div>
+                    <div class="separator"> / </div>
+                    <div class="col-sm-4 col-xs-5 no-padding">
+                        @Html.DropDownListFor(m => m.Year, Model.CaseYears, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl">Свързани дела № / Година:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-7 no-padding">
+                        @Html.TextBoxFor(m => m.PredecessorNumber)
+                    </div>
+                    <div class="separator"> / </div>
+                    <div class="col-sm-4 col-xs-5 no-padding">
+                        @Html.DropDownListFor(m => m.PredecessorYear, Model.PredecessorYears, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl">Вид акт:</div>
+                <div class="vl">
+                    <div class="col-sm-10 no-padding" style="width: 87.5%;">
+                        @Html.DropDownListFor(m => m.ActKindId, Model.ActKinds, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl">Акт №: / Година:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-7 no-padding">
+                        @Html.TextBoxFor(m => m.ActNumber)
+                    </div>
+                    <div class="separator"> / </div>
+                    <div class="col-sm-4 col-xs-5 no-padding">
+                        @Html.DropDownListFor(m => m.ActYear, Model.ActYears, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+
+            @if (Model.ShowSides)
+            {
+                <div class="rw ">
+                    <div class="lbl">Страна по дело / ЕГН / ЛНЧ / ЕИК / БУЛСТАТ:</div>
+                    <div class="vl">
+                        <div class="col-sm-10 no-padding" style="width: 87.5%;">
+                            @Html.TextBoxFor(m => m.SideName)
+                        </div>
+                    </div>
+                </div>
+            }
+
+            @if (Model.ShowLawyers)
+            {
+                <div class="rw">
+                    <div class="lbl">Адвокат:</div>
+                    <div class="vl">
+                        <div class="col-sm-10 no-padding" style="width: 87.5%;">
+                            <input type="text" name="LawyerId" class="lawyers-search" value="@Model.LawyerId" />
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (!Request.IsAuthenticated)
+            {
+                <div class="rw">
+                    <div class="lbl">Код за сигурност:</div>
+                    <div class="vl">
+                        @Html.CaptchaImage(31, 150)
+                    </div>
+                </div>
+                <div class="rw">
+                    <div class="lbl"> </div>
+                    <div class="vl">
+                        <div class="col-xs-6 no-padding">
+                            @Html.TextBox("Captcha", null, new { @autocomplete = "off", @maxlength = "5" })
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit wait" value="ТЪРСИ" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData.ModelState.IsValid && Model.ShowResults)
+{
+    if (Model.SearchResults == null)
+    {
+        Model.SearchResults = new PagedList<eCase.Domain.Entities.Case>(null, 1, 1);
+    }
+
+    if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+    {
+        string sortClass = Model.IsAsc ? "sort-asc" : "sort-desc";
+        string actionName = MVC.Case.ActionNames.Search;
+        string controllerName = MVC.Case.Name;
+
+        <!--TABLE -->
+        <div class="results-table">
+            <div class="results-thead">
+                <div class="results-cell sortable @(Model.Order == CasesOrder.Court ? sortClass : "")">
+                    @Html.ActionLink("Съд", actionName, controllerName, Model.GetRouteValues(queryString, null, CasesOrder.Court), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == CasesOrder.Case ? sortClass : "")">
+                    @Html.ActionLink("Дело № / Год.", actionName, controllerName, Model.GetRouteValues(queryString, null, CasesOrder.Case), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == CasesOrder.Kind ? sortClass : "")">
+                    @Html.ActionLink("Вид дело", actionName, controllerName, Model.GetRouteValues(queryString, null, CasesOrder.Kind), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == CasesOrder.Department ? sortClass : "")">
+                    @Html.ActionLink("Отделение на съда", actionName, controllerName, Model.GetRouteValues(queryString, null, CasesOrder.Department), null)
+                </div>
+                <div class="results-cell"> </div>
+            </div>
+            @foreach (var res in Model.SearchResults)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Съд:</span>
+                        <span class="label">
+                            @if (res.Court != null)
+                            {
+                                <text>@res.Court.Name</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дело № / Год.:</span>
+                        <span class="label">@res.Number/@res.CaseYear</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Вид дело:</span>
+                        <span class="label">
+                            @if (res.CaseKind != null)
+                            {
+                                <text>@res.CaseKind.Name</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Отделение на съда:</span>
+                        <span class="label">
+                            @res.DepartmentName
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"> </span>
+                        <span class="label">
+                            @Html.ActionLink("Преглед", MVC.Case.ActionNames.Details, MVC.Case.Name, new { gid = res.Gid }, new { @class = "btn orange-btn wait" })
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        if (Model.SearchResults.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.SearchResults.PageNumber/@Model.SearchResults.PageCount):</span>
+                @Html.PagedListPager(Model.SearchResults,
+                        page => Url.Action(actionName
+                            , controllerName
+                            , Model.GetRouteValues(queryString, eCase.Common.Crypto.ConfigurationBasedStringEncrypter.Encrypt(page.ToString())))
+                        , new PagedListRenderOptions
+                        {
+                            Display = PagedListDisplayMode.IfNeeded,
+                            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                            LinkToNextPageFormat = ">",
+                            LinkToPreviousPageFormat = "<"
+                        })
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-results">
+            <img src="@(Url.Content(Links.Content.img.icons.warning_png))" alt="" />
+            <span>Няма намерени резултати</span>
+        </div>
+    }
+
+    @section scripts
+        {
+        <script>
+            $(document).ready(function () {
+                $('html, body').animate({ scrollTop: $('.search-panel').position().top }, 1400, 'easeOutQuint');
+            });
+        </script>
+    }
+}

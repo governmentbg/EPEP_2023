@@ -1,0 +1,62 @@
+﻿@{
+    string divClass = "col-lg-3 col-md-6 col-sm-6 col-xs-12";
+    if (Statics.IsSummonsPortal)
+    {
+        divClass = "col-lg-4 col-md-4 col-sm-12 col-xs-12";
+    }
+}
+
+<div class="information-links clearfix" style="margin-top:20px;">
+    <div class="@divClass">
+        <a style="text-decoration:none;"><strong>Българско правосъдие</strong></a>
+        <a href="http://www.vss.justice.bg/" target="blank">Висш съдебен съвет на Република България</a>
+        <a href="https://portal.justice.bg/">Единен портал за електронно правосъдие</a>
+        <a href="http://www.nbpp.government.bg/" target="blank">Националното бюро за правна помощ</a>
+        <a href="http://www.mjs.bg/" target="blank">Министерство на правосъдието</a>
+    </div>
+    <div class="@divClass">
+        <a style="text-decoration:none;"><strong>Международно правосъдие</strong></a>
+        <a href="http://www.echr.coe.int/Pages/home.aspx?p=home&c=" target="blank">Европейски съд по правата на човека в Страсбург</a>
+        <a href="https://e-justice.europa.eu/home.do?action=home&plang=bg" target="blank">Европейският портал за електронно правосъдие</a>
+        <a href="http://www.icj-cij.org/" target="blank">Международен съд към ООН в Хага</a>
+        @*<a href="http://www.hcch.net/upload/bulgarian.html" target="blank">Хагска конференция</a>*@
+    </div>
+    <div class="md-clear"> </div>
+    <div class="@divClass">
+        <a style="text-decoration:none;"><strong>Европейско законодателство</strong></a>
+        <a href="http://ec.europa.eu/legislation/index_bg.htm" target="blank">Европейско законодателство</a>
+        <a href="http://ec.europa.eu/civiljustice/index_bg.htm" target="blank">Европейска съдебна мрежа</a>
+        <a href="http://curia.europa.eu/jcms/jcms/j_6/" target="blank">Съд на Европейския съюз</a>
+        <a href="http://eur-lex.europa.eu/homepage.html?locale=bg" target="blank">Право на ЕС</a>
+    </div>
+    @if (!Statics.IsSummonsPortal)
+    {
+        <div class="@divClass">
+            <a style="text-decoration:none;"><strong>Обща информация</strong></a>
+            <a href="@(Url.Action(MVC.Home.ActionNames.AccessibilityPolicy, MVC.Home.Name))">Политика за достъпност</a>
+            <a href="@(Url.Action(MVC.Feedback.ActionNames.Index, MVC.Feedback.Name))">Обратна връзка</a>
+            <a href="@(Url.Action(MVC.Home.ActionNames.AboutTheSystem, MVC.Home.Name))">За системата</a>
+            <a href="@(Url.Action(MVC.Home.ActionNames.Help, MVC.Home.Name))">Помощ</a>
+        </div>
+    }
+    <span class="gototop">
+        <img src="@Links.Content.img.icons.chevron_up_png" alt="Горе">
+        Горе
+    </span>
+</div>
+
+<footer class="clearfix text-align-center">
+    <div class="col-xs-12">
+        @if (Statics.IsSummonsPortal)
+        {
+            <p style="margin:20px 20% 20px 20%">Проект: ”Подкрепа за Висшия съдебен съвет, свързана с изграждането на капацитет и подобряване на ефективността на съдебната система” по договор за безвъзмездна помощ № 93-00-41/20.02.2013г., финансиран от Норвежкия финансов механизъм (НФМ) 2009-2014</p>
+            <img src="@Links.Content.img.footer_logos_summons_gif" alt="" />
+        }
+        else
+        {
+            <p style="margin:20px 20% 20px 20%">Порталът е разработен по проект: „Електронно правосъдие - проучване и изграждане на единна комуникационна и информационна инфраструктура и единен електронен портал на съдебната власт“, финансиран по Оперативна програма "Административен капацитет", съфинансирана от Европейския съюз чрез Европейския социален фонд. Договорът е сключен в изпълнение на обществена поръчка с предмет: „Разработване и внедряване на единен портал на електронното правосъдие, и обучение за работа с единния портал“.</p>
+           <p style="margin:20px 20% 20px 20%">Проект „Доразвитие и централизиране на порталите в СП за достъп на граждани до информация, е-услуги и е-правосъдие“, се осъществява с финансовата подкрепа на Оперативна програма „Добро управление“ 2014-2020, съфинансирана от Европейския съюз чрез Европейския социален фонд.</p>
+                <img src="@Links.Content.img.footer_logos_gif" alt="" />
+        }
+    </div>
+</footer>

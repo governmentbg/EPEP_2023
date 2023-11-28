@@ -1,0 +1,68 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+
+@using System.Configuration
+@using eCase.Common.Helpers
+
+@{
+    string portalUrl = ConfigurationManager.AppSettings["eCase.Web:DomainUrl"];
+    string portalFeedback = string.Format("{0}Feedback", portalUrl);
+    string activationCode = (string)Model["activationCode"];
+    string activationLink = string.Format("{0}account/activate?ac={1}", portalUrl, activationCode);
+    string email = (string)Model["email"];
+    string courtName = (string)Model["courtName"];
+    string oldUserName = (string)Model["oldUserName"];
+
+    var header = "Единен портал за електронно правосъдие (Промяна на потребителско име)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var queryMessage = "Във връзка с Ваше писмено заявление за промяна на потребителско име чрез информационната система на ";
+    var rightsMessage = "са променени правата за достъп до ";
+    var removeProfileMessage = "От профила е премахнат старият електронен адрес: {0} и е асоцииран Вашия нов адрес: {1}.";
+    var deleteMessage = "Ако заявката не е направена от Вас, моля, изтрийте този имейл.";
+    var activateMessage = "Ако заявката е Ваша, натиснете хипервръзката за активиране на новия профил: ";
+    var dbCourtMessage = "Моля да имате предвид, че правата за достъп до електронните копия на съдебни дела в портала се определят и управляват от информационните системи на съдилищата.";
+    var questionMessage = "Ако има въпроси, претенции или проблеми конкретно към тази промяна, моля да потърсите съдействие от ";
+    var authorMessage = ", който я е извършил. ";
+    var gretting = "Поздрави, ";
+    var team = "Екипът на Единния портал за електронно правосъдие";
+    var answerMessage = "Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.";
+    var helpMessage = "При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на ";
+    var form = " или формата за ";
+    var feedback = "Обратна връзка";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @queryMessage <strong style="color: #444444;">@courtName</strong> @rightsMessage <a href="@portalUrl">@eCase</a>.
+</p>
+
+<p style="margin-bottom: 15px;">
+    @string.Format(removeProfileMessage, oldUserName, email)
+</p>
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@deleteMessage</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @activateMessage<br />
+    <a href="@(activationLink)">@(activationLink)</a>
+</p>
+
+<p style="margin-bottom: 15px;">
+    @dbCourtMessage
+</p>
+
+<p style="margin-bottom: 15px;">
+    @questionMessage <strong style="color: #444444;">@courtName</strong> @authorMessage
+</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    @gretting <br />
+    @team
+</p>
+
+<p style="font-size: 13px; margin-top: 0px;">
+    @answerMessage<br />
+    @helpMessage<a href="@portalUrl">@eCase</a>@form<a href="@portalFeedback">@feedback</a>.
+</p>

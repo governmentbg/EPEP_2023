@@ -1,0 +1,62 @@
+﻿@using Epep.Core.ViewModels.Case;
+@model SummonDocumentVM
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 14pt;
+        }
+
+        .legend {
+            margin-top: 6pt;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24pt;
+            font-style: italic;
+            margin-top: 130pt;
+            margin-bottom: 100pt;
+        }
+
+        .content {
+            text-indent: 50pt;
+        }
+
+        .footer {
+            font-size: 10pt;
+            text-align: center;
+            position: absolute;
+            width:100%;
+            bottom: 5pt;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="legend">Съд: <b>@Model.CourtName</b></div>
+    <div class="legend">Дело: <b>@Model.CaseNumber</b></div>
+    <div class="legend">Вид: <b>@Model.CaseKind</b></div>
+    <div class="legend">Година: <b>@Model.CaseYear</b></div>
+
+
+    <div class="title">ОТЧЕТ ЗА ДОСТАВЕНО СЪОБЩЕНИЕ ПРЕЗ ЕПЕП</div>
+
+    <div class="content">
+        Съобщение тип <b>@Model.SummonKind</b> по дело номер <b>@Model.CaseNumber</b>
+        , издадено на <b>@Model.DateCreated.ToString("dd.MM.yyyy г.")</b>
+        , е прочетено от <b>@Model.UserNameRead, @Model.UserEmailRead</b> в електронния портал за достъп до информация до съдебни дела на <b>@Model.ReadTime.ToString("dd.MM.yyyy г. в HH:mm:ss")</b>
+        и се счита за връчено на <b>@Model.Addressee</b>.
+    </div>
+    <div class="footer">
+        Този документ е генериран от <a href="https://ecase.justice.bg">Eдинния портал за електронно правосъдие</a>.
+    </div>
+</body>
+
+</html>

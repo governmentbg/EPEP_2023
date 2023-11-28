@@ -1,0 +1,32 @@
+﻿@using Epep.Core.ViewModels.Case
+@model FilesPreviewVM
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <h3 class="section-title">Обжалване</h3>
+
+        @foreach (var appeal in Model.ActAppeals.OrderBy(x => x.DateFiled))
+        {
+            <div class="row my-3 mb-3">
+                <div class="col-md-4">
+                    <div class="list__cell">
+                        <span class="list__label">@appeal.SideInvolmentKindName</span>
+                        <div class="list__output">@appeal.SideName</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="list__cell">
+                        <span class="list__label">Вид</span>
+                        <div class="list__output">@appeal.AppealKindName</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="list__cell">
+                        <span class="list__label">Дата</span>
+                        <div class="list__output">@appeal.DateFiled.ToString("dd.MM.yyyy")</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

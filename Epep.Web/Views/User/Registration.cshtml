@@ -1,0 +1,130 @@
+﻿@using Epep.Core.ViewModels.User;
+@model UserRegistrationVM
+@{
+    ViewData["Title"] = "Регистрация";
+    ViewData["HideAside"] = true;
+}
+
+<main class="page-content">
+    <div class="container">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <form action="@Url.Action("Registration")" method="post" class="registration__form" enctype="multipart/form-data">
+            <h2 class="section-title section-title--s ms-lg-5">Вие сте...</h2>
+            <div class="registration__header">
+                <input id="registrationRole-1" name="UserType" type="radio" class="registration__role-btn" value="@NomenclatureConstants.UserTypes.Person">
+                <label for="registrationRole-1" class="registration__role-btn registration__role-btn--fl">Физическо лице</label>
+                <input id="registrationRole-3" name="UserType" type="radio" class="registration__role-btn" value="@NomenclatureConstants.UserTypes.Organization">
+                <label for="registrationRole-3" class="registration__role-btn registration__role-btn--ul">Юридическо лице</label>
+            </div>
+            <div class="registration__form__section">
+                <br />
+                <h2 class="section-title section-title--xxs div-person">Данни за физическото лице</h2>
+                <h2 class="section-title section-title--xxs div-org">Данни за юридическото лице</h2>
+                <div class="row div-person">
+                    <div class="col-lg-12">
+                        @Html.EditorFor(x=>x.FullName,"String",null,new{placeholder="Въведете Вашето име на кирилица"})
+                    </div>
+                </div>
+                <div class="row div-org">
+                    <div class="col-lg-12">
+                        @Html.EditorFor(x=>x.OrgFullName,"String",null,new{placeholder="Въведете пълното наименование на кирилица"})
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 div-person">
+                        @Html.DisplayFor(x=>x.EGN,"obj")
+                    </div>
+                    <div class="col-lg-4 div-org">
+                        @Html.DisplayFor(x=>x.UIC,"obj")
+                    </div>
+                    <div class="col-lg-4">
+                        @Html.EditorFor(x=>x.Email)
+                    </div>
+                    <div class="col-lg-4 div-person">
+                        @Html.EditorFor(x=>x.NotificationEmail)
+                    </div>
+                    @*<div class="col-lg-4 div-org">
+                        <div class="form-group">
+                            <label class="form-label">Документ за упълномощяване</label>
+                            <label for="orgFile" class="btn u-btn u-truncate">Изберeте файл</label>
+                            <input type="file" id="orgFile" name="orgFile" style="visibility:hidden;" />
+                            <br />
+                            <span asp-validation-for="@Model.OrgFileError" class="text-danger"></span>
+                        </div>
+                    </div>*@
+                </div>
+
+                <h2 class="section-title section-title--xxs div-org">Данни за представляващия</h2>
+                <div class="row div-org">
+                    <div class="col-lg-12">
+                        @Html.EditorFor(x=>x.RepresentativeFullName,"String",null,new{placeholder="Въведете Вашето име на кирилица"})
+                    </div>
+                </div>
+                <div class="row div-org">
+                    <div class="col-lg-4 div-org">
+                        @Html.DisplayFor(x=>x.RepresentativeEGN,"obj")
+                    </div>
+                    <div class="col-lg-4">
+                        @Html.EditorFor(x=>x.RepresentativeEmail)
+                    </div>
+                    <div class="col-lg-4">
+                        @Html.EditorFor(x=>x.RepresentativeNotificationEmail)
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        @Html.HiddenFor(x => x.reCaptchaToken)
+                        <div id="rc-inline"></div>
+                    </div>
+                    <div class="col-lg-4">
+                        <span asp-validation-for="@Model.Gid" class="text-danger"></span>
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="button" onclick="checkBeforeSubmit(this);" class="btn u-btn-gradient w!-100 float-end" value="Регистрация" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+
+
+@section Scripts{
+    <partial name="_CaptchaScript" />
+    <script>
+        $(function () {
+            $('input[name="UserType"][value="' + @Model.UserType+'"]').attr('checked', 'checked');
+            $('input[name="UserType"]').change(function () {
+                let userType = $('input[name="UserType"]:checked').val();
+                switch (userType) {
+                    case '@NomenclatureConstants.UserTypes.Person':
+                        $('.div-person').show();
+                        $('.div-org').hide();
+                        break;
+                    case '@NomenclatureConstants.UserTypes.Organization':
+                        $('.div-person').hide();
+                        $('.div-org').show();
+                        break;
+                }
+            }).trigger('change');
+
+            //if ($('input[name="UserType"]:checked')) {
+            //    $('input[name="UserType"]:first').attr('checked', 'checked').trigger('change');
+            //}
+
+            $('#orgFile').change(function (e) {
+                if ($(this).val()) {
+                    var f = e.target.value.replace(/.*[\/\\]/, '');
+                    $('label[for="' + e.target.id + '"]').html(f)
+                        .parent().find('span:first').removeClass('hidden');
+                } else {
+                    $('label[for="' + e.target.id + '"]').html('Изберeте файл')
+                        .parent().find('span:first').addClass('hidden');
+                }
+            });
+        });
+    </script>
+}

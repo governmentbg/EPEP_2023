@@ -1,0 +1,154 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserRegistrationVM
+@{
+    var title = "Редакция на потребител";
+    if (!Model.Gid.HasValue)
+    {
+        title = "Добавяне на потребител";
+    }
+    var comfirmedInfo = (UserComfirmedInfoVM)ViewBag.comfirmedInfo;
+    var formAction = Url.Action("UserEdit");
+    var isDisabled = false;
+    if (comfirmedInfo != null && comfirmedInfo.DeniedDate != null)
+    {
+        isDisabled = true;
+        formAction = "";
+    }
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">@title</div>
+                        <div class="list__output">@Model.FullName</div>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.OrgFullName))
+                {
+                    <div class="col-md">
+                        <div class="list__cell">
+                            <div class="list__label">@Model.UIC</div>
+                            <div class="list__output">@Model.OrgFullName</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        @if (comfirmedInfo != null)
+        {
+            <div class="row my-3 mb-3">
+                @if (comfirmedInfo.ComfirmedDate.HasValue)
+                {
+                    <div class="col-md-6">
+                        <div class="list__cell">
+                            <span class="list__label">Дата на потвърждение</span>
+                            <div class="list__output">@comfirmedInfo.ComfirmedDate.Value.ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="list__cell">
+                            <span class="list__label">Потвърдил</span>
+                            <div class="list__output">@comfirmedInfo.ComfirmedUserName (@comfirmedInfo.ComfirmedUserType)</div>
+                        </div>
+                    </div>
+                }
+                @if (comfirmedInfo.DeniedDate.HasValue)
+                {
+                    <div class="col-md-6">
+                        <div class="list__cell">
+                            <span class="list__label">Дата на отказ</span>
+                            <div class="list__output">@comfirmedInfo.DeniedDate.Value.ToString("dd.MM.yyyy HH:mm")</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="list__cell">
+                            <span class="list__label">Отказал</span>
+                            <div class="list__output">@comfirmedInfo.ComfirmedUserName (@comfirmedInfo.ComfirmedUserType)</div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="list__cell">
+                            <span class="list__label">Основание</span>
+                            <div class="list__output">@comfirmedInfo.DeniedDescription</div>
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (comfirmedInfo.Files.Any())
+            {
+                <div class="row my-3 mb-3">
+                    @foreach (var file in comfirmedInfo.Files)
+                    {
+
+                        <div class="col-md-6">
+                            <div class="list__cell">
+                                <span class="list__label">Документ</span>
+                                <div class="list__output">
+                                    <a href="@Url.Action("Download","File",new{fileKey=file.FileGid})">
+                                        @file.Title
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            }
+        }
+
+
+        <div class="ajax-form" data-url="@formAction">
+            <div class="ajax-form" data-url="@formAction">
+                <form class="form-content">
+                    @Html.HiddenFor(x=>x.Gid)
+                    @Html.HiddenFor(x=>x.UserType)
+                    @if (Model.UserType == NomenclatureConstants.UserTypes.CourtAdmin)
+                    {
+                        @Html.EditorFor(x=>x.CourtId,"GenericDropDown")
+                    }
+                    @if (isDisabled)
+                    {
+                        @if (Model.UserType == NomenclatureConstants.UserTypes.Organization)
+                        {
+                            @Html.DisplayFor(x=>x.UIC,"obj")
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(x=>x.EGN,"obj")
+                        }
+                        @Html.DisplayFor(x=>x.FullName,"obj")
+                        @Html.DisplayFor(x=>x.Email,"obj")
+                        @Html.DisplayFor(x=>x.IsActive,"objBool")
+                    }
+                    else
+                    {
+                        @if (Model.UserType == NomenclatureConstants.UserTypes.Organization)
+                        {
+                            @Html.EditorFor(x=>x.UIC)
+                        }
+                        else
+                        {
+                            @Html.EditorFor(x=>x.EGN)
+                        }
+                        @Html.EditorFor(x=>x.FullName)
+                        @Html.EditorFor(x=>x.Email)
+                        @Html.EditorFor(x=>x.IsActive)
+                    }
+
+                </form>
+                @if (!string.IsNullOrEmpty(formAction))
+                {
+                    <button type="button" class="cta-active btn form-submit" data-callback="editUserCallback">Запис</button>
+                }
+                <span class="ajax-form-validation text-danger"></span>
+            </div>
+        </div>
+    </div>

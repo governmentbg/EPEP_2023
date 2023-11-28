@@ -1,0 +1,131 @@
+﻿@using Epep.Core.ViewModels.Case
+@model HearingVM
+@{
+    var hearingItems = (IEnumerable<CaseElementVM>)ViewBag.items;
+    var hearingParticipants = (IEnumerable<HearingParticipantVM>)ViewBag.participants;
+
+    var returnUrl = Url.Action("Preview", "Case", new { type = NomenclatureConstants.SourceTypes.Hearing, gid = Model.Gid });
+
+    var protocolFiles = (List<FileItemVM>)ViewBag.protocolFiles;
+}
+
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="list__cell">
+                        <div class="list__label">Дата на провеждане</div>
+                        <div class="list__output">@Model.Date.ToString("dd MMMM yyyyг.")</div>
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="list__cell">
+                        <div class="list__label">Вид</div>
+                        <div class="list__output">@Model.HearingType</div>
+                    </div>
+                </div>
+                @if (Model.IsCanceled)
+                {
+                    <div class="col-md-2">
+                        <div class="list__cell">
+                            <div class="list__label">Статус</div>
+                            <div class="list__output">Отменено</div>
+                        </div>
+                    </div>
+                }
+                <div class="col-md-2">
+                    <div class="list__label">Резултат</div>
+                    <div class="list__output">@Model.HearingResult</div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.CourtRoom))
+                {
+                    <div class="col-md-2">
+                        <div class="list__cell">
+                            <div class="list__label">Зала</div>
+                            <div class="list__output">@Model.CourtRoom</div>
+                        </div>
+                    </div>
+                }
+                @if (!string.IsNullOrEmpty(Model.VideoUrl))
+                {
+                    <div class="col-md-2">
+                        <div class="list__cell">
+                            <div class="list__label">Онлайн заседание</div>
+                            <div class="list__output"><a href="@Html.Raw(Model.VideoUrl)" target="_blank" title="Натиснете тук за преглед на онлайн заседание">Връзка</a></div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <h3 class="section-title">Състав</h3>
+        <div class="row my-3 mb-3">
+            @foreach (var participant in hearingParticipants.OrderBy(x => x.Order))
+            {
+                <div class="col-md-4">
+                    <div class="list__cell">
+                        <span class="list__label">@participant.Role</span>
+                        <div class="list__output">@participant.FullName</div>
+                    </div>
+                </div>
+            }
+        </div>
+        <section class="section">
+            <h3 class="section-title">Свързани документи</h3>
+            <div class="section-body">
+                <ul class="list">
+                    @foreach (var item in hearingItems)
+                    {
+                        <li class="list__item">
+
+                            <a href="#"
+                           onclick="requestOffcanvas('@Url.Action("Preview","Case",new{gid = item.Gid,type=item.Type,backCanvasUrl=returnUrl})', { });return false;"
+                           class="case-card case-card--darken">
+                                <div class="case-card__body">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <span class="list__label">Вид</span>
+                                            <div class="list__output">@item.TypeName</div>
+                                        </div>
+                                        <div class="col-md-1">
+                                            <span class="list__label">Номер</span>
+                                            <div class="list__output">@item.Number</div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <span class="list__label">Дата и час </span>
+                                            <div class="list__output"><span class="d-block">@item.Date.ToString("dd.MM.yyyy")</span><span>@item.Date.ToString("HH:mm")</span></div>
+                                        </div>
+
+                                        <div class="col-md">
+                                            <span class="list__label">Пояснение</span>
+                                            <div class="list__output">
+                                                @item.ItemType
+                                            </div>
+                                        </div>
+                                        <div class="col-md">
+                                            <span class="list__label">Детайли</span>
+                                            <div class="list__output">@item.Detail</div>
+                                        </div>
+                                        <div class="ms-auto col-auto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+
+        @if (protocolFiles != null && protocolFiles.Count > 0)
+        {
+            <partial name="_PreviewFiles" model="@protocolFiles" />
+        }
+    </div>
+</div>

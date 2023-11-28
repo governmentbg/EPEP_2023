@@ -1,0 +1,6 @@
+﻿New-Service -Name "EPEP.Service" -BinaryPathName C:\MSTEST\EPEP.Epep.Service\Epep.Service.exe
+
+
+Remove-Service -Name "EPEP.Service"
+
+sc.exe delete "EPEP.Service"
