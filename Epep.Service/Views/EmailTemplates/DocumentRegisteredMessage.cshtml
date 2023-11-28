@@ -1,0 +1,28 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    Layout = "~/Views/EmailTemplates/MailLayout.cshtml";
+    string portalUrl = (string)ViewData["portalUrl"];
+    string portalFeedback = (string)ViewData["feedbackUrl"];
+
+
+    string courtName = (string)Model["courtName"];
+    string applyType = (string)Model["applyType"];
+    string applyNumber = (string)Model["applyNumber"];
+    string applyDate = (string)Model["applyDate"];
+
+    string courtType = (string)Model["courtType"];
+    string courtNumber = (string)Model["courtNumber"];
+    string courtDate = (string)Model["courtDate"];
+
+    var header = "Единен портал за електронно правосъдие (Електронен документ)";
+    var eCase = "Единния портал за електронно правосъдие";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    Здравейте, <br />
+    Подаденият от Вас електронен документ <strong style="color: #444444;">@applyType</strong> под номер <strong style="color: #444444;">@applyNumber / @applyDate</strong><br />
+    е регистриран в <strong style="color: #444444;">@eCase</strong>
+    В <strong style="color: #444444;">@courtName</strong> като <strong style="color: #444444;">@courtType</strong> под номер <strong style="color: #444444;">@courtNumber / @courtDate</strong><br />
+</p>

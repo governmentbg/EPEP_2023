@@ -1,0 +1,132 @@
+.pagination {
+    gap: $main-gutter/2;
+    margin-bottom: 0;
+    .page-item {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+    }
+
+    .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        border: 1px solid transparent;
+
+        color: inherit;
+        line-height: 1.1;
+
+        &:hover,
+        &:focus,
+        &:active {
+            font-weight: 700;
+            background-color: white;
+            border-bottom: 1px solid $primary-dark;
+        }
+    }
+
+    .page-next {
+        .page-link {
+            background-image: url(../images/general/pagerarrowsright-State=normal_Type=navigation.svg);
+
+            &:hover,
+            &:focus {
+                background-image: url(../images/general/pagerarrowsright-State=hover_Type=navigation.svg);
+            }
+
+            &:active {
+                background-image: url(../images/general/pagerarrowsright-State=active\_Type=navigation.svg);
+            }
+        }
+    }
+
+    .page-first {
+        .page-link {
+            background-image: url(../images/general/State=normal_Type=navigation-2.svg);
+            &:hover,
+            &:focus {
+                background-image: url(../images/general/State=hover_Type=navigation-2.svg);
+            }
+
+            &:active {
+                background-image: url(../images/general/State=active_Type=navigation-2.svg);
+            }
+        }
+    }
+
+    .page-last {
+        .page-link {
+            background-image: url(../images/general/State=normal_Type=navigation-2_Direction=right.svg);
+            &:hover,
+            &:focus {
+                background-image: url(../images/general/State=hover_Type=navigation-2_Direction=right.svg);
+            }
+
+            &:active {
+                background-image: url(../images/general/State=active_Type=navigation-2_Direction=right.svg);
+            }
+        }
+    }
+
+    .page-prev {
+        .page-link {
+            background-image: url(../images/general/pagerarrows-State=normal_Type=navigation.svg);
+            &:hover,
+            &:focus {
+                background-image: url(../images/general/pagerarrows-State=hover_Type=navigation.svg);
+            }
+
+            &:active {
+                background-image: url(../images/general/pagerarrows-State=active\_Type=navigation.svg);
+            }
+        }
+    }
+
+    .page-prev,
+    .page-first,
+    .page-last,
+    .page-next {
+        .page-link {
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: 34px;
+
+            border-radius: 0;
+        }
+    }
+
+    .page-inactive .page-link {
+        opacity: 0.3;
+
+        &:hover,
+        &:focus,
+        &:active {
+            border-bottom: 1px solid transparent;
+        }
+    }
+
+    .active .page-link {
+        color: inherit;
+        font-weight: 700;
+        color: $secondary-dark;
+        background-color: white;
+        border: 1px solid transparent;
+
+        &:hover,
+        &:focus,
+        &:active {
+            background-color: white;
+            border-bottom: 1px solid $primary-dark;
+        }
+    }
+
+    .page-location {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: $primary-dark-75;
+    }
+}

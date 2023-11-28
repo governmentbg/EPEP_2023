@@ -1,0 +1,199 @@
+@font-face {
+    font-family: "Montserrat";
+    src: url(../fonts/montserrat/Montserrat-Medium.ttf);
+    font-weight: 500;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Montserrat";
+    src: url(../fonts/montserrat/Montserrat-ExtraBold.ttf);
+    font-weight: 800;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-SemiLight.woff);
+    font-weight: 300;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-Regular.woff);
+    font-weight: normal;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-Medium.woff);
+    font-weight: 500;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-SemiBold.woff);
+    font-weight: 600;
+    font-variant: normal;
+}
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-Bold.woff);
+    font-weight: 700;
+    font-variant: normal;
+}
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-ExtraBold.woff);
+    font-weight: 800;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSansCond-ExtraBold.woff);
+    font-weight: 850;
+    font-variant: normal;
+}
+
+@font-face {
+    font-family: "Sofia";
+    src: url(../fonts/sofia/SofiaSans-Black.woff);
+    font-weight: 900;
+    font-variant: normal;
+}
+
+body {
+    font-family: "Sofia", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-weight: normal;
+    text-rendering: geometricPrecision;
+    color: $pp-black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-family: "Sofia", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    //     word-break: break-word;
+    //     overflow-wrap: break-word;
+    //     hyphens: auto;
+}
+
+h1,
+h2,
+h3 {
+    text-transform: uppercase;
+    font-weight: 700;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    &:hover,
+    &:focus,
+    &:active {
+        color: $secondary-dark;
+    }
+}
+
+.section-title {
+    font-weight: 800;
+    font-size: 1.75rem;
+    text-transform: none;
+    line-height: 1;
+    color: $secondary-dark;
+
+    background-repeat: no-repeat;
+
+    &--s {
+        font-size: 1.25rem !important;
+    }
+
+    &--xs {
+        font-size: 1.125rem !important;
+    }
+
+    &--xxs {
+        font-size: 1rem !important;
+    }
+
+    &--messages {
+        padding-left: calc(8px + 16px + 24px);
+        background-image: url(../images/dashboard/messages-red.svg);
+        background-position: left 12px top 2px;
+        background-size: 24px;
+    }
+
+    &--cases {
+        padding-left: calc(8px + 16px + 24px);
+        background-image: url(../images/dashboard/folder-red.svg);
+        background-position: left 12px top 2px;
+        background-size: 24px;
+    }
+
+    &--calendar {
+        padding-left: calc(8px + 16px + 24px);
+        background-image: url(../images/dashboard/calendar-red.svg);
+        background-position: left 12px top 2px;
+        background-size: 24px;
+    }
+
+    &--users {
+        background: url(../images/general/confirm-users.svg) left center no-repeat;
+        padding-left: 49px;
+    }
+
+    &--queries {
+        background: url(../images/general/queries.svg) left center no-repeat;
+        padding-left: 49px;
+    }
+}
+
+.notification {
+    font-weight: 700;
+    text-transform: none;
+    font-size: 1.25rem;
+    line-height: 1.1;
+
+    margin-bottom: $main-gutter;
+}
+
+.page-title {
+    text-transform: none;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.14;
+
+    span {
+        position: relative;
+        margin-left: $main-gutter/2;
+
+        &:after {
+            content: "";
+            display: block;
+            position: absolute;
+            top: 90%;
+            right: 0;
+            width: 100%;
+            height: 2px;
+            background-color: $primary-dark;
+        }
+    }
+}
+
+.form-title {
+    // color: $primary-blue-dark;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+@include respond-max(md) {
+    .page-title {
+        font-size: 1.5rem;
+    }
+}

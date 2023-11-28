@@ -1,0 +1,46 @@
+﻿@using Epep.Core.Extensions
+@model long?
+@{
+    var fieldName = ViewData.TemplateInfo.HtmlFieldPrefix.Replace(".", "_") + "_ddl";
+    IEnumerable<SelectListItem> ddl = null;
+    var containerClass = ViewData["container_class"] ?? "form-group";
+    var select2 = "";
+    if (ViewData["select2"] != null)
+    {
+        select2 = "select2";
+    }
+    bool isMultiple = (bool?)ViewData["multiple"] == true;
+
+}
+
+@if (ViewData[fieldName] != null)
+{
+    ddl = (List<SelectListItem>)ViewData[fieldName];
+}
+else
+{
+    if (ViewData["ddl"] != null)
+        ddl = (List<SelectListItem>)ViewData[fieldName];
+    else
+        ddl = new List<SelectListItem>();
+}
+
+<div class="@containerClass">
+    @if (ViewData["label"] != null)
+    {
+        <label class="form-label">@ViewData["label"]</label>
+    }
+    else
+    {
+        <label asp-for="@Model" class="form-label"></label>
+    }
+    @if (isMultiple)
+    {
+        @Html.DropDownListFor(model => model, ddl.SetSelected(Model), new { @class = select2 + " form-control", @multiple = "multiple" })
+    }
+    else
+    {
+        @Html.DropDownListFor(model => model, ddl.SetSelected(Model), new { @class = select2 + " form-control" })
+    }
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

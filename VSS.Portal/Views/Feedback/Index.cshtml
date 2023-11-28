@@ -1,0 +1,78 @@
+﻿@model VSS.Portal.Models.Feedback.FeedbackVM
+
+<div class="inner-top-head"> </div>
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Обратна връзка")
+
+<div class="search-panel clearfix">
+    <div class="title">
+        <span>Обратна</span>
+        <span>връзка</span>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="POST">
+            <!-- VALIDATION -->
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    @Html.ValidationSummary()
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl"><span style="color: red;">*&nbsp;</span>Съобщение за:</div>
+                <div class="vl">
+                    @Html.DropDownListFor(m => m.Type,
+                        new List<SelectListItem>()
+                        {
+                            new SelectListItem { Value = string.Empty, Text = "- Моля изберете -"},
+                            new SelectListItem { Value = "1", Text = "Въпрос", },
+                            new SelectListItem { Value = "2", Text = "Предложение", },
+                            new SelectListItem { Value = "3", Text = "Технически проблем", }
+                        }, new { @class = "select2" })
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Име и фамилия:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Name)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Eлектронна поща:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Email)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl" style="vertical-align: top"><span style="color: red;">*&nbsp;</span>Описание:</div>
+                <div class="vl">
+                    @Html.TextAreaFor(m => m.Message)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"><span style="color: red;">*&nbsp;</span>Код за сигурност:</div>
+                <div class="vl">
+                    @Html.CaptchaImage(31, 150)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"> </div>
+                <div class="vl">
+                    <div class="col-xs-6 no-padding">
+                        @Html.TextBox("Captcha", null, new { @autocomplete = "off", @maxlength = "5" })
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="ИЗПРАТИ">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

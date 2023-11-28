@@ -1,0 +1,28 @@
+.breadcrumbs {
+    &__list {
+        background: url(../images/general/pagerarrows-State=normal_Type=navigation.svg) left -10px center no-repeat;
+        // background-size: 34px;
+        margin-bottom: 0;
+        list-style: none;
+        padding-left: $main-gutter * 1.5;
+
+        font-size: 0.87rem;
+        font-weight: 500;
+
+        li {
+            display: inline-block;
+        }
+
+        li:after {
+            content: " | ";
+        }
+
+        li:last-child::after {
+            display: none;
+        }
+
+        a {
+            text-decoration: underline;
+        }
+    }
+}

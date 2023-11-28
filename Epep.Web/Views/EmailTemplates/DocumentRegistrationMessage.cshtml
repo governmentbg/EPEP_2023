@@ -1,0 +1,35 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    Layout = "~/Views/EmailTemplates/MailLayout.cshtml";
+    string userName = (string)Model["userName"];
+    string orgName = (string)Model["orgName"];
+    bool isComfirmed = (bool)Model["isComfirmed"];
+    string deniedReason = (string)Model["deniedReason"];
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">Единен портал за електронно правосъдие (Регистриран документ)</strong></p>
+
+<p style="margin-bottom: 15px;">
+    Здравейте,<br />
+    В <strong style="color: #444444;">Единния портал за електронно правосъдие</strong>
+    беше получена заявка за потвърждаване на нов потребителски профил като представляващ.<br />
+    Име: <strong style="color: #444444;">@userName</strong><br />
+    Юридическо лице: <strong style="color: #444444;">@orgName</strong><br />
+    Профилът Ви е:
+    @if (isComfirmed)
+    {
+        <strong style="color: #444444;">потвърден</strong>
+
+        <br />
+    }
+    else
+    {
+        <strong style="color: #444444;">отказан</strong>
+
+        <br />
+        <text>Забележка:</text>
+        <strong style="color: #444444;">@deniedReason</strong>
+
+        <br />
+    }
+</p>

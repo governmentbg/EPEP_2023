@@ -1,0 +1,20 @@
+﻿@model DateTime?
+@{
+    var containerClass = ViewData["container_class"] ?? "form-group";
+    var value = "";
+    if(Model != null)
+    {
+        value = Model.Value.ToString("dd.MM.yyyy");
+    }
+}
+<div class="@containerClass">
+    @if (ViewData["label"] != null)
+    {
+        <span class="list__label">@ViewData["label"]</span>
+    }
+    else
+    {
+        <span class="list__label">@Html.DisplayNameForModel()</span>
+    }
+    <div class="list__output">@value</div>
+</div>

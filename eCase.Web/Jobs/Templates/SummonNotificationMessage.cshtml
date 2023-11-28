@@ -1,0 +1,50 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+
+@using System.Configuration
+@using eCase.Common.Helpers
+
+@{
+    string portalUrl = ConfigurationManager.AppSettings["eCase.Web:DomainUrl"];
+    string portalFeedback = string.Format("{0}Feedback", portalUrl);
+    string email = (string)Model["email"];
+
+    var header = "Единен портал за електронно правосъдие (Съобщение по дело)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var eAccessMessage = "Във връзка с Ваше писмено заявление за предоставяне на електронни призовки и съобщения по съдебно дело Ви информиране, че: ";
+    var newMessage = "Имате едно ново съобщение.";
+    var accessMessage = "Съобщението по делото е достъпно в ";
+    var profileMessage = " чрез профила, асоцииран с имейл адрес: ";
+    var dbCourtMessage = "Моля да имате предвид, че в системата се публикуват само съобщения и призовки, изпратени и заредени в базата данни от съдилищата. Ако имате въпроси или забележите пропуски или неточности, конкретно по това дело, моля да потърсите съдействие от компетентния по делото съд.";
+    var gretting = "Поздрави, ";
+    var team = "Екипът на Единния портал за електронно правосъдие";
+    var answerMessage = "Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.";
+    var helpMessage = "При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на ";
+    var form = " или формата за ";
+    var feedback = "Обратна връзка";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @eAccessMessage <strong style="color: #444444;">@newMessage</strong>
+</p>
+
+<p style="margin-bottom: 15px;">
+    @accessMessage <a href="@portalUrl">@eCase</a> @profileMessage @email
+</p>
+
+<p style="margin-bottom: 15px;">
+    @dbCourtMessage
+</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    @gretting <br />
+    @team
+</p>
+
+<p style="font-size: 13px; margin-top: 0px;">
+    @answerMessage<br />
+    @helpMessage<a href="@portalUrl">@eCase</a>@form<a href="@portalFeedback">@feedback</a>.
+</p>

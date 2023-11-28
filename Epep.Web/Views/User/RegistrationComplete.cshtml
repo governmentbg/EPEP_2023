@@ -1,0 +1,32 @@
+﻿@model int
+@{
+    ViewData["Title"] = "Регистрация";
+    ViewData["HideAside"] = true;
+}
+<main class="page-content">
+    <div class="container">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <div class="registration__msg">
+            @if (Model == NomenclatureConstants.UserTypes.Person)
+            {
+                <h3 class="notification text-center">Потребителят е регистриран успешно.</h3>
+                <div class="row">
+                    <div class="col-md-4 mx-auto"><a href="@Url.Action("Index","Home")" class="btn u-btn-gradient w-100">Начало</a></div>
+                </div>
+                @*                <div class="row">
+            <div class="col-md-4 mx-auto">
+            <a href="@Url.Action("Login","User")" class="btn cta-login w-100">Вход с КЕП</a>
+            </div>
+            </div>
+            *@
+            }
+            else
+            {
+                <h3 class="notification text-center">Потребителят е регистриран успешно и очаква потвърждение от администратор.</h3>
+                <div class="row">
+                    <div class="col-md-4 mx-auto"><a href="@Url.Action("Index","Home")" class="btn u-btn-gradient w-100">Начало</a></div>
+                </div>
+            }
+        </div>
+    </div>
+</main>

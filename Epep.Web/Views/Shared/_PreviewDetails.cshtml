@@ -1,0 +1,117 @@
+﻿@using Epep.Core.ViewModels.Case
+@model FilesPreviewVM
+@{
+    var hearingParticipants = (IEnumerable<HearingParticipantVM>)ViewBag.participants;
+}
+@if (Model != null)
+{
+    <div class="details__header details__header--red offcanvas-header">
+        @if (!string.IsNullOrEmpty(Model.BackUrl))
+        {
+            <button type="button" class="btn u-btn-back" onclick="document.location.href='@(Model.BackUrl)';" aria-label="Затвори и се върни обратно"></button>
+        }
+        else
+        {
+            if (!string.IsNullOrEmpty(Model.BackCanvasUrl))
+            {
+                <button type="button" class="btn u-btn-back" onclick="requestOffcanvas('@(Model.BackCanvasUrl)', {})" aria-label="Затвори и се върни обратно"></button>
+            }
+            else
+            {
+                <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+            }
+        }
+        <div class="container">
+            <div class="case__assets">
+                <div class="row">
+                    <div class="col-md">
+                        <div class="list__cell">
+                            <div class="list__label">Вид</div>
+                            <div class="list__output">@Model.TypeName</div>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.Number))
+                    {
+                        <div class="col-md">
+                            <div class="list__cell">
+                                <div class="list__label">Номер</div>
+                                <div class="list__output">@Model.Number</div>
+                            </div>
+                        </div>
+                    }
+                    @if (Model.Date.HasValue)
+                    {
+                        <div class="col-md">
+                            <div class="list__cell">
+                                <div class="list__label">Дата</div>
+                                <div class="list__output">@Model.Date.Value.ToString("dd MMMM yyyyг.")</div>
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.TypeDetails))
+                    {
+                        <div class="col-md">
+                            <div class="list__cell">
+                                <div class="list__label">Информация</div>
+                                <div class="list__output">@Model.TypeDetails</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (hearingParticipants != null)
+    {
+        <div class="details__body offcanvas-body">
+            <div class="container">
+                <h3 class="section-title">Съдебен състав</h3>
+                <div class="row my-3 mb-3">
+                    @foreach (var participant in hearingParticipants.OrderBy(x => x.Order))
+                    {
+                        <div class="col-md-4">
+                            <div class="list__cell">
+                                <span class="list__label">@participant.Role</span>
+                                <div class="list__output">@participant.FullName</div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(Model.SummonCourtDescription) && Model.SummonCourtDate.HasValue)
+    {
+        <div class="details__body offcanvas-body">
+            <div class="container">
+                <h3 class="section-title">Прочетено съобщение</h3>
+                <div class="row my-3 mb-3">
+
+                    <div class="col-md-4">
+                        <div class="list__cell">
+                            <span class="list__label">Връчено на</span>
+                            <div class="list__output">@Model.SummonCourtDate.Value.ToString("dd.MM.yyyy HH:mm:ss")</div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="list__cell">
+                            <span class="list__label">Основание</span>
+                            <div class="list__output">@Model.SummonCourtDescription</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.ActAppeals != null && Model.ActAppeals.Any())
+    {
+        <partial name="_PreviewDetailsActAppeals" model="@Model" />
+    }
+    <partial name="_PreviewFiles" model="@Model.Files" />
+    @Html.HiddenFor(x=>x.ActionMode)
+}
+else
+{
+    <h5>Ненамерен обект.</h5>
+}

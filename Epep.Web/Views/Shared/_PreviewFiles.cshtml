@@ -1,0 +1,87 @@
+﻿@using Epep.Core.ViewModels.Case
+@model List<FileItemVM>
+@{
+    bool noContainer = (bool?)ViewData["nocontainer"] == true;
+}
+@if (Model != null)
+{
+    if (noContainer)
+    {
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="pdf-reader" id="previewBox">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <ul class="relative-doc__list">
+                    @foreach (var file in Model)
+                    {
+                        <li>
+                            @if (file.CanPreview)
+                            {
+                                <text>
+                                    <a href="#" onclick="previewPdf('@Url.Action("PreviewPdf","File",new{fileKey=file.FileGid})#toolbar=1&navpanes=0','previewBox',100); return false;" class="info-bubble preview-pdf">
+                                </text>
+                            }
+                            else
+                            {
+                                <text>
+                                    <a href="@Url.Action("Download","File",new{fileKey=file.FileGid})" class="info-bubble">
+                                </text>
+                            }
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <span class="list__output">@(file.Title ?? file.FileName)</span>
+                                </div>
+                            </div>
+                            @Html.Raw("</a>")
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="details__body offcanvas-body">
+            <div class="container-fluid" aria-label="Свързани документи">
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="pdf-reader" id="previewBox">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <ul class="relative-doc__list">
+                            @foreach (var file in Model)
+                            {
+                                <li>
+                                    @if (file.CanPreview)
+                                    {
+                                        <text>
+                                            <a href="#" onclick="previewPdf('@Url.Action("PreviewPdf","File",new{fileKey=file.FileGid})#toolbar=1&navpanes=0','previewBox',100); return false;" class="info-bubble preview-pdf">
+                                        </text>
+                                    }
+                                    else
+                                    {
+                                        <text>
+                                            <a href="@Url.Action("Download","File",new{fileKey=file.FileGid})" class="info-bubble">
+                                        </text>
+                                    }
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span class="list__output">@(file.Title ?? file.FileName)</span>
+                                        </div>
+                                    </div>
+                                    @Html.Raw("</a>")
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+}

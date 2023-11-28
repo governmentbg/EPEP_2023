@@ -1,0 +1,133 @@
+.case-card {
+    display: block;
+
+    &__header {
+        background-color: $primary-light-50;
+        border-radius: 4px 4px 0 0;
+        color: $primary-dark;
+        font-weight: 700;
+        font-size: 1.125rem;
+
+        h2,
+        h3,
+        h4 {
+            all: unset;
+        }
+    }
+
+    &__body {
+        background-color: $primary-light-25;
+        // border-radius: 0 0 4px 4px;
+        border-radius: 4px;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: inherit;
+        .case-card__header {
+            background-color: $primary-dark-25;
+        }
+
+        .case-card__body {
+            background-color: $primary-dark-10;
+        }
+    }
+
+    &__btn {
+        display: flex;
+        background-color: transparent;
+        border: none;
+        text-align: left;
+    }
+
+    &__collapse {
+        padding: 0 !important;
+        background-color: white;
+        border-color: transparent;
+        .card {
+            border-color: transparent;
+            padding-left: $main-gutter/4;
+            padding-right: $main-gutter/4;
+            .section-title {
+                font-size: 1.25rem;
+            }
+        }
+    }
+
+    &--alert {
+        .case-card__body {
+            background-color: $secondary-dark-10;
+        }
+
+        &:hover {
+            .case-card__body {
+                background-color: $secondary-dark-25;
+            }
+        }
+    }
+
+    &--darken {
+        .case-card__body {
+            background-color: $primary-light-75;
+        }
+
+        .cta-disabled {
+            background-color: $primary-dark-25;
+        }
+
+        &:hover {
+            .case-card__body {
+                background-color: $primary-light;
+            }
+        }
+    }
+
+    & .list__output a {
+        color: $secondary-dark;
+        text-decoration: underline;
+    }
+
+    &__icon {
+        width: 34px;
+        height: 100%;
+        background-size: 120%;
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        &--bell {
+            background-image: url(../images/general/receives-notifications.svg);
+        }
+    }
+}
+
+.case {
+    &__controls {
+        margin-bottom: -50px;
+        // position: absolute;
+        // bottom: -52px;
+        width: 100%;
+    }
+
+    &__direction {
+        width: 32px;
+        height: 100%;
+        background-size: 32px;
+        background-repeat: no-repeat;
+        background-position: center top;
+
+        &--pause {
+            background-image: url(../images/documents/paused.svg);
+        }
+        &--outbox {
+            background-image: url(../images/documents/Direction=outbox.svg);
+        }
+        &--inbox {
+            background-image: url(../images/documents/Direction=inbox.svg);
+        }
+
+        &--internal {
+            background-image: url(../images/documents/Direction=internal.svg);
+        }
+    }
+}

@@ -1,0 +1,19 @@
+﻿@model string
+@{
+    var containerClass = ViewData["container_class"] ?? "form-group";
+    var rows = ViewData["rows"] ?? "3";
+    var placeholder = ViewData["placeholder"] ?? "";
+    var maxLength = ViewData["max"] ?? "2000";
+}
+<div class="@containerClass">
+    @if (ViewData["label"] != null)
+    {
+        <label class="form-label">@ViewData["label"]</label>
+    }
+    else
+    {
+        <label asp-for="@Model" class="form-label"></label>
+    }
+    @Html.TextAreaFor(model => model, new { @class = "form-control",rows=rows,placeholder=placeholder,maxlength=maxLength })
+    <span asp-validation-for="@Model" class="text-danger"></span>
+</div>

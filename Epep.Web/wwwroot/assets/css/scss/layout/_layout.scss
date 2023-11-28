@@ -1,0 +1,131 @@
+.page {
+    &-wrapper {
+        display: flex;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    &-body {
+        display: flex;
+        flex-direction: column;
+        width: calc(100% - 80px);
+        width: 100%;
+        min-height: 100vh;
+        background-color: $background-light-25;
+    }
+
+    &-content {
+        padding-top: $main-gutter * 3;
+        padding-bottom: $main-gutter * 3;
+    }
+
+    &-with-heading {
+        padding-top: 0;
+    }
+
+    &-title {
+        width: 100%;
+        &__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: $main-gutter * 3;
+        }
+
+        &__right {
+            display: inline-block;
+            margin-left: auto !important;
+            color: $secondary-dark;
+            &::after {
+                display: none !important;
+            }
+        }
+    }
+
+    &-pagination {
+        margin-top: $main-gutter;
+        margin-bottom: $main-gutter;
+
+        .pagination {
+            li:first-child {
+                margin-left: auto;
+            }
+        }
+    }
+
+    &-footer {
+        padding-top: $main-gutter * 3;
+        margin-top: auto;
+    }
+}
+
+.sidebar {
+    width: 80px;
+    background-color: $background-light-10;
+    box-shadow: $box-shadow;
+
+    transition: all 0.2s ease;
+    z-index: 100;
+
+    &--open {
+        width: 340px;
+    }
+}
+
+.section {
+    // border-bottom: 1px solid $primary-light;
+    // padding-bottom: $main-gutter;
+    margin-bottom: $main-gutter * 2;
+
+    &-header {
+        margin-bottom: $main-gutter/2;
+
+        .row > * {
+            display: flex;
+            align-items: center;
+        }
+
+        a {
+            color: $secondary-dark;
+            font-weight: 700;
+            // text-decoration: underline;
+            &:hover,
+            &:focus,
+            &:active {
+                text-decoration: underline;
+            }
+        }
+
+        .form-select {
+            padding: 0.375rem 2.25rem 0.375rem 0.75rem;
+        }
+    }
+    &-title {
+        margin-bottom: 0;
+    }
+
+    &:last-of-type {
+        border-bottom: 0;
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    .list {
+        margin-bottom: 0;
+    }
+}
+
+@include respond-max(md) {
+    .sidebar {
+        width: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+
+        &--open {
+            width: 100vw;
+
+            overflow-y: scroll;
+        }
+    }
+}

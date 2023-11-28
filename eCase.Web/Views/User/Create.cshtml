@@ -1,0 +1,70 @@
+﻿@model eCase.Web.Models.User.UserCreateVM
+@using PagedList
+@using PagedList.Mvc;
+@using eCase.Common.Captcha
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.User.ActionNames.Search, MVC.User.Name), "Потребители")
+}, "Нов потребител")
+
+<!-- SEARCH PANEL -->
+<div class="search-panel narrow-fields clearfix">
+    <div class="title">
+        <span>Добави нов</span>
+        <strong>потребител</strong>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="post">
+            @if (!ViewContext.ViewData.ModelState.IsValid)
+            {
+            <!-- VALIDATION -->
+                <div class="rw">
+                    <div class="lbl"></div>
+                    <div class="vl">
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="rw">
+                <div class="lbl">Електронна поща:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Username)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Име:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Name)
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl">Съд:</div>
+                <div class="vl">
+                    @Html.DropDownListFor(m => m.CourtCode, Model.Courts, "", new { @class = "select2" })
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <label class="checkbox @(Model.IsActive ? "checked" : "")">
+                        Активен
+                        @Html.CheckBoxFor(m => m.IsActive)
+                    </label>
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="СЪЗДАЙ" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

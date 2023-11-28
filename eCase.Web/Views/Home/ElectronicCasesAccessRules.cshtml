@@ -1,0 +1,159 @@
+﻿@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Правила за достъп и образци на заявления")
+
+@{ 
+    var downloadIcon = Links.Content.img.icons.ico_download_png;
+    if (Statics.IsSummonsPortal)
+    {
+        downloadIcon = Links.Content.img.icons.blue_ico_download_png;
+    }
+}
+<!-- DESCRIPTION -->
+<h1 class="text-align-center">Правила за достъп и образци на заявления</h1>
+<div class="inner-page-bg download-templates clearfix">
+    <div class="col-lg-10 col-lg-offset-1 col-md-12 col-md-offset-0">
+        <p class="margin-top-30 text-justify"><strong>Общи указния</strong></p>
+        <p class="text-justify">
+            За да използвате функционалностите на Портала (например достъп до електронно копие на дело, електронно призоваване, изпращане на съобщения по конкретно дело и др.), 
+            е необходимо да имате личен потребителски профил. Право на такъв профил има всяко лице, независимо от това дали в момента има право или възможност да използва дадена функционалност. 
+            Искането за създаване на профил се заявява лично чрез подаване на заявление по образец в някое от 
+            <a href="@Url.Action(MVC.Home.ActionNames.CourtsList, MVC.Home.Name)">свързаните в момента към Портала съдилища</a>, 
+            създава се еднократно и важи за системата като цяло и всички предлагани от нея услуги.
+        </p>
+        <p class="text-justify">
+            След като вече имате създаден личен потребителски профил, чрез подаване на заявление по образец за достъп до конкретно дело и/или електронно призоваване в съда 
+            компетентен по съответното дело, имате възможност след като влезете в системата да видите електронното копие на Вашето дело или да получите електронна призовка или съобщение.
+        </p>
+        
+        <h2 style="margin-top:60px; text-transform: uppercase; font-weight:bold;">Правила за достъп до електронни съдебни дела в Единния портал за електронно правосъдие</h2>
+        <a class="link-to-element" href="/docs/Правила за достъп до електронни съдебни дела в Единния портал за електронно правосъдие.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Правила за достъп до електронни съдебни дела в Единния портал за електронно правосъдие.pdf
+                </span>
+            </span>
+            <span class="size">381 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        
+        
+        <h2 style="margin-top:60px; text-transform: uppercase; font-weight:bold;">Образци на заявления за създаване и промяна на личен потребителски профил</h2>
+        <p class="margin-top-30 text-justify"><strong>Заявление за регистрация и създаване на личен потребителски профил</strong></p>
+        <p class="text-justify">Заявлението се използва при искане за първоначално създаване на личен потребителски профил.</p>
+        <a class="link-to-element" href="/docs/Заявление за създаване на нов потребителски профил.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за създаване на нов потребителски профил.pdf
+                </span>
+            </span>
+            <span class="size">268 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <a class="link-to-element" href="/docs/Заявление за създаване на нов потребителски профил.doc" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.doc_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за създаване на нов потребителски профил.doc
+                </span>
+            </span>
+            <span class="size">40 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <p class="margin-top-30 text-justify"><strong>Заявление за смяна на потребителско име на личен профил</strong></p>
+        <p class="text-justify">Заявлението се използва при искане за промяна на потребителско име (адрес на електронна поща) на личен потребителски профил.</p>
+        <a class="link-to-element" href="/docs/Заявление за смяна на потребителско име на профил.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за смяна на потребителско име на профил.pdf
+                </span>
+            </span>
+            <span class="size">348 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <a class="link-to-element" href="/docs/Заявление за смяна на потребителско име на профил.doc" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.doc_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за смяна на потребителско име на профил.doc
+                </span>
+            </span>
+            <span class="size">41 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+
+        <h2 style="margin-top:60px; text-transform: uppercase; font-weight:bold;">Образци на заявления за достъп до Електронни съдебни дела</h2>
+        <p class="margin-top-30 text-justify"><strong>Заявление за достъп до електронно дело и електронно призоваване</strong></p>
+        <p class="text-justify">Заявлението се използва при искане за получаване на достъп до дело и/или при искане за електронно призоваване за конкретно дело.</p>
+        <a class="link-to-element" href="/docs/Заявление за достъп до електронно дело и електронно призоваване.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за достъп до електронно дело и електронно призоваване.pdf
+                </span>
+            </span>
+            <span class="size">351 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <a class="link-to-element" href="/docs/Заявление за достъп до електронно дело и електронно призоваване.doc" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.doc_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за достъп до електронно дело и електронно призоваване.doc
+                </span>
+            </span>
+            <span class="size">46 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+
+        <p class="margin-top-30 text-justify"><strong>Заявление за отказ от достъп до дело или електронно призоваване</strong></p>
+        <p class="text-justify">Заявлението се използва при искане на прекратяване на личен достъп до дело и/или отказ от електронно призоваване.</p>
+        <a class="link-to-element" href="/docs/Заявление за отказ от достъп до дело или електронно призоваване.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за отказ от достъп до дело или електронно призоваване.pdf
+                </span>
+            </span>
+            <span class="size">350 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <a class="link-to-element" href="/docs/Заявление за отказ от достъп до дело или електронно призоваване.doc" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.doc_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за отказ от достъп до дело или електронно призоваване.doc
+                </span>
+            </span>
+            <span class="size">48 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+
+        <p class="margin-top-30 text-justify"><strong>Заявление за прекратяване на достъп на трето лице</strong></p>
+        <p class="text-justify">Заявлението се използва при искане за прекратяване на достъпа до електронно дело на трето лице, различно от заявителя. Такова заявление може да се подаде например, когато страна е сменила своя процесуален представител и желае да ограничи достъпа до делото за стария си представител.</p>
+        <a class="link-to-element" href="/docs/Заявление за прекратяване на достъп на трето лице.pdf" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.pdf_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за прекратяване на достъп на трето лице.pdf
+                </span>
+            </span>
+            <span class="size">345 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+        <a class="link-to-element" href="/docs/Заявление за прекратяване на достъп на трето лице.doc" target="_blank" title="">
+            <img src="@(Url.Content(Links.Content.img.icons.files.doc_png))" alt="" class="type">
+            <span class="content">
+                <span class="middle">
+                    Заявление за прекратяване на достъп на трето лице.doc
+                </span>
+            </span>
+            <span class="size">46 KB</span>
+            <img src="@(Url.Content(downloadIcon))" alt="" class="action">
+        </a>
+    </div>
+</div>

@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Електронни съдебни дела</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+
+    <noscript><meta http-equiv="refresh" content="0; url=@(Url.Content("/Error/NoScript.html"))" /></noscript>
+
+    <!-- Not supported browser -->
+    @Html.Partial("_NotSupportedBrowser")
+
+    @Styles.Render("~/bundles/upxcss")
+
+    @if (Statics.IsSummonsPortal)
+    {
+        <link href="@Url.Content("~/Content/css/summons-style.css")" rel="stylesheet">
+    }
+
+</head>
+<body>
+    @{
+        var loaderGif = Links.Content.img.loader_gif;
+        if (Statics.IsSummonsPortal)
+        {
+            loaderGif = Links.Content.img.blue_loader_gif;
+        }
+    }
+    <div class="loader"><div><img src="@Url.Content(loaderGif)" alt="" /><br />Моля, изчакайте</div></div>
+
+    <div class="wrapper">
+
+        <!-- HEADER -->
+        @Html.Partial(MVC.Shared.Views._HeaderPartial)
+
+        @Html.Partial(MVC.Shared.Views._MenuPartial)
+
+        <!-- BODY -->
+        @RenderBody()
+
+        <!-- FOOTER -->
+        @Html.Partial(MVC.Shared.Views._FooterPartial)
+
+        <!-- SUMMON MODAL -->
+        @Html.Partial(MVC.Shared.Views._SummonModalPartial)
+    </div>
+
+    @Scripts.Render("~/bundles/upxjs")
+    @Scripts.Render("~/bundles/customjs")
+
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+    @RenderSection("scripts", required: false)
+
+    @Html.Partial(MVC.Shared.Views._GoogleAnalytics)
+</body>
+</html>

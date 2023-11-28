@@ -1,0 +1,96 @@
+.heading {
+    padding: $main-gutter 0;
+
+    background-color: $primary-light-75;
+    width: 100%;
+    min-height: 80px;
+
+    .container {
+        position: relative;
+    }
+
+    .page-title {
+        color: $primary-dark;
+        margin-bottom: 0;
+        display: flex;
+    }
+
+    &__subheading {
+        display: flex;
+        align-items: center;
+
+        h2 {
+            text-transform: none;
+            font-size: 1rem;
+            font-weight: 700;
+            color: $primary-dark;
+            line-height: 1.3;
+            margin-bottom: 0;
+        }
+    }
+
+    &--light {
+        position: relative;
+        background-color: $primary-light-25;
+        padding: $main-gutter * 1.5 0;
+        margin-bottom: $main-gutter;
+
+        .case__assets {
+            div[class*="col"] {
+                border-right: 1px dashed $primary-dark-25;
+            }
+        }
+    }
+}
+
+.u-archive {
+    position: relative;
+    display: block;
+
+    width: 20px;
+    height: 20px;
+
+    background: url(../images/cases/archive-normal.svg) center no-repeat;
+
+    // &:after {
+    //     position: absolute;
+    //     top: 2px;
+    //     margin-left: 10px;
+    //     font-weight: 600;
+    //     font-size: 0.85rem;
+    // }
+
+    &:hover,
+    &:focus {
+        background: url(../images/cases/archive-normal.svg) center no-repeat;
+
+        // &:after {
+        //     content: "Архивирай";
+        //     display: block;
+
+        //     text-decoration: underline;
+        // }
+    }
+
+    &--selected {
+        background: url(../images/cases/archive-selected.svg) center no-repeat;
+
+        // &:after {
+        //     content: "Премахни от архив";
+        //     display: block;
+        //     width: fit-content;
+        //     white-space: nowrap;
+        //     text-decoration: underline;
+        // }
+
+        &:hover,
+        &:focus {
+            background: url(../images/cases/archive-selected.svg) center no-repeat;
+
+            // &:after {
+            //     content: "Премахни от архив";
+            //     text-decoration: underline;
+            // }
+        }
+    }
+}

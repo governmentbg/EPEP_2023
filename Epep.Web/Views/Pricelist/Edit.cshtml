@@ -1,0 +1,46 @@
+﻿@using Epep.Core.Models;
+@model MoneyPricelist
+@{
+    var title = "Редакция на тарифа";
+    if (Model.Id == 0)
+    {
+        title = "Добавяне на тарифа";
+    }
+}
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label"></div>
+                        <div class="list__output">@title</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("Edit")">
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.Id)
+                @Html.HiddenFor(x=>x.DocumentsIds)
+
+                @Html.EditorFor(x=>x.Code,new{container_class="mb-2"})
+                @Html.EditorFor(x=>x.ShortName,new{container_class="mb-2"})
+                @Html.EditorFor(x=>x.Name,new{container_class="mb-2"})
+                @Html.EditorFor(x=>x.Description,new{container_class="mb-2"})
+                @Html.EditorFor(x=>x.DocumentsList,"GenericSelect2Multi",new{container_class="mb-2"})
+                <div class="row g-2">
+                    @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                    @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+                </div>
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-beforesubmit="editPricelistBeforeSubmit" data-callback="editPricelistCallback">Запис</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,13 @@
+﻿@using Epep.Core.ViewModels.Payment;
+@model TestPaymentVM
+<main class="page-content">
+    <div class="container">
+        @using (Html.BeginForm())
+        {
+
+            @Html.EditorFor(x=>x.CourtId,"GenericDropDown")
+            @Html.EditorFor(x=>x.Amount)
+            <input type="submit" value="ТЕСТОВО ПЛАЩАНЕ" class="btn btn-danger">
+        }
+    </div>
+</main>

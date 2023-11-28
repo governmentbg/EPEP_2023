@@ -1,0 +1,14 @@
+.case-tabs {
+    &__container {
+    }
+
+    &__info {
+        padding-top: $main-gutter;
+        padding-bottom: $main-gutter;
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}

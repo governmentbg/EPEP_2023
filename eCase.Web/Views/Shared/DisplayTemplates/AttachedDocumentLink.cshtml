@@ -1,0 +1,73 @@
+﻿@model IEnumerable<eCase.Domain.Entities.AttachedDocument>
+@{
+    var type = (int)ViewData["type"];
+    var parentId = (long)ViewData["parentId"];
+    var masterFileUrl = (string)ViewData["masterUrl"];
+    var hasMasterFile = !string.IsNullOrEmpty(masterFileUrl);
+    var items = Model.Where(x => x.AttachmentType == type && x.ParentId == parentId);
+}
+
+<div class="btn-group" style="position:relative;">
+    @if (items.Any())
+    {
+        <a class="btn orange-btn dropdown-toggle" style="margin-left:-2px;padding:0 7px;" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <text>Прикачени документи</text>
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </a>
+        <ul class="dropdown-menu">
+            @if (hasMasterFile)
+            {
+                <li>
+                    <a href="@masterFileUrl" target="_blank">Прикачен документ</a>
+                </li>
+            }
+            @foreach (var item in items)
+            {
+                var label = item.FileName;
+                if (!string.IsNullOrEmpty(item.FileTitle))
+                {
+                    label = item.FileTitle;
+                }
+                <li>
+                    @Html.ActionLink(label, "GetAttachedDocumentFile", MVC.Case.Name, new { gid = item.Gid }, new { title = item.FileName, target = "_blank" })
+                </li>
+            }
+
+
+
+        </ul>
+    }
+    else
+    {
+        if (hasMasterFile)
+        {
+            <a href="@masterFileUrl" class="btn orange-btn">Изтегли</a>
+        }
+    }
+
+
+</div>
+
+@*@foreach (var item in items)
+    {
+        @Html.ActionLink("Изтегли", "GetAttachedDocumentFile", MVC.Case.Name, new { gid = item.Gid }, new { title = item.FileName, target = "_blank", @class = "btn orange-btn" })
+    }*@
+
+
+
+<!-- Split button -->
+@*<div class="btn-group">
+        <button type="button" class="btn btn-danger">Action</button>
+        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+        </ul>
+    </div>*@

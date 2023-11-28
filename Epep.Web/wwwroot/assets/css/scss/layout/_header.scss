@@ -1,0 +1,225 @@
+.page-header {
+    --width: 100%;
+
+    @include respond-min(sm) {
+        --width: 576px;
+    }
+
+    @include respond-min(md) {
+        --width: 768px;
+    }
+
+    @include respond-min(lg) {
+        --width: 992px;
+    }
+
+    @include respond-min(xl) {
+        --width: 1200px;
+    }
+
+    @include respond-min(xxl) {
+        --width: 1400px;
+    }
+
+    .container-fluid {
+        display: flex;
+        align-items: center;
+        width: calc(var(--width) + ((100% - var(--width) - 80px) / 2));
+        margin-left: 0;
+        justify-content: space-between;
+        padding: $main-gutter/2 12px $main-gutter/2 $main-gutter * 2;
+        // padding-right: calc(100vw - 80px - 1400px - 32px);
+    }
+
+    height: 80px;
+
+    color: white;
+    background-color: $primary-dark;
+
+    &--fixed {
+        position: fixed;
+        z-index: 3;
+    }
+
+    &__role {
+        padding-left: 24px;
+
+        text-align: right;
+        text-transform: uppercase;
+        font-weight: 800;
+        line-height: 1.2;
+
+        background-size: 20px;
+
+        small {
+            display: block;
+            text-transform: none;
+            font-weight: 500;
+        }
+
+        &--administrator {
+            background: url(../images/general/role-administrator.svg) left bottom no-repeat;
+        }
+
+        &--court-admin {
+            background: url(../images/general/role-court-admin.svg) left bottom no-repeat;
+        }
+
+        &--legal-advisor {
+            background: url(../images/general/role-legal-advisor.svg) left bottom no-repeat;
+        }
+
+        &--person {
+            background: url(../images/general/role-person.svg) left bottom no-repeat;
+        }
+
+        &--representative {
+            background: url(../images/general/role-representative.svg) left bottom no-repeat;
+        }
+    }
+}
+
+.exit {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    text-align: right;
+
+    padding: $main-gutter/4 $main-gutter * 1.5 $main-gutter/4 $main-gutter;
+
+    line-height: 1;
+    color: inherit;
+    font-weight: 700;
+
+    border-radius: 20px;
+
+    transition: all 0.5s ease;
+
+    &:before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 28px;
+        padding-right: 0;
+        background: url(../images/general/log-out.svg) left center no-repeat;
+        transition: all 0.5s ease;
+    }
+
+    &:hover {
+        background-color: $primary-dark-75;
+        color: inherit;
+
+        box-shadow: $box-shadow;
+
+        &:before {
+            width: 35px;
+            padding-right: $main-gutter/2;
+        }
+    }
+}
+
+.login {
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    text-align: right;
+
+    padding: $main-gutter/4 $main-gutter * 1.5 $main-gutter/4 $main-gutter;
+
+    line-height: 1;
+    color: inherit;
+    font-weight: 700;
+
+    border-radius: 20px;
+
+    transition: all 0.5s ease;
+
+    &:before {
+        content: "";
+        display: block;
+        width: 28px;
+        height: 28px;
+        padding-right: 0;
+        background: url(../images/general/log-in.svg) left center no-repeat;
+        transition: all 0.5s ease;
+    }
+
+    &:hover {
+        background-color: $primary-dark-75;
+        color: inherit;
+
+        box-shadow: $box-shadow;
+
+        &:before {
+            width: 35px;
+            padding-right: $main-gutter/2;
+        }
+    }
+}
+
+.brand {
+    color: inherit;
+
+    &:hover {
+        color: inherit;
+    }
+
+    span {
+        display: block;
+    }
+    span:first-child {
+        font-size: 0.9rem;
+    }
+
+    span:last-child {
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 1.75rem;
+        line-height: 1.3;
+    }
+}
+
+@include respond-max(md) {
+    .page {
+        &-header {
+            height: unset;
+
+            .container-fluid {
+                width: 100%;
+                padding-left: 50px;
+                padding-right: $main-gutter;
+                gap: $main-gutter;
+            }
+
+            .brand {
+                flex: 0 0 70%;
+            }
+
+            .exit,
+            .login {
+                flex: 0 0 30%;
+                padding: 10px;
+                font-size: 0.8rem;
+
+                &:before {
+                    width: 20px;
+                    height: 20px;
+                    background-size: 15px;
+                    background-position: left top;
+                }
+                // overflow: hidden;
+            }
+        }
+    }
+
+    .brand {
+        span {
+            &:first-child {
+                font-size: 0.8rem;
+            }
+            &:last-child {
+                font-size: 1rem;
+            }
+        }
+    }
+}

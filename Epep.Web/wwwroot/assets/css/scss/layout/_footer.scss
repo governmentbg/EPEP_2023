@@ -1,0 +1,112 @@
+.footer {
+    &-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $main-gutter * 2;
+        list-style: none;
+        padding-left: 0;
+    }
+
+    &-nav__item {
+        a {
+            font-weight: 800;
+        }
+    }
+
+    &__title {
+        text-transform: none;
+        color: $pp-black-50;
+        font-size: 1.125rem;
+        font-weight: 800;
+        line-height: 1.33;
+    }
+}
+
+.copyrights,
+.footer-nav--small {
+    gap: $main-gutter;
+    color: $primary-dark-50;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.33;
+
+    padding-top: 10px;
+
+    a {
+        text-decoration: underline;
+    }
+}
+
+.copyrights {
+    position: relative;
+    &:before {
+        content: "";
+        display: block;
+        position: absolute;
+        top: 0;
+        width: 180px;
+        height: 1px;
+
+        background-color: $primary-light;
+    }
+}
+
+.footer-nav--small li:first-child {
+    margin-left: auto;
+}
+
+.payment {
+    display: block;
+    width: 36px;
+    height: 36px;
+
+    flex: 0 0 36px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+
+    transition: all 0.3s ease;
+
+    &--mastercard {
+        background-image: url(../images/general/cc-Type=mastercard_State=normal.svg);
+        &:hover {
+            background-image: url(../images/general/cc-Type=mastercard_State=hover.svg);
+        }
+    }
+    &--maestro {
+        background-image: url(../images/general/cc-Type=maestro_State=normal.svg);
+        &:hover {
+            background-image: url(../images/general/cc-Type=maestro_State=hover.svg);
+        }
+    }
+    &--visa {
+        background-image: url(../images/general/cc-Type=visa_State=normal.svg);
+        &:hover {
+            background-image: url(../images/general/cc-Type=visa_State=hover.svg);
+        }
+    }
+    &--visa-electron {
+        background-image: url(../images/general/cc-Type=visa_electron_State=normal.svg);
+        &:hover {
+            background-image: url(../images/general/cc-Type=visa_electron_State=hover.svg);
+        }
+    }
+
+    &__title {
+        width: 100%;
+        text-align: right;
+    }
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        list-style: none;
+        padding-left: 0;
+        margin-left: 0;
+
+        li:first-child {
+            margin-left: auto;
+        }
+    }
+}

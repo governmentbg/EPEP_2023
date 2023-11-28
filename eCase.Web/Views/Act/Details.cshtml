@@ -1,0 +1,232 @@
+﻿@model eCase.Web.Models.Act.ActDetailsVM
+@using PagedList
+@using PagedList.Mvc;
+@using eCase.Data.Repositories;
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.Case.ActionNames.Search, MVC.Case.Name), "Съдебни дела"),
+    new BreadcrumbItem(Url.Action(MVC.Case.ActionNames.Details, MVC.Case.Name, new { gid = Model.Act.Case.Gid }), "Данни за дело " + Model.Act.Case.Abbreviation)
+}, "Данни за акт")
+
+<!-- DESCRIPTION -->
+<h2 class="text-align-center">Данни за акт</h2>
+<div class="inner-page-table">
+    <div class="tr">
+        <div class="lbl">Съд:</div>
+        <div class="vl">@Model.Act.Case.Court.Name</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Дело:</div>
+        <div class="vl">@Model.Act.Case.Abbreviation</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Вид:</div>
+        <div class="vl">@Model.Act.ActKind.Name</div>
+    </div>
+    @if (Model.Act.Number != null)
+    {
+        <div class="tr">
+            <div class="lbl">Номер:</div>
+            <div class="vl">@Model.Act.Number</div>
+        </div>
+    }
+
+    <div class="tr">
+        <div class="lbl">Дата на постановяване:</div>
+        <div class="vl">@Html.DisplayFor(m => m.Act.DateSigned)</div>
+    </div>
+    @if (Model.Act.DateInPower.HasValue)
+    {
+        <div class="tr">
+            <div class="lbl">Дата на влизане в сила:</div>
+            <div class="vl">@Html.DisplayFor(m => m.Act.DateInPower)</div>
+        </div>
+    }
+
+    @*@if (Request.IsAuthenticated && Model.HasActFile)*@
+    @if (Model.HasActFile || Model.HasPublicActFile)
+    {
+        <div class="tr">
+            <div class="lbl">Съдържание на акта:</div>
+            <div class="vl">
+                @if (Model.HasActFile)
+                {
+                    @Html.ActionLink("Изтегли", "GetActFile", MVC.Act.Name, new { actGid = Model.Act.Gid }, new { target = "_blank" })
+                }
+                @if (Model.HasPublicActFile)
+                {
+                    @Html.ActionLink("Изтегли обезличен", "GetActFile", MVC.Act.Name, new { actGid = Model.Act.Gid, getPublicFile = true }, new { target = "_blank" })
+                }
+            </div>
+        </div>
+    }
+
+    @if (Model.IsCriminal)
+    {
+        if (Model.Act.MotiveDate.HasValue)
+        {
+            <div class="tr">
+                <div class="lbl">Дата на постановяване на мотивите:</div>
+                <div class="vl">@Html.DisplayFor(m => m.Act.MotiveDate)</div>
+            </div>
+        }
+        if (Model.HasMotiveFile || Model.HasPublicMotiveFile)
+        {
+            <div class="tr">
+                <div class="lbl">Съдържание на мотивите:</div>
+                <div class="vl">
+                    @if (Model.HasMotiveFile)
+                    {
+                        @Html.ActionLink("Изтегли", "GetMotiveFile", MVC.Act.Name, new { actGid = Model.Act.Gid }, new { target = "_blank" })
+                    }
+                    @if (Model.HasPublicMotiveFile)
+                    {
+                        @Html.ActionLink("Изтегли обезличени", "GetMotiveFile", MVC.Act.Name, new { actGid = Model.Act.Gid, getPublicFile = true }, new { target = "_blank" })
+                    }
+                </div>
+            </div>
+        }
+    }
+    @if (Model.AttachedDocument.Any(a => a.AttachmentType == AttachedTypes.ActCoordination || a.AttachmentType == AttachedTypes.ActCoordinationPublic))
+    {
+        <div class="tr">
+            <div class="lbl">Особено мнение:</div>
+            <div class="vl">
+                @foreach (var privateItem in Model.AttachedDocument.Where(a => a.AttachmentType == AttachedTypes.ActCoordination))
+                {
+
+                    @Html.ActionLink(privateItem.FileTitle, "GetAttachedDocumentFile", MVC.Case.Name, new { gid = privateItem.Gid }, new { target = "_blank" })
+                    <br />
+                }
+                @foreach (var publicItems in Model.AttachedDocument.Where(a => a.AttachmentType == AttachedTypes.ActCoordinationPublic))
+                {
+
+                    @Html.ActionLink(publicItems.FileTitle, "GetAttachedDocumentFile", MVC.Case.Name, new { gid = publicItems.Gid }, new { target = "_blank" })
+                    <br />
+                }
+            </div>
+        </div>
+    }
+</div>
+@if (Model.Summons != null && Model.Summons.Any())
+{
+    <!--Summons -->
+    <h2 class="text-align-center" style="@(Model.SummonsCount > 0 ? "font-weight: bold;" : "")">Съобщения @(Model.SummonsCount > 0 ? String.Format("({0})", Model.SummonsCount) : "")</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Дата</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Страна</div>
+            <div class="results-cell">Съд</div>
+            <div class="results-cell">Дело</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var summon in Model.Summons)
+        {
+            <div class="results-row @(!summon.IsRead ? "unread" : "")">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата:</span>
+                    <span class="label">
+                        @Html.DisplayFor(m => summon.DateCreated)
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">
+                        @if (summon.SummonType != null)
+                        {
+                            <text>@summon.SummonType.Name</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Страна:</span>
+                    <span class="label">@summon.Addressee</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съд:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null && summon.Side.Case.Court != null)
+                        {
+                            <text>@summon.Side.Case.Court.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Дело:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null)
+                        {
+                            <text>@summon.Side.Case.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Summon.ActionNames.Details, MVC.Summon.Name, new { gid = summon.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (Model.Summons != null && Model.Summons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Summons.PageNumber/@Model.Summons.PageCount):</span>
+            @Html.PagedListPager(Model.Summons,
+            page => Url.Action(MVC.Act.ActionNames.Details,
+                     MVC.Act.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sPage = page
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+<!--ActParticipants -->
+@if (Model.Act.ActPreparators != null && Model.Act.ActPreparators.Any())
+{
+    <h2 class="text-align-center">Съдебен състав</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Съдия</div>
+            <div class="results-cell">Роля</div>
+            <div class="results-cell">Заменен</div>
+            <div class="results-cell">Причина за замяна</div>
+        </div>
+        @foreach (var participant in Model.Act.ActPreparators)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Съдия:</span>
+                    <span class="label">@participant.JudgeName</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Роля:</span>
+                    <span class="label">@participant.Role</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Заменен:</span>
+                    <span class="label">@participant.SubstituteFor</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Причина за замяна:</span>
+                    <span class="label">@participant.SubstituteReason</span>
+                </div>
+            </div>
+        }
+    </div>
+}

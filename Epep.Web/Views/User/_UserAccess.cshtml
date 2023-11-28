@@ -1,0 +1,51 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserAccessVM
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">Заявка</div>
+                        <div class="list__output">Достъп до дело/електронно призоваване</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("UserAccess","Case")">
+            <form class="form-content">
+                @Html.HiddenFor(x=>x.CaseGid)
+                @Html.HiddenFor(x=>x.SideGid)
+                @Html.DisplayFor(x=>x.SideName,"obj")
+                @Html.DisplayFor(x=>x.SideRole,"obj")
+
+                <div class="row g-2">
+                    <div class="col-6 mb-2">
+                        <label>@Html.RadioButtonFor(x=>x.RequestAccess,NomenclatureConstants.UserAccessModes.RequestAccess) Заяви достъп</label>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label>@Html.RadioButtonFor(x=>x.RequestAccess,NomenclatureConstants.UserAccessModes.RemoveAccess) Откажи достъп</label>
+                    </div>
+                </div>
+
+                <div class="row g-2">
+                    <div class="col-6 mb-2">
+                        <label>@Html.RadioButtonFor(x=>x.RequestSummon,NomenclatureConstants.UserAccessModes.RequestSummon) Заяви електронно призоваване</label>
+                    </div>
+                    <div class="col-6 mb-2">
+                        <label>@Html.RadioButtonFor(x=>x.RequestSummon,NomenclatureConstants.UserAccessModes.RemoveSummon) Откажи електронно призоваване</label>
+                    </div>
+                </div>
+
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="userAccessCallback">Потвърди</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

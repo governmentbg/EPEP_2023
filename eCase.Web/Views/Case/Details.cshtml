@@ -1,0 +1,904 @@
+﻿@model eCase.Web.Models.Case.CaseDetailsVM
+@using PagedList
+@using PagedList.Mvc;
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.Case.ActionNames.Search, MVC.Case.Name), "Съдебни дела")
+}, "Данни за дело")
+
+<!-- DESCRIPTION -->
+<h2 class="text-align-center">Данни за делото</h2>
+<div class="inner-page-table">
+    <div class="tr">
+        <div class="lbl">Съд:</div>
+        <div class="vl">@Model.Case.Court.Name</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Case.DepartmentName))
+    {
+        <div class="tr">
+            <div class="lbl">Отделение на съда:</div>
+            <div class="vl">@Model.Case.DepartmentName</div>
+        </div>
+    }
+    <div class="tr">
+        <div class="lbl">Вид на делото:</div>
+        <div class="vl">@Model.Case.CaseKind.Name</div>
+    </div>
+    @if (Model.Case.IncomingDocument != null)
+    {
+        <div class="tr">
+            <div class="lbl">Входящ номер на делото:</div>
+            <div class="vl">@Model.Case.IncomingDocument.IncomingNumber</div>
+        </div>
+    }
+    <div class="tr">
+        <div class="lbl">Номер на делото:</div>
+        <div class="vl">@Model.Case.Number</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Година:</div>
+        <div class="vl">@Model.Case.CaseYear</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Дата на образуване:</div>
+        <div class="vl">@Html.DisplayFor(m => m.Case.FormationDate)</div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Case.LegalSubject))
+    {
+        <div class="tr">
+            <div class="lbl">Предмет на делото:</div>
+            <div class="vl">@Model.Case.LegalSubject</div>
+        </div>
+    }
+    @if (Model.Case.CaseCode != null && !string.IsNullOrWhiteSpace(Model.Case.CaseCode.Code))
+    {
+        <div class="tr">
+            <div class="lbl">Код на делото:</div>
+            <div class="vl">@Model.Case.CaseCode.Name</div>
+        </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Case.Status))
+    {
+        <div class="tr">
+            <div class="lbl">Статус:</div>
+            <div class="vl">@Model.Case.Status</div>
+        </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Case.PanelName))
+    {
+        <div class="tr">
+            <div class="lbl">Съдебен състав:</div>
+            <div class="vl">@Model.Case.PanelName</div>
+        </div>
+    }
+
+    @if (Model.Case.Reporters != null && Model.Case.Reporters.Any())
+    {
+        if (!string.IsNullOrWhiteSpace(Model.Case.Reporters.OrderByDescending(e => e.DateAssigned).FirstOrDefault().JudgeName))
+        {
+            <div class="tr">
+                <div class="lbl">Съдия-докладчик:</div>
+                <div class="vl text-upper">
+                    @Model.Case.Reporters.OrderByDescending(e => e.DateAssigned).FirstOrDefault().JudgeName
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@if (Model.Summons != null && Model.Summons.Any())
+{
+    <!--Summons -->
+    <h2 class="text-align-center" style="@(Model.SummonsCount > 0 ? "font-weight: bold;" : "")">Съобщения дело @(Model.SummonsCount > 0 ? String.Format("({0})", Model.SummonsCount) : "")</h2>
+    @Html.DisplayFor(m => m.Summons, MVC.Shared.Views.DisplayTemplates.SummonCollection)
+
+    if (Model.Summons != null && Model.Summons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Summons.PageNumber/@Model.Summons.PageCount):</span>
+            @Html.PagedListPager(Model.Summons,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                     MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = page,
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+@if (Model.ActSummons != null && Model.ActSummons.Any())
+{
+    <!--ActSummons -->
+    <h2 class="text-align-center" style="@(Model.ActSummonsCount > 0 ? "font-weight: bold;" : "")">Съобщения актове @(Model.ActSummonsCount > 0 ? String.Format("({0})", Model.ActSummonsCount) : "")</h2>
+    @Html.DisplayFor(m => m.ActSummons, MVC.Shared.Views.DisplayTemplates.SummonCollection)
+
+    if (Model.ActSummons != null && Model.ActSummons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.ActSummons.PageNumber/@Model.ActSummons.PageCount):</span>
+            @Html.PagedListPager(Model.ActSummons,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                     MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = page,
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+@if (Model.AppealSummons != null && Model.AppealSummons.Any())
+{
+    <!--AppealSummons -->
+    <h2 class="text-align-center" style="@(Model.AppealSummonsCount > 0 ? "font-weight: bold;" : "")">Съобщения обжалвания @(Model.AppealSummonsCount > 0 ? String.Format("({0})", Model.AppealSummonsCount) : "")</h2>
+    @Html.DisplayFor(m => m.AppealSummons, MVC.Shared.Views.DisplayTemplates.SummonCollection)
+
+    if (Model.AppealSummons != null && Model.AppealSummons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.AppealSummons.PageNumber/@Model.AppealSummons.PageCount):</span>
+            @Html.PagedListPager(Model.AppealSummons,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                     MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = page,
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+@if (Model.HearingSummons != null && Model.HearingSummons.Any())
+{
+    <!--HearingSummons -->
+    <h2 class="text-align-center" style="@(Model.HearingSummonsCount > 0 ? "font-weight: bold;" : "")">Призовки @(Model.HearingSummonsCount > 0 ? String.Format("({0})", Model.HearingSummonsCount) : "")</h2>
+    @Html.DisplayFor(m => m.HearingSummons, MVC.Shared.Views.DisplayTemplates.SummonCollection)
+
+    if (Model.HearingSummons != null && Model.HearingSummons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.HearingSummons.PageNumber/@Model.HearingSummons.PageCount):</span>
+            @Html.PagedListPager(Model.HearingSummons,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                     MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = page,
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+<!--Hearings -->
+@if (Model.Hearings != null && Model.Hearings.Any())
+{
+    <h2 class="text-align-center">Заседания</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Дата на провеждане</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Секретар</div>
+            <div class="results-cell">Прокурор</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var hearing in Model.Hearings)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата на издаване:</span>
+                    <span class="label">@Html.DisplayFor(m => hearing.Date)</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">@hearing.HearingType</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Секретар:</span>
+                    <span class="label text-upper">@hearing.SecretaryName</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Прокурор:</span>
+                    <span class="label text-upper">@hearing.ProsecutorName</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Hearing.ActionNames.Details, MVC.Hearing.Name, new { gid = hearing.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+    if (Model.Hearings != null && Model.Hearings.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Hearings.PageNumber/@Model.Hearings.PageCount):</span>
+            @Html.PagedListPager(Model.Hearings,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = page,
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+}
+
+
+
+<!--Acts -->
+@if (Model.Acts != null && Model.Acts.Any())
+{
+    <h2 class="text-align-center">Актове</h2>
+    <div class="results-table">
+
+        <div class="results-thead">
+            <div class="results-cell">Дата на издаване</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Номер</div>
+            <div class="results-cell">Съдия-докладчик</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var act in Model.Acts)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата на издаване:</span>
+                    <span class="label">@Html.DisplayFor(m => act.DateSigned)</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">@act.ActKind.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Номер:</span>
+                    <span class="label">@act.Number</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съдия-докладчик:</span>
+                    <span class="label text-upper">
+                        @if (act.ActPreparators.Where(ap => ap.Role.ToLower() == "докладчик" || ap.Role.ToLower() == "съдия докладчик").Any())
+                        {
+                            @act.ActPreparators.Where(ap => ap.Role.ToLower() == "докладчик" || ap.Role.ToLower() == "съдия докладчик").FirstOrDefault().JudgeName;
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Act.ActionNames.Details, MVC.Act.Name, new { gid = act.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (Model.Acts != null && Model.Acts.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Acts.PageNumber/@Model.Acts.PageCount):</span>
+            @Html.PagedListPager(Model.Acts,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = page,
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+
+}
+
+<!--Appeals -->
+@if (Model.Appeals != null && Model.Appeals.Any())
+{
+    <h2 class="text-align-center">Жалби</h2>
+    <div class="results-table">
+
+        <div class="results-thead">
+            <div class="results-cell">Дата на входиране</div>
+            <div class="results-cell">Подател</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Номер на акт</div>
+            <div class="results-cell">Дата на акт</div>
+        </div>
+        @foreach (var appeal in Model.Appeals)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата на издаване:</span>
+                    <span class="label">@Html.DisplayFor(m => appeal.DateFiled)</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Подател:</span>
+                    <span class="label">@appeal.Side.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">@appeal.AppealKind.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Акт номер:</span>
+                    <span class="label">@appeal.Act.Number</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Акт дата:</span>
+                    <span class="label">@Html.DisplayFor(m => appeal.Act.DateSigned)</span>
+                </div>
+
+            </div>
+        }
+    </div>
+
+    if (Model.Appeals != null && Model.Appeals.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Appeals.PageNumber/@Model.Appeals.PageCount):</span>
+            @Html.PagedListPager(Model.Appeals,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = page,
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+
+}
+
+<!--ConnectedCases -->
+@if (Model.ConnectedCases != null && Model.ConnectedCases.Any())
+{
+    <h2 class="text-align-center">Свързани дела</h2>
+    <div class="results-table">
+
+        <div class="results-thead">
+            <div class="results-cell">Дата</div>
+            <div class="results-cell">Дело №/Година</div>
+            <div class="results-cell">Вид дело</div>
+            <div class="results-cell">Съд</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var connectedCase in Model.ConnectedCases)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата:</span>
+                    <span class="label">@Html.DisplayFor(m => connectedCase.FormationDate)</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Дело №/Година:</span>
+                    <span class="label">@connectedCase.Number @connectedCase.CaseYear</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид дело:</span>
+                    <span class="label">@connectedCase.CaseKind.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съд:</span>
+                    <span class="label">@connectedCase.Court.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Case.ActionNames.Details, MVC.Case.Name, new { gid = connectedCase.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (Model.ConnectedCases != null && Model.ConnectedCases.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.ConnectedCases.PageNumber/@Model.ConnectedCases.PageCount):</span>
+            @Html.PagedListPager(Model.ConnectedCases,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    ccPage = page,
+                    asPage = Request.QueryString["asPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+
+}
+
+@if (Model.HasPermissions)
+{
+    <!--Sides -->
+    if (Model.Case.Sides != null && Model.Case.Sides.Any())
+    {
+        <h2 class="text-align-center">Страни по делото</h2>
+        <div class="results-table">
+            <div class="results-thead">
+                <div class="results-cell">Име</div>
+                <div class="results-cell">Качество</div>
+                <div class="results-cell">Адвокати</div>
+                <div class="results-cell">Процесуално качество</div>
+            </div>
+            @foreach (var side in Model.Case.Sides)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Име:</span>
+                        <span class="label">@side.Name</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Качество:</span>
+                        <span class="label">@side.SideInvolvementKind.Name</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Адвокати:</span>
+                        <span class="label">
+                            @if (side.LawyerAssignments != null)
+                            {
+                                foreach (var assignment in side.LawyerAssignments)
+                                {
+                                    if (assignment.Lawyer != null)
+                                    {
+                                        <span data-toggle="tooltip" title="@assignment.Lawyer.LawyerDataTable">@assignment.Lawyer.Name</span> <br />
+                                    }
+                                }
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Процесуално качество:</span>
+                        <span class="label">@side.ProceduralRelation</span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    if (Model.Assignments != null && Model.Assignments.Any())
+    {
+        <!--Assignments -->
+        <h2 class="text-align-center">Протокол за разпределение по делото</h2>
+        <div class="results-table">
+
+            <div class="results-thead">
+                <div class="results-cell">Дата</div>
+                <div class="results-cell">Начин на разпределение</div>
+                <div class="results-cell">Съдия докладчик</div>
+                <div class="results-cell">Извършител на разпределението</div>
+                <div class="results-cell"></div>
+            </div>
+            @foreach (var assignment in Model.Assignments)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дата:</span>
+                        <span class="label">@Html.DisplayFor(m => assignment.Date)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Начин на разпределение:</span>
+                        <span class="label">@assignment.Type</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Съдия докладчик:</span>
+                        <span class="label">@assignment.JudgeName</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Извършител на разпределението:</span>
+                        <span class="label">@assignment.Assignor</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"></span>
+                        <span class="label">
+                            @if (assignment.BlobKey != null)
+                            {
+                                @Html.ActionLink("Изтегли", MVC.Case.ActionNames.GetAssignmentFile, MVC.Case.Name, new { assignmentGid = assignment.Gid }, new { target = "_blank", @class = "btn orange-btn" })
+                            }
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        if (Model.Assignments != null && Model.Assignments.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.Assignments.PageNumber/@Model.Assignments.PageCount):</span>
+                @Html.PagedListPager(Model.Assignments,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = page,
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = Request.QueryString["sdPage"]
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+            </div>
+        }
+    }
+
+    <!--Case rulings -->
+    if (Model.CaseRulings != null && Model.CaseRulings.Any())
+    {
+        <h2 class="text-align-center">Произнасяния на състава с отражение по хода на делото</h2>
+        <div class="results-table">
+
+            <div class="results-thead">
+                <div class="results-cell">Вид</div>
+                <div class="results-cell">Дата</div>
+            </div>
+            @foreach (var ruling in Model.CaseRulings)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Вид:</span>
+                        <span class="label">@Html.Raw(ruling.CaseRulingKind.Name)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дата:</span>
+                        <span class="label">@Html.DisplayFor(m => ruling.CreateDate)</span>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+
+    <!--Incoming documents -->
+    if (Model.IncomingDocuments != null && Model.IncomingDocuments.Any())
+    {
+        <h2 class="text-align-center">Входящи документи</h2>
+        <div class="results-table">
+
+            <div class="results-thead">
+                <div class="results-cell">Адресат</div>
+                <div class="results-cell">Дата</div>
+                <div class="results-cell">Номер</div>
+                <div class="results-cell">Тип</div>
+                <div class="results-cell"> </div>
+            </div>
+            @foreach (var doc in Model.IncomingDocuments)
+            {
+                string fileUrl = null;
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Адресат:</span>
+                        <span class="label">@(doc.Subject != null ? doc.Subject.Name : string.Empty)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дата:</span>
+                        <span class="label">@Html.DisplayFor(m => doc.IncomingDate)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Номер:</span>
+                        <span class="label">@doc.IncomingNumber</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Тип:</span>
+                        <span class="label">@(doc.IncomingDocumentType != null ? doc.IncomingDocumentType.Name : string.Empty)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"> </span>
+                        <span class="label">                            
+                            @if (doc.BlobKey != null)
+                            {
+                                fileUrl = Url.Action(MVC.Case.ActionNames.GetIncomingDocumentFile, MVC.Case.Name, new { incomingDocumentGid = doc.Gid });
+                                @*@Html.ActionLink("Изтегли", MVC.Case.ActionNames.GetIncomingDocumentFile, MVC.Case.Name, new { incomingDocumentGid = doc.Gid }, new { target = "_blank", @class = "btn orange-btn" })*@
+                            }
+                            @Html.DisplayFor(x => x.AttachedDocument, "AttachedDocumentLink", new { masterUrl = fileUrl, type = eCase.Data.Repositories.AttachedTypes.IncommingDocument, parentId = doc.IncomingDocumentId })
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+        if (Model.IncomingDocuments != null && Model.IncomingDocuments.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.IncomingDocuments.PageNumber/@Model.IncomingDocuments.PageCount):</span>
+                @Html.PagedListPager(Model.IncomingDocuments,
+                page => Url.Action(MVC.Case.ActionNames.Details,
+                        MVC.Case.Name
+                    , new
+                    {
+                        gid = Request.QueryString["gid"],
+                        sumPage = Request.QueryString["sumPage"],
+                        actSumPage = Request.QueryString["actSumPage"],
+                        appSumPage = Request.QueryString["appSumPage"],
+                        hearSumPage = Request.QueryString["hearSumPage"],
+                        hPage = Request.QueryString["hPage"],
+                        aPage = Request.QueryString["aPage"],
+                        asPage = Request.QueryString["asPage"],
+                        ccPage = Request.QueryString["ccPage"],
+                        idPage = page,
+                        odPage = Request.QueryString["odPage"],
+                        sdPage = Request.QueryString["sdPage"]
+                    })
+                    , new PagedListRenderOptions
+                    {
+                        Display = PagedListDisplayMode.IfNeeded,
+                        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                        LinkToNextPageFormat = ">",
+                        LinkToPreviousPageFormat = "<"
+                    })
+            </div>
+        }
+    }
+
+    <!--Outgoing documents -->
+    if (Model.OutgoingDocuments != null && Model.OutgoingDocuments.Any())
+    {
+        <h2 class="text-align-center">Изходящи документи</h2>
+        <div class="results-table">
+
+            <div class="results-thead">
+                <div class="results-cell">Адресат</div>
+                <div class="results-cell">Дата</div>
+                <div class="results-cell">Номер</div>
+                <div class="results-cell">Тип</div>
+                <div class="results-cell"> </div>
+            </div>
+            @foreach (var doc in Model.OutgoingDocuments)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Адресат:</span>
+                        <span class="label">@(doc.Subject != null ? doc.Subject.Name : string.Empty)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дата:</span>
+                        <span class="label">@Html.DisplayFor(m => doc.OutgoingDate)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Номер:</span>
+                        <span class="label">@doc.OutgoingNumber</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Тип:</span>
+                        <span class="label">@(doc.OutgoingDocumentType != null ? doc.OutgoingDocumentType.Name : string.Empty)</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"> </span>
+                        <span class="label">
+                            @if (doc.BlobKey != null)
+                            {
+                                @Html.ActionLink("Изтегли", MVC.Case.ActionNames.GetOutgoingDocumentFile, MVC.Case.Name, new { outgoingDocumentGid = doc.Gid }, new { target = "_blank", @class = "btn orange-btn" })
+                            }
+                            @Html.DisplayFor(x => x.AttachedDocument, "AttachedDocumentLink", new { type = eCase.Data.Repositories.AttachedTypes.OutgoingDocument, parentId = doc.OutgoingDocumentId })
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+        if (Model.OutgoingDocuments != null && Model.OutgoingDocuments.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.OutgoingDocuments.PageNumber/@Model.OutgoingDocuments.PageCount):</span>
+                @Html.PagedListPager(Model.OutgoingDocuments,
+                page => Url.Action(MVC.Case.ActionNames.Details,
+                        MVC.Case.Name
+                    , new
+                    {
+                        gid = Request.QueryString["gid"],
+                        sumPage = Request.QueryString["sumPage"],
+                        actSumPage = Request.QueryString["actSumPage"],
+                        appSumPage = Request.QueryString["appSumPage"],
+                        hearSumPage = Request.QueryString["hearSumPage"],
+                        hPage = Request.QueryString["hPage"],
+                        aPage = Request.QueryString["aPage"],
+                        asPage = Request.QueryString["asPage"],
+                        ccPage = Request.QueryString["ccPage"],
+                        idPage = Request.QueryString["idPage"],
+                        odPage = page,
+                        sdPage = Request.QueryString["sdPage"]
+                    })
+                    , new PagedListRenderOptions
+                    {
+                        Display = PagedListDisplayMode.IfNeeded,
+                        DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                        LinkToNextPageFormat = ">",
+                        LinkToPreviousPageFormat = "<"
+                    })
+            </div>
+        }
+    }
+
+    if (Model.ScannedFiles != null && Model.ScannedFiles.Any())
+    {
+        <!--ScannedFiles -->
+        <h2 class="text-align-center">Сканирани документи</h2>
+        <div class="results-table">
+
+            <div class="results-thead">
+                <div class="results-cell">Описание</div>
+                <div class="results-cell"> </div>
+            </div>
+            @foreach (var scannedFile in Model.ScannedFiles)
+            {
+                <div class="results-row">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Описание:</span>
+                        <span class="label">@scannedFile.Description</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"> </span>
+                        <span class="label">
+                            @Html.ActionLink("Изтегли", MVC.Case.ActionNames.GetScannedFile, MVC.Case.Name, new { scannedFileGid = scannedFile.Gid }, new { target = "_blank", @class = "btn orange-btn" })
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        if (Model.ScannedFiles != null && Model.ScannedFiles.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.ScannedFiles.PageNumber/@Model.ScannedFiles.PageCount):</span>
+                @Html.PagedListPager(Model.ScannedFiles,
+            page => Url.Action(MVC.Case.ActionNames.Details,
+                    MVC.Case.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sumPage = Request.QueryString["sumPage"],
+                    actSumPage = Request.QueryString["actSumPage"],
+                    appSumPage = Request.QueryString["appSumPage"],
+                    hearSumPage = Request.QueryString["hearSumPage"],
+                    hPage = Request.QueryString["hPage"],
+                    aPage = Request.QueryString["aPage"],
+                    asPage = Request.QueryString["asPage"],
+                    ccPage = Request.QueryString["ccPage"],
+                    sdPage = page
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+            </div>
+        }
+    }
+
+}

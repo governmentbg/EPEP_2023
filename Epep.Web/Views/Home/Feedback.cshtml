@@ -1,0 +1,44 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model FeedbackVM
+@{
+    ViewData["Title"] = "Обратна връзка";
+}
+
+<main class="page-content">
+    <div class="container">
+        <h1 class="page-title">@ViewData["Title"]</h1>
+        <h2 class="section-title section-title--xxs">Моля да имате предвид, че през портала са достъпни само дела и документи, изпратени и заредени в базата данни от съдилищата. Ако има пропуски или неточности, моля да потърсите съдействие от съответния съд, компетентен по Вашето дело. Към нас може да се обръщате по повод технически проблеми, свързани с бързодействието, работоспособността, удобството и начина на използване на системата.</h2>
+        <br />
+        <form action="@Url.Action("Feedback")" method="post">
+            <div class="row">
+                <div class="col-lg-4">
+                    @Html.EditorFor(x=>x.Type,"GenericDropDownInt")
+                </div>
+                <div class="col-lg-4">
+                    @Html.EditorFor(x=>x.Email)
+                </div>
+                <div class="col-lg-4">
+                    @Html.EditorFor(x=>x.Name)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    @Html.EditorFor(x=>x.Message)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-8">
+                    @Html.HiddenFor(x => x.reCaptchaToken)
+                    <div id="rc-inline"></div>
+                </div>
+                <div class="col-lg-4">
+                    <input type="button" onclick="checkBeforeSubmit(this);" class="btn u-btn-gradient float-end" value="Изпрати" />
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+<partial name="_CaptchaScript" />
+

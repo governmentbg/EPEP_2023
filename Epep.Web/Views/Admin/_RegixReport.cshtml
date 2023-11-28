@@ -1,0 +1,87 @@
+﻿@using Epep.Core.ViewModels.Regix;
+@model EntityInfoVM
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial;
+            font-size: 14pt;
+        }
+
+        .legend {
+            margin-top: 6pt;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 24pt;
+            font-style: italic;
+            margin-top: 130pt;
+            margin-bottom: 100pt;
+        }
+
+        .content {
+            text-indent: 50pt;
+        }
+
+        .footer {
+            font-size: 10pt;
+            text-align: center;
+            position: absolute;
+            width: 100%;
+            bottom: 5pt;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="title">ОТЧЕТ ЗА ПРОВЕРКА ПО ИДЕНТИФИКАТОР</div>
+
+    @if (!string.IsNullOrEmpty(Model.Label))
+    {
+        <div class="legend">Идентификатор: <b>@Model.Uic</b></div>
+        <div class="legend">Наименование: <b>@Model.Label</b></div>
+        <div class="legend">Правна форма: <b>@Model.LegalForm</b></div>
+        @if (!string.IsNullOrEmpty(Model.LegalOrgan))
+        {
+            <div class="legend">Орган, упражняващ правата на държавата: <b>@Model.LegalOrgan</b></div>
+        }
+        <div class="legend">Седалище и адрес на управление: <b>@Model.HeadquatersAddress</b></div>
+        @if (!string.IsNullOrEmpty(Model.LegalOrganManagers))
+        {
+            <div class="legend">Членове на органите на управление и контрол: <b>@Model.LegalOrganManagers</b></div>
+        }
+        @if (!string.IsNullOrEmpty(Model.Managers))
+        {
+            <div class="legend">Управители: <b>@Model.Managers</b></div>
+        }
+        @if (!string.IsNullOrEmpty(Model.CoOwners))
+        {
+            <div class="legend">Съдружници: <b>@Model.CoOwners</b></div>
+        }
+        @if (!string.IsNullOrEmpty(Model.Representatives))
+        {
+            <div class="legend">Представляващи: <b>@Model.Representatives</b></div>
+        }
+        @if (!string.IsNullOrEmpty(Model.RepresentType))
+        {
+            <div class="legend">Начин на представляване: <b>@Model.RepresentType</b></div>
+        }
+    }
+    else
+    {
+        <div class="content">
+            Подадения идентификатор @Model.Uic не е намерен в публичните регистри.
+        </div>
+    }
+
+    <div class="footer">
+        Този документ е генериран на @DateTime.Now.ToString("dd.MM.yyyyг. HH:mm") на базата на извършена проверка в Regix</a>.
+    </div>
+</body>
+
+</html>

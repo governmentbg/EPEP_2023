@@ -1,0 +1,31 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserRegistrationVM
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">Редакция на данни</div>
+                        <div class="list__output">@Model.FullName</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("ProfileData")">
+            <form class="form-content">
+                @Html.EditorFor(x=>x.FullName)
+                @Html.EditorFor(x=>x.Email)
+                @Html.EditorFor(x=>x.NotificationEmail)
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="editProfileCallback">Запис</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+    </div>
+</div>

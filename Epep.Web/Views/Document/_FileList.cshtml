@@ -1,0 +1,11 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model List<FileListVM>
+<ul class="u-list-file">
+    @if (Model != null)
+    {
+        foreach (var file in Model)
+        {
+            <li> <a href="@Url.Action("Download","File",new{fileKey = file.BlobKey})" title="Изтегли файла">@file.FileName</a> <button class="btn u-btn-delete" onclick="removeFile('@file.Gid');return false;" aria-label="изтрий файл"></button></li>
+        }
+    }
+</ul>

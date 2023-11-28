@@ -1,0 +1,40 @@
+.event-card {
+    display: block;
+
+    border-radius: 4px;
+    background-color: $primary-dark-10;
+    background-repeat: no-repeat;
+
+    .list__label {
+        &--bold {
+            font-weight: 800;
+        }
+
+        &--grey {
+            font-weight: 400;
+            color: $primary-dark-50;
+            margin-top: $main-gutter/4;
+        }
+    }
+
+    .list__output {
+        margin-top: $main-gutter/4;
+    }
+
+    &--calendar {
+        background-image: url(../images/calendar/calendar-item-bkg.svg);
+        background-position: right 10px bottom;
+    }
+
+    &--leave {
+        background-color: $secondary-dark-10;
+        background-image: url(../images/calendar/leave-item-bkg.svg);
+        background-position: right 10px bottom;
+    }
+
+    &--queries {
+        background-color: $secondary-dark-10;
+        background-image: url(../images/general/queries-panel.svg);
+        background-position: right 10px bottom;
+    }
+}

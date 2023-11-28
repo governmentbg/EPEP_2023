@@ -1,0 +1,276 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model ElectronicDocumentVM
+<main class="page-content">
+    <div class="container">
+
+        <div class="row mt-3 mb-4 g-2">
+            @*<div class="col-md-auto">
+            <button class="btn u-btn u-btn--grey cta-close my-auto w-100 h-100">Изчисти и затвори</button>
+            </div>*@
+            <div class="col-md-auto">
+                <div class="msg-note">
+                    <p class="msg-note__label">Дължима такса</p>
+                    <p class="msg-note__output"><span id="docPrice">-.--</span>лв.</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="step-counter step-counter--1">
+                    <div class="step-counter__title">Данни за документ</div>
+                    <div class="step-counter__counter">част <span class="step-number">1</span> от <span>3</span></div>
+                </div>
+            </div>
+        </div>
+        <div id="divStep1">
+            <partial name="_EditStep1" />
+        </div>
+        <div id="divStep2">
+            <partial name="_EditStep2" />
+        </div>
+        <div class="row">
+            <div class="col-md-auto ms-auto row g-2">
+                <div class="col-md-auto"><button class="btn u-btn--grey cta-back h-100 w-100">Предна стъпка</button></div>
+                <div class="col-md-auto"><button class="btn u-btn--grey cta-pause h-100 w-100">Продължи по-късно</button></div>
+                <div class="col-md-auto"><button class="btn u-btn-gradient cta-next h-100 w-100">Следваща стъпка</button></div>
+            </div>
+        </div>
+
+    </div>
+</main>
+
+@section Scripts{
+    <script src="~/js/prod/jquery.form.min.js"></script>
+    <script>
+        let stepNumber = @Model.StepNo;
+        $(function () {
+            $('input#uploadFile').change(function () {
+
+                fileUploadHandler(null, 0);
+            });
+
+            refreshFileList();
+            refreshSideList();
+            attachHandlers();
+            showStep(stepNumber);
+        });
+        function fileUploadHandler(file, i) {
+            var url = "@Url.Action("FileUpload",new{gid=Model.Gid})";
+            var xhr = new XMLHttpRequest();
+
+            var formData = new FormData();
+            if (!file || file == null) {
+                formData = new FormData(document.getElementById('frmUpload'));
+            } else {
+                formData.append("uploadFile", file);
+            }
+            initializeProgress(1);
+            xhr.open("POST", url, true);
+
+            xhr.upload.addEventListener("progress", function (e) {
+                updateProgress(i, (e.loaded * 100.0) / e.total || 100);
+            });
+
+            xhr.addEventListener("readystatechange", function (e) {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    displayXhrSaveResult(xhr, function () {
+                        refreshFileList();
+                    });
+                    updateProgress(i, 0);
+                } else if (xhr.readyState == 4 && xhr.status != 200) {
+                    messageHelper.ShowErrorMessage('Проблем при прикачване на документ');
+                    // Error. Inform the user
+
+                    //updateProgress(i, 100); // MUST BE DELETED ONLY FOR TEST
+                }
+            });
+
+            xhr.send(formData);
+        }
+        function showStep(stepNo) {
+            $('.step-counter')
+                .removeClass('step-counter--1')
+                .removeClass('step-counter--2')
+                .addClass(`step-counter--${stepNo}`)
+                .find('span.step-number').text(stepNo);
+
+            switch (stepNo) {
+                case 1:
+                    $('#divStep1').show();
+                    $('#divStep2').hide();
+                    $('button.cta-back').hide();
+                    $('button.cta-next').show();
+                    break;
+                case 2:
+                    $('#divStep1').hide();
+                    $('#divStep2').show();
+                    $('button.cta-back').show();
+                    $('button.cta-next').show();
+                    break;
+            }
+        }
+        function refreshFileList() {
+            requestContent('@Url.Action("GetFileList",new{gid=Model.Gid})', {}, function (fileList) {
+                $('#divFileList').html(fileList);
+            });
+        }
+
+        function addSide() {
+            requestContent('@Url.Action("SideAdd",new{gid=Model.Gid})', {}, function (html) {
+                $('#divSideEdit').html(html);
+                initControls();
+            });
+        }
+        function editSide(sideGid) {
+            requestContent(`@Url.Action("SideEdit")/${sideGid}`, {}, function (html) {
+                $('#divSideEdit').html(html);
+                initControls();
+            });
+        }
+        function refreshSideList() {
+            requestContent('@Url.Action("GetSideList",new{gid=Model.Gid})', {}, function (sideList) {
+                $('#divSideList').html(sideList);
+            });
+        }
+        function sideSubmit(sender) {
+            let _form = $(sender).parents('form:first')[0];
+            $(_form).ajaxForm({
+                error: function (a, b, c) {
+                    console.log(`a=${a};b=${b};c=${c}`);
+                },
+                complete: function (xhr) {
+                    displayXhrSaveResult(xhr, function () {
+                        refreshSideList();
+                        $('#divSideEdit').html('');
+                    });
+                }
+            });
+            $(_form).trigger('submit');
+        }
+        function removeSide(sideGid) {
+            postJson('@Url.Action("RemoveSide")', { gid: sideGid }, function (res) {
+                displaySaveResult(res, function () {
+                    refreshSideList();
+                });
+            });
+        }
+        function removeFile(fileGid) {
+            postJson('@Url.Action("RemoveFile")', { gid: fileGid }, function (res) {
+                displaySaveResult(res, function () {
+                    refreshFileList();
+                });
+            });
+        }
+        function attachHandlers() {
+            $(document).on('change', '#SubjectTypeId', function () {
+                if ($(this).val() == '@NomenclatureConstants.SubjectTypes.Person') {
+                    $(this).parents('form:first').find('.person').show();
+                    $(this).parents('form:first').find('.entity').hide();
+                } else {
+                    $(this).parents('form:first').find('.person').hide();
+                    $(this).parents('form:first').find('.entity').show();
+                }
+            });
+
+        @if (Model.DocumentKind == NomenclatureConstants.DocumentKinds.Initial)
+        {
+            <text>
+                    $('#CourtId').change(function () {
+                        requestCombo('@Url.Action("GetDocumentListByCourt")', { documentKind: @(Model.DocumentKind), courtId: $(this).val() }, '#ElectronicDocumentTypeId', '@Model.ElectronicDocumentTypeId', function () {
+                            $('#ElectronicDocumentTypeId').trigger('change');
+                        });
+                    });
+            </text>
+        }
+
+                $('#ElectronicDocumentTypeId').change(function () {
+                    requestCombo('@Url.Action("GetPricelistsByDocument")', { documentTypeId: $(this).val() }, '#MoneyPricelistId', '@Model.MoneyPricelistId', function () {
+                        $('#MoneyPricelistId').trigger('change');
+                    });
+                }).trigger('change');
+
+            $('#MoneyPricelistId').change(function () {
+                requestContent('@Url.Action("GetPrice")', { pricelistId: $(this).val(), baseAmount: $('#BaseAmount').val() }, function (priceRes) {
+                    if (priceRes > 0) {
+                        $('#docPrice').text(priceRes.toFixed(2));
+                    } else {
+                        $('#docPrice').text('-.--');
+                    }
+                });
+            });
+
+            $('button.btn.cta-back').click(function () {
+                stepNumber--;
+                showStep(stepNumber);
+            });
+
+            $('button.btn.cta-next').click(function () {
+                stepNumber++;
+                if (stepNumber == 3) {
+                    $('#SaveMode').val('preview').parents('form:first').trigger('submit');
+                } else {
+                    showStep(stepNumber);
+                }
+            });
+
+            $('button.btn.cta-pause').click(function () {
+                $('#SaveMode').val('close').parents('form:first').trigger('submit');
+            });
+        }
+
+        const dropZone = document.getElementById("drop_zone");
+        //const dropInput = document.getElementById("uploadFile");
+
+        let progressBar = document.getElementById("progress-bar");
+        let uploadProgress = [];
+
+        dropZone.addEventListener("drop", dropHandler);
+        //dropInput.addEventListener("change", fileUploadHandler);
+
+        //Resets and Hihlights
+        ["dragenter", "dragover", "dragleave", "drop"].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        [("dragenter", "dragover")].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+
+        ["dragleave", "drop"].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+
+        function initializeProgress(numFiles) {
+            progressBar.value = 0;
+            uploadProgress = [];
+
+            for (let i = numFiles; i > 0; i--) {
+                uploadProgress.push(0);
+            }
+        }
+
+        function updateProgress(fileNumber, percent) {
+            uploadProgress[fileNumber] = percent;
+            let total = uploadProgress.reduce((tot, curr) => tot + curr, 0) / uploadProgress.length;
+            progressBar.value = total;
+        }
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        function highlight() {
+            dropZone.classList.add("drag-and-drop--highlight");
+        }
+        function unhighlight() {
+            dropZone.classList.contains("drag-and-drop--highlight") ? dropZone.classList.remove("drag-and-drop--highlight") : "";
+        }
+        function dropHandler(e) {
+            let dt = e.dataTransfer;
+            let files = dt.files;
+            //initializeProgress(files.length);
+            if (files) {
+                [...files].forEach(fileUploadHandler);
+            }
+        }
+    </script>
+}

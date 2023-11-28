@@ -1,0 +1,136 @@
+//Media Queries
+/*
+ sm     =   small   =   phone-small     = 576px     = 36em;
+ md     =   medium  =   phone-large     = 768px     = 48em;
+ lg     =   large   =   phone-tablet    = 992px     = 62em;
+ xl     =   xlarge  =   desktop         = 1200px    = 75em;
+ xxl    =   xxl     =   big desktop     = 1400px    = 87.5em;
+
+ 1em = 16px;
+*/
+
+/*
+When using MAX and Desktop first approach the biggest screen size
+shall be on top for right cascading of styles(smallest shall be last)
+*/
+
+/*
+When using MIN and Mobile first approach the smalles screen size
+shall be on top for right cascading of styles(bigest shall be last)
+*/
+
+//respond up to max
+@mixin respond-max($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: 35.9em) {
+      @content;
+    }
+  } //576px
+  @if $breakpoint == md {
+    @media (max-width: 47.9em) {
+      @content;
+    }
+  } //768px
+  @if $breakpoint == lg {
+    @media (max-width: 61.9em) {
+      @content;
+    }
+  } //992px
+  @if $breakpoint == xl {
+    @media (max-width: 74.9em) {
+      @content;
+    }
+  } //1200px
+  @if $breakpoint == xxl {
+    @media (max-width: 87.4em) {
+      @content;
+    }
+  } //1400px
+}
+
+//min response from
+@mixin respond-min($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: 36em) {
+      @content;
+    }
+  } //576px
+  @if $breakpoint == md {
+    @media (min-width: 48em) {
+      @content;
+    }
+  } //768px
+  @if $breakpoint == lg {
+    @media (min-width: 62em) {
+      @content;
+    }
+  } //992px
+  @if $breakpoint == xl {
+    @media (min-width: 75em) {
+      @content;
+    }
+  } //1200px
+  @if $breakpoint == xxl {
+    @media (min-width: 87.5em) {
+      @content;
+    }
+  } //1400px
+}
+
+//Desktop Firs Design model
+@mixin respond-df($breakpoint) {
+  @if $breakpoint == sm {
+    @media (max-width: 35.9em) {
+      @content;
+    }
+  } //576px
+  @if $breakpoint == md {
+    @media (max-width: 47.9em) {
+      @content;
+    }
+  } //768px
+  @if $breakpoint == lg {
+    @media (max-width: 61.9em) {
+      @content;
+    }
+  } //992px
+  @if $breakpoint == xl {
+    @media (min-width: 75em) {
+      @content;
+    }
+  } //1200px
+  @if $breakpoint == xxl {
+    @media (min-width: 87.5em) {
+      @content;
+    }
+  } //1400px
+}
+
+@mixin respond-mf($breakpoint) {
+  @if $breakpoint == sm {
+    @media (min-width: 36em) {
+      @content;
+    }
+  } //576px
+  @if $breakpoint == md {
+    @media (min-width: 48em) {
+      @content;
+    }
+  } //768px
+  @if $breakpoint == lg {
+    @media (min-width: 62em) {
+      @content;
+    }
+  } //992px
+  @if $breakpoint == xl {
+    @media (min-width: 75em) {
+      @content;
+    }
+  } //1200px
+  /*----------------------------------------------------------------------*/
+  @if $breakpoint == xxl {
+    @media (min-width: 87.5em) {
+      @content;
+    }
+  } //1400px ??
+}

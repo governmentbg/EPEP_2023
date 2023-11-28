@@ -1,0 +1,58 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.User;
+@model UserComfirmVM
+
+<div class="details__header details__header--red offcanvas-header">
+    <button type="button" class="btn u-btn-back" data-bs-dismiss="offcanvas" aria-label="Затвори и се върни обратно"></button>
+    <div class="container">
+        <div class="case__assets">
+            <div class="row">
+                <div class="col-md">
+                    <div class="list__cell">
+                        <div class="list__label">@Model.UserTypeName</div>
+                        <div class="list__output">@Model.FullName</div>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="list__cell">
+                        <div class="list__label">Идентификатор</div>
+                        <div class="list__output">@Model.Uic</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="details__body offcanvas-body">
+    <div class="container">
+        <div class="ajax-form" data-url="@Url.Action("ComfimUser")">
+            <form class="form-content comfirm-user-form">
+                @Html.HiddenFor(x=>x.Gid)
+                @if (!string.IsNullOrWhiteSpace(Model.OrganizationName))
+                {
+                    @Html.DisplayFor(x=>x.OrganizationName,"obj")
+                    @Html.DisplayFor(x=>x.OrganizationUic,"obj")
+                }
+                @if (!string.IsNullOrWhiteSpace(Model.RegCertificateInfo))
+                {
+                    @Html.DisplayFor(x=>x.RegCertificateInfo,"obj")
+                }
+                @Html.EditorFor(x=>x.Comfirm,"GenericDropDownBoolean")
+                @Html.EditorFor(x=>x.DeniedDescription,"Textarea",new{container_class="comfirm-user-denied"})
+            </form>
+            <button type="button" class="cta-active btn form-submit" data-callback="comfirmUserCallback">Потвърди</button>
+            <span class="ajax-form-validation text-danger"></span>
+        </div>
+        @if (Model.Files != null)
+        {
+            <br />
+            <br />
+            <partial name="_PreviewFiles" model="@Model.Files" view-data='@new ViewDataDictionary(ViewData) { { "nocontainer", true } }' />
+        }
+    </div>
+</div>
+
+<script type="text/javascript">
+    comfirmUserLoad();
+</script>
+

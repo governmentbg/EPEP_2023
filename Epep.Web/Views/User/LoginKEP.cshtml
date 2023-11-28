@@ -1,0 +1,131 @@
+﻿@model LoginVM
+@{
+    Layout = null;
+    bool adminMode = (bool)ViewBag.adminMode;
+}
+
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Електронни съдебни дела :: ЕПЕП</title>
+    <link rel="stylesheet" href="~/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+    <script src="~/assets/scripts/jquery.min.js" asp-append-version="true"></script>
+    <link rel="icon" type="image/ico" sizes="16x16" href="~/assets/favicon.ico" />
+</head>
+<body id="imgContainer" class="login-page">
+    <div class="page-wrapper">
+        <div class="container">
+            <div class="row">
+                <div class="login-page__info col-lg-6">
+                    <header id="header" class="row">
+                        <div class="col-12">
+                            <div class="brand">
+                                <a href="@Url.Action("Index","Home")" class="brand__link">Единен портал за<span>електронно правосъдие</span></a>
+                            </div>
+                        </div>
+                    </header>
+                    <main class="login-page__main row">
+                        <div class="col-12">
+                            @if (adminMode)
+                            {
+                                <h1 class="login-page__title"><span>Служебен модул</span></h1>
+                            }
+                            else
+                            {
+                                <h1 class="login-page__title">Електронни<span>съдебни дела</span></h1>
+                            }
+
+                        </div>
+                        <span class="text-danger">@ViewBag.errorMessage</span>
+                        <span class="text-success">@ViewBag.successMessage</span>
+
+                        <form action="ExternalLogin" class="login-page__form" method="post">
+                            @Html.HiddenFor(x=>x.ExternalProvider)
+                            @Html.HiddenFor(x=>x.LoginUserType)
+                            @if (adminMode)
+                            {
+                                <formfield>
+                                    <div class="row g-2 mb-2">
+                                        <div class="col-auto">
+                                            <input type="button" class="btn-check" name="roles" id="option4" data-type="@NomenclatureConstants.UserTypes.Administrator" />
+                                            <label class="btn cta-active" style="max-width:unset;" for="option4">ВХОД</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-1 mb-1">
+                                        <div class="col-auto">
+                                            <center>Нямате профил? Моля, обърнете се към администраторите на Висшия съдебен съвет.</center>
+                                        </div>
+                                    </div>
+                                </formfield>
+                            }
+                            else
+                            {
+                                <formfield>
+                                    <legend>Изберете роля</legend>
+                                    <div class="row g-1 mb-1">
+                                        <div class="col-md-auto">
+                                            <input type="button" class="btn-check" name="roles" id="option1" data-type="@NomenclatureConstants.UserTypes.Person" />
+                                            <label class="btn cta-active" style1="max-width:unset;" for="option1">Физическо лице</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="button" class="btn-check" name="roles" id="option2" data-type="@NomenclatureConstants.UserTypes.Lawyer" />
+                                            <label class="btn cta-active" style1="max-width:unset;" for="option2">Адвокат</label>
+                                        </div>
+                                        <div class="col-auto">
+                                            <input type="button" class="btn-check" name="roles" id="option3" data-type="@NomenclatureConstants.UserTypes.Organization" />
+                                            <label class="btn cta-active" style1="max-width:unset;" for="option3">Юридическо лице</label>
+                                        </div>
+                                    </div>
+                                    <div class="row g-1 mb-1">
+                                        <div class="col-auto">
+                                            <center>Нямате профил? <strong class="text-danger"><a href="@Url.Action("RegistrationCheck")">Регистрирайте се тук.</a></strong></center>
+                                        </div>
+                                    </div>
+                                </formfield>
+                            }
+                            @*<div class="row g-1 mt-3 mb-3 organization-uic">
+                                <div class="col-md-9">
+                                    <label for="loginEIK" class="list__label">ЕИК</label>
+                                    @Html.TextBoxFor(x=>x.OrganizationUIC,new {@class="form-control",placeholder="въведете ЕИК",required="required"})
+                                </div>
+                            </div>
+                            <div class="row g-1  organization-uic">
+                                <div class="col-md-9">
+                                    <a href="#" class="btn cta-login w-100">Вход с КЕП</a>
+                                </div>
+                            </div>*@
+                        </form>
+
+                    </main>
+                    <footer class="login-page__footer">
+                        <div class="brand">
+                            <a href="https://vss.justice.bg/" class="brand__link" target="_blank" rel="noreferrer">Република България&nbsp;<span>Висш съдебен съвет</span></a>
+                        </div>
+                        <div class="copyright">
+                            <p>© Висш съдебен съвет. Всички права запазени.</p>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/scripts/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/scripts/index.js"></script>
+    <script>
+       
+        $('.login-page__form .btn-check').click(function () {
+            let userType = $(this).data('type');
+            $('#LoginUserType').val(userType);
+            $(this).parents('form:first').trigger('submit');
+        });
+
+        $('.cta-login').click(function () {
+            $(this).parents('form:first').trigger('submit');
+        })
+    </script>
+</body>
+</html>

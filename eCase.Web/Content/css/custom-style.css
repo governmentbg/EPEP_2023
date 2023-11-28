@@ -1,0 +1,284 @@
+
+/* NAV */
+.nav-bg {
+    background: #655d51;
+    height: 40px;
+    width: 100%;
+    transition: box-shadow 0.3s ease-in-out;
+    -moz-transition: -moz-box-shadow 0.3s ease-in-out;
+    -o-transition: box-shadow 0.3s ease-in-out;
+    -webkit-transition: -webkit-box-shadow 0.3s ease-in-out;
+}
+
+    .nav-bg.fixed {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 300;
+        -webkit-box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 6px 6px 0px rgba(0, 0, 0, 0.2);
+    }
+
+    .nav-bg img {
+        position: absolute;
+    }
+
+nav.top {
+    background-color: #ff9000;
+    background-position: top center;
+    background-repeat: no-repeat;
+}
+
+    nav.top a {
+        color: #fff;
+        margin-right: 1px;
+        padding: 10px 20px 13px 20px;
+        float: left;
+        font-weight: 500;
+        font-size: 15px;
+        text-transform: uppercase;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+    }
+
+        nav.top a:hover, nav.top a.selected, nav.top .nav-dropdown.open a.dropdown-toggle {
+            background-color: #ff9000;
+            background-position: top center;
+            background-repeat: no-repeat;
+            height: 19px;
+            -webkit-box-shadow: 0px 4px 3px -1px rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 4px 3px -1px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+    nav.top .btn-group {
+        float: left;
+    }
+
+.dropdown-menu {
+    min-width: 100%;
+    background: #FFFFFF;
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+}
+
+    .dropdown-menu li a {
+        text-align: left;
+        padding: 4px 24px;
+        /*padding: 10px 24px 10px 24px;*/
+        font-size: 10px;
+        /*IO, phase1*/
+        color: #655d51;
+        text-decoration: none;
+        /*background-color: #f16848; - оранжево*/
+        background-color: #fff;
+        /*IO, phase1*/
+        /*background-color: #ff9000;*/
+        text-transform: uppercase;
+        border-top: 1px solid #FFFFFF;
+        display: block;
+        float: none;
+        margin-right: 0px;
+    }
+
+        .dropdown-menu li a:hover, .dropdown-menu li a:focus {
+            background-color: #655d51;
+            color: #FFF;
+            height: auto;
+        }
+
+/*  BREADCRUMBS */
+/*.breadcrumbs {
+    height: 31px;
+    width: 100%;
+    background-color: #f2f0ec;
+    padding-top: 9px;
+}
+
+    .breadcrumbs a, .breadcrumbs span {
+        font-size: 13px;
+        color: #000000;
+        text-decoration: none;
+    }
+
+        .breadcrumbs a:hover {
+            text-decoration: underline;
+        }
+
+.text-upper {
+    text-transform: uppercase;
+}*/
+
+/*FILES*/
+
+ul.file-list {
+    list-style: none;
+    padding-left: 20px;
+}
+
+    ul.file-list li {
+        background: url('../img/icons/files/file.png') no-repeat left center;
+        padding: 5px 0 5px 30px;
+        font-weight: 300;
+    }
+
+        ul.file-list li.file-doc {
+            background: url('../img/icons/files/doc.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-pdf {
+            background: url('../img/icons/files/pdf.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-xls {
+            background: url('../img/icons/files/xls.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-ppt {
+            background: url('../img/icons/files/ppt.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-zip {
+            background: url('../img/icons/files/zip.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-txt {
+            background: url('../img/icons/files/txt.png') no-repeat left center;
+        }
+
+        ul.file-list li.file-html {
+            background: url('../img/icons/files/html.png') no-repeat left center;
+        }
+
+.row-file-list {
+    padding-left: 0px;
+}
+
+    .row-file-list li {
+        border-top: 1px solid #000000;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+        .row-file-list li:first-child {
+            border-top: 0px;
+        }
+
+/* MAIN MENU */
+.error-main-menu {
+    background-color: #525459; /* @lightgray */
+    font-size: 20px;
+    font-weight: 300;
+}
+
+    .error-main-menu a, .error-main-menu a.btn {
+        line-height: 45px;
+        padding: 0px 30px;
+        margin: 0px 1px 0px 0px;
+        display: block;
+        float: left;
+        color: #FFFFFF;
+        text-decoration: none;
+        cursor: pointer;
+        font-size: 20px;
+        font-weight: 300;
+        text-transform: none;
+    }
+
+        .error-main-menu a:hover, .error-main-menu a.active, .error-main-menu .dropdown.open > a {
+            background-color: #f16848; /* @orange */
+        }
+
+.margin-top-10 {
+    margin-top: 10px;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.margin-top-30 {
+    margin-top: 30px;
+}
+
+.required-span {
+    color: red;
+    font-weight: bold;
+}
+
+.help-page ul.disc-style-type {
+    list-style-type: disc;
+}
+
+.help-page ul.disc-style-type li{
+    margin: 0;
+    padding: 0;
+}
+
+.help-questions h4.section-heading {
+    cursor: pointer;
+}
+
+    .help-questions h4.section-heading img.arrow {
+        width: 20px;
+        margin-right: 0px;
+        /*transition: all 0.2s linear 0.1s;
+	-webkit-transition: all 0.2s linear 0.1s;
+	-moz-transition: all 0.2s linear 0.1s;
+	-o-transition: all 0.2s linear 0.1s;*/
+    }
+
+    .help-questions h4.section-heading.opened img.arrow {
+        transform: rotate(90deg);
+        -ms-transform: rotate(90deg); /* IE 9 */
+        -webkit-transform: rotate(90deg); /* Opera, Chrome, and Safari */
+        -moz-transform: rotate(90deg); /* Opera, Chrome, and Safari */
+        -o-transform: rotate(90deg); /* Opera, Chrome, and Safari */
+    }
+
+.help-questions h4 + section p {
+    margin-top: 0px;
+}
+
+.help-questions section {
+    padding-left: 40px;
+}
+
+.help-questions h4 {
+    margin: 10px 0px 10px 0px;
+}
+
+.help-questions section.togglable-section {
+    margin: 0px;
+}
+
+img.info-icon{
+	height: 25px;
+	position: relative;
+	bottom: 5px;
+	cursor: pointer;
+}
+.table-wrapper table td img.info-icon{
+	height: 15px;
+	position: relative;
+	bottom: 2px;
+}
+.form-group label img.info-icon{
+	height: 15px;
+	bottom: 1px;
+	cursor: pointer;
+}
+.table-wrapper table thead th img.info-icon{
+	height: 15px;
+	bottom: 1px;
+	cursor: pointer;
+}
+.unread {
+  font-weight: bold;
+}
+.text-justify {
+    text-align: justify;
+}

@@ -1,0 +1,48 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model ElectronicDocumentSideVM
+@{
+    var btnLabel = "Добави лицето";
+    if (Model.SideGid != Guid.Empty)
+    {
+        btnLabel = "Промени лицето";
+    }
+}
+<form action="@Url.Action("SaveSideData")" method="post" id="frmSideSave">
+    @Html.HiddenFor(x=>x.DocumentGid)
+    @Html.HiddenFor(x=>x.SideGid)
+    <h3 class="section-title section-title--xs mb-3">Лични данни</h3>
+    <div class="row g-2">
+        <div class="col-md-6">
+            @Html.EditorFor(x=>x.SubjectTypeId,"GenericDropDown",new{container_class="mb-2",ddl=ViewBag.SubjectTypeId_ddl})
+        </div>
+        <div class="col-md-6">
+            @Html.EditorFor(x=>x.Uic,new{container_class="mb-2"})
+        </div>
+        <div class="col-md-4 person">
+            @Html.EditorFor(x=>x.Firstname,new{container_class="mb-2"})
+        </div>
+        <div class="col-md-4 person">
+            @Html.EditorFor(x=>x.Secondname,new{container_class="mb-2"})
+        </div>
+        <div class="col-md-4 person">
+            @Html.EditorFor(x=>x.Lastname,new{container_class="mb-2"})
+        </div>
+        <div class="col-12 entity">
+            @Html.EditorFor(x=>x.EntityName,new{container_class="mb-2"})
+        </div>
+        <div class="col-12">
+            @Html.EditorFor(x=>x.SideInvolvementKindId,"GenericDropDown",new{container_class="mb-2" ,select2=true,ddl=ViewBag.SideInvolvementKindId_ddl})
+           
+        </div>
+        <div class="col-12 row g-1 mb-5 mb-lg-0 justify-content-end">
+            <div class="col-auto"><button class="btn u-btn-close h-100" onclick="$('#divSideEdit').html('');return false;" aria-label="изтрий"></button></div>
+            <div class="col-auto"><button class="btn u-btn-green cta-check h-100" onclick="sideSubmit(this);return false;">@btnLabel</button></div>
+        </div>
+
+    </div>
+</form>
+<script>
+    $(function () {
+        $('#SubjectTypeId').trigger('change');
+    });
+</script>

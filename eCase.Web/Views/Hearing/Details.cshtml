@@ -1,0 +1,293 @@
+﻿@model eCase.Web.Models.Hearing.HearingDetailsVM
+@using PagedList
+@using PagedList.Mvc;
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.Case.ActionNames.Search, MVC.Case.Name), "Съдебни дела"),
+    new BreadcrumbItem(Url.Action(MVC.Case.ActionNames.Details, MVC.Case.Name, new { gid = Model.Hearing.Case.Gid }), "Данни за дело " + Model.Hearing.Case.Abbreviation)
+}, "Данни за заседание")
+
+<!-- DESCRIPTION -->
+<h2 class="text-align-center">Данни за заседанието</h2>
+<div class="inner-page-table">
+    <div class="tr">
+        <div class="lbl">Съд:</div>
+        <div class="vl">@Model.Hearing.Case.Court.Name</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Дело:</div>
+        <div class="vl">@Model.Hearing.Case.Abbreviation</div>
+    </div>
+    <div class="tr">
+        <div class="lbl">Дата на провеждане:</div>
+        <div class="vl">
+            @Model.Hearing.Date.ToString("dd.MM.yyyy HH:mm").Replace(" 00:00", "")
+        </div>
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Model.Hearing.HearingType))
+    {
+        <div class="tr">
+            <div class="lbl">Вид:</div>
+            <div class="vl">@Model.Hearing.HearingType</div>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Hearing.SecretaryName))
+    {
+        <div class="tr">
+            <div class="lbl">Секретар:</div>
+            <div class="vl">@Model.Hearing.SecretaryName</div>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Hearing.ProsecutorName))
+    {
+        <div class="tr">
+            <div class="lbl">Прокурор:</div>
+            <div class="vl">@Model.Hearing.ProsecutorName</div>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Hearing.CourtRoom))
+    {
+        <div class="tr">
+            <div class="lbl">Зала:</div>
+            <div class="vl">@Model.Hearing.CourtRoom</div>
+        </div>
+    }
+
+    @if (Model.Hearing.IsCanceled)
+    {
+        <div class="tr">
+            <div class="lbl"></div>
+            <div class="vl">Отменено</div>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(Model.Hearing.HearingResult))
+    {
+        <div class="tr">
+            <div class="lbl">Резултат от заседанието:</div>
+            <div class="vl">@Model.Hearing.HearingResult</div>
+        </div>
+    }
+
+    @if (Model.HasPermissions && Model.HasProtocolFile)
+    {
+        <div class="tr">
+            <div class="lbl">Протокол:</div>
+            <div class="vl">
+                @Html.ActionLink("Изтегли", MVC.Hearing.ActionNames.GetProtocolFile, MVC.Hearing.Name, new { hearingGid = Model.Hearing.Gid }, new { target = "_blank" })
+            </div>
+        </div>
+    }
+</div>
+
+@if (Model.Summons != null && Model.Summons.Any())
+{
+    <!--Summons -->
+    <h2 class="text-align-center" style="@(Model.SummonsCount > 0 ? "font-weight: bold;" : "")">Призовки @(Model.SummonsCount > 0 ? String.Format("({0})", Model.SummonsCount) : "")</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Дата</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Страна</div>
+            <div class="results-cell">Съд</div>
+            <div class="results-cell">Дело</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var summon in Model.Summons)
+        {
+            <div class="results-row @(!summon.IsRead ? "unread" : "")">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата:</span>
+                    <span class="label">
+                        @Html.DisplayFor(m => summon.DateCreated)
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">
+                        @if (summon.SummonType != null)
+                        {
+                            <text>@summon.SummonType.Name</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Страна:</span>
+                    <span class="label">@summon.Addressee</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съд:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null && summon.Side.Case.Court != null)
+                        {
+                            <text>@summon.Side.Case.Court.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Дело:</span>
+                    <span class="label">
+                        @if (summon.Side != null && summon.Side.Case != null)
+                        {
+                            <text>@summon.Side.Case.Abbreviation</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Summon.ActionNames.Details, MVC.Summon.Name, new { gid = summon.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (Model.Summons != null && Model.Summons.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.Summons.PageNumber/@Model.Summons.PageCount):</span>
+            @Html.PagedListPager(Model.Summons,
+            page => Url.Action(MVC.Hearing.ActionNames.Details,
+                     MVC.Hearing.Name
+                , new
+                {
+                    gid = Request.QueryString["gid"],
+                    sPage = page
+                })
+                , new PagedListRenderOptions
+                {
+                    Display = PagedListDisplayMode.IfNeeded,
+                    DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                    LinkToNextPageFormat = ">",
+                    LinkToPreviousPageFormat = "<"
+                })
+        </div>
+    }
+
+
+}
+
+
+<!--HearingParticipants -->
+@if (Model.Hearing.HearingParticipants != null && Model.Hearing.HearingParticipants.Any())
+{
+    <h2 class="text-align-center">Съдебен състав</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Съдия</div>
+            <div class="results-cell">Роля</div>
+            <div class="results-cell">Заменен</div>
+            <div class="results-cell">Причина за замяна</div>
+        </div>
+        @foreach (var participant in Model.Hearing.HearingParticipants)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Съдия:</span>
+                    <span class="label">@participant.JudgeName</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Роля:</span>
+                    <span class="label">@participant.Role</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Заменен:</span>
+                    <span class="label">@participant.SubstituteFor</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Причина за замяна:</span>
+                    <span class="label">@participant.SubstituteReason</span>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!--Acts -->
+@if (Model.Hearing.Acts != null && Model.Hearing.Acts.Any())
+{
+    <h2 class="text-align-center">Актове</h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Дата на издаване</div>
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Номер</div>
+            <div class="results-cell">Издател</div>
+            <div class="results-cell"></div>
+        </div>
+        @foreach (var act in Model.Hearing.Acts)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Дата на издаване:</span>
+                    <span class="label">@Html.DisplayFor(m => act.DateSigned)</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">@act.ActKind.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Номер:</span>
+                    <span class="label">@act.Number</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Издател:</span>
+                    <span class="label text-upper">
+                        @if (act.ActPreparators != null && act.ActPreparators.Any())
+                        {
+                            <text>@act.ActPreparators.FirstOrDefault().JudgeName</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"></span>
+                    <span class="label">
+                        @Html.ActionLink("Преглед", MVC.Act.ActionNames.Details, MVC.Act.Name, new { gid = act.Gid }, new { @class = "btn orange-btn wait" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+
+@if (Model.HearingDocuments != null && Model.HearingDocuments.Count() > 0)
+{
+    <!--HearingDocuments -->
+    <h2 class="text-align-center">Документи, предоставени в заседанието </h2>
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell">Вид</div>
+            <div class="results-cell">Страна</div>
+            <div class="results-cell"> </div>
+        </div>
+        @foreach (var document in Model.HearingDocuments)
+        {
+            <div class="results-row">
+
+                <div class="results-cell">
+                    <span class="hidden-lg">Вид:</span>
+                    <span class="label">
+                        @document.HearingDocumentKind
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Страна:</span>
+                    <span class="label">@document.Side.Subject.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.DisplayFor(x => x.AttachedDocument, "AttachedDocumentLink", new { type = eCase.Data.Repositories.AttachedTypes.SessionFastDocument, parentId = document.HearingDocumentId })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+}

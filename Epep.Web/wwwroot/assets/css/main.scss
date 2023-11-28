@@ -1,0 +1,31 @@
+@import "./scss/basics/mixins";
+@import "./scss/basics/vars";
+@import "./scss/basics/base";
+@import "./scss/basics/typography";
+@import "./scss/basics/utility";
+
+@import "./scss/components/main-nav";
+@import "./scss/components/elements";
+@import "./scss/components/case-card";
+@import "./scss/components/details";
+@import "./scss/components/pagination";
+@import "./scss/components/heading";
+@import "./scss/components/breadcrumbs";
+@import "./scss/components/tabs-nav";
+@import "./scss/components/compliant";
+@import "./scss/components/info-bubble";
+@import "./scss/components/relative-doc";
+@import "./scss/components/msg-board";
+@import "./scss/components/event-card";
+@import "./scss/components/timeline";
+@import "./scss/components/registration-form";
+@import "./scss/components/epep-calendar";
+@import "./scss/components/step-counter";
+@import "./scss/components/drag-and-dropp";
+@import "./scss/components/add-new-address";
+
+@import "./scss/layout/layout";
+@import "./scss/layout/header";
+@import "./scss/layout/footer";
+@import "./scss/layout/case-single";
+@import "./scss/layout/login-page";

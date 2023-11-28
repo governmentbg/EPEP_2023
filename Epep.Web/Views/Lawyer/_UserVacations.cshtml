@@ -1,0 +1,61 @@
+﻿@using Epep.Core.Contracts;
+@inject IUserContext userContext;
+
+<div class="row">
+    <div class="col-lg-12">
+        <button onclick="addUserVacation();return false;" class="btn u-btn-gradient float-end">Добави отсъствие</button>
+    </div>
+</div>
+<div id="gvUserVacations"></div>
+<script>
+    $(function () {
+        let gvUserVacations = new GridView({
+            container: '#gvUserVacations',
+            url: '@Url.Action("VacationLoadData","Lawyer")',
+            grid_title: 'Отсъствия',
+            template: '#gvUserVacationItem',
+            autoload: false
+        });
+    });
+    function addUserVacation() {
+        requestOffcanvasSmall('@Url.Action("VacationAdd","Lawyer")', {}, function () {
+            initDatePicker();
+        });
+    }
+    function editUserVacation(id) {
+        requestOffcanvasSmall('@Url.Action("VacationEdit","Lawyer")', { id: id }, function () {
+            initDatePicker();
+        });
+    }
+    function editVacationCallback() {
+        hideOffcanvas();
+        gridViewLoadData('#gvUserVacations');
+    }
+</script>
+<script type="text/x-handlebars-template" id="gvUserVacationItem">
+    <li class="list__item">
+        <div class="case-card case-card--darken">
+        <a href="#" onclick="editUserVacation({{id}});return false;" class="case-card case-card--darken">
+            <div class="case-card__body">
+                <div class="row">
+                    <div class="col-md">
+                        <span class="list__label">Вид</span>
+                        <div class="list__output">{{vacationType}}</div>
+                    </div>
+                    <div class="col-md">
+                        <span class="list__label">Дата от</span>
+                        <div class="list__output">{{date dateFrom}}</div>
+                    </div>
+                    <div class="col-md">
+                        <span class="list__label">Дата до</span>
+                        <div class="list__output">{{date dateTo}}</div>
+                    </div>
+                    <div class="ms-auto col-lg-1">
+                        <button onclick="return false;" class="btn u-btn-lupa" title="Преглед"></button>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </li>
+</script>
+

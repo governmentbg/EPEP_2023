@@ -1,0 +1,185 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.Case
+@inject IUserContext userContext;
+@{
+    ViewData["Title"] = "Работен плот";
+    var nextHearings = (IEnumerable<HearingVM>)ViewBag.nextHearings;
+}
+
+<main class="page-content">
+    <div class="container">
+        <section class="section">
+            <div class="page-title__container row">
+                <div class="col-auto">
+                    <h1 class="page-title">@ViewData["Title"]</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="gvLastSummons"></div>
+                </div>
+                <div class="col-md-3">
+                    <a href="@Url.Action("Index","Summon")" class="msg-board msg-board--dashboard">
+                        <h3 class="msg">
+                            <span class="msg__counter">@ViewBag.newSummons</span>
+                            <span class="msg__text">
+                                нови <br>
+                                съобщения
+                            </span>
+                        </h3>
+                    </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="gvLastCases"></div>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-header">
+                <div class="row">
+                    <div class="col-auto"><h2 class="section-title section-title--calendar">Предстоящи заседания</h2></div>
+
+                    <div class="col-auto ms-auto"></div>
+                    <div class="col-auto"><a href="@Url.Action("Calendar")" class="">Виж календар</a></div>
+                </div>
+            </div>
+            <div class="section-body">
+                <ul class="list row">
+                    @foreach (var hearing in nextHearings)
+                    {
+                        <li class="list__item col-md-4">
+                            <a href="#" class="event-card event-card--calendar">
+                                <div class="row">
+                                    <div class="col-md-6" title="Преглед на заседание" onclick="showFiles(@(NomenclatureConstants.SourceTypes.Hearing),'@hearing.Gid');return false;">
+                                        <span class="list__label list__label--bold">@hearing.Date.ToString("dd MMMM yyyy | HH:mm")</span>
+                                        <div class="list__output">@hearing.CourtName</div>
+                                        <div class="list__label list__label--grey">@hearing.CourtName</div>
+                                    </div>
+
+                                    <div class="col-md-6 text-md-end" title="Преглед на дело" onclick="document.location.href='@Url.Action("CaseDetail",new{gid=hearing.CaseGid})';return false;">
+                                        <span class="list__label">№ на дело</span>
+                                        <div class="list__output">@hearing.CaseInfo</div>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </section>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            let gvLastSummons = new GridView({
+                container: '#gvLastSummons',
+                url: '@Url.Action("DesktopSummonsLoadData")',
+                view_all_url: '@Url.Action("Index","Summon")',
+                view_top_pages : false,
+                sizeSelector: false,
+                size: 3,
+                pager: false,
+                grid_title: 'Последни съобщения',
+                grid_title_class: 'section-title--messages',
+                template: '#gvItemSummon'
+            });
+            let gvLastCases = new GridView({
+                container: '#gvLastCases',
+                url: '@Url.Action("DesktopLastCasesLoadData")',
+                //view_all_url: '@Url.Action("Index","Summon")',
+                sizeSelector: false,
+                size: 3,
+                pager: false,
+                grid_title: 'Последно разглеждани дела',
+                grid_title_class: 'section-title--cases',
+                template: '#gvItemLastCase'
+            });
+        });
+
+        function readSummonCallback(){
+            let actionMode = $('#ActionMode').val();
+            if (actionMode == 'reload-summon') {
+                gridViewLoadData('#gvLastSummons');
+            }
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemSummon">
+        <li class="list__item">
+            <div href="#" class="case-card case-card--alert">
+                <div class="case-card__body">
+                    <div class="row">
+                        <a href="#" class="col-lg-7" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}',readSummonCallback);return false;">
+                            <div class="row">
+                                <div class="col-1 col-md-auto">
+                                     {{#if isRead}}
+                                     <div class="msg-open">
+                                         <span class="visually-hidden">Прочетено съобщение</span>
+                                     </div>
+                                     {{else}}
+                                     <div class="msg-new">
+                                         <span class="visually-hidden">Ново съобщение</span>
+                                     </div>
+                                     {{/if}}
+                                 </div>
+                                <div class="col-md-4">
+                                   <span class="list__label">Получено на</span>
+                                   <div class="list__output">{{dateFormat dateCreated "DD.MM.YYYY HH:mm"}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="list__label">Тип</span>
+                                    <div class="list__output">{{summonType}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Изпращач</span>
+                                    <div class="list__output">{{courtName}}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="col-md-6 col-lg-3">
+                            <span class="list__label">Свързано дело</span>
+                            <div class="list__output">
+                                <a href="@Url.Action("CaseDetail","Case")/{{caseGid}}">
+                                    {{caseInfo}}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-2 d-flex">
+                            {{#if isRead}}
+                                Прочетена
+                            {{else}}
+                                <button class="cta-active btn ms-md-auto" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}');return false;">Прочети</button>
+                            {{/if}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemLastCase">
+        <li class="list__item">
+            <div href="#" class="case-card case-card--alert">
+                <div class="case-card__body">
+                        <a href="#" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Case),'{{gid}}');return false;">
+                            <div class="row">
+                                <div class="col-md-4">
+                                   <span class="list__label">Съд</span>
+                                   <div class="list__output">{{courtName}}</div>
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="list__label">Дело</span>
+                                    <div class="list__output">{{regNumber}}/{{regYear}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Вид</span>
+                                    <div class="list__output">{{caseKindName}}</div>
+                                </div>
+                            </div>
+                        </a>
+                </div>
+            </div>
+        </li>
+    </script>
+}

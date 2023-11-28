@@ -1,0 +1,22 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+@{
+    Layout = "~/Views/EmailTemplates/MailLayout.cshtml";
+    string portalUrl = (string)ViewData["portalUrl"];
+    string portalFeedback = (string)ViewData["feedbackUrl"];
+
+    string userName = (string)Model["userName"];
+    string docCount = (string)Model["docCount"];
+    int draftDays = (int)Model["draftDays"];
+    int notifyDays = (int)Model["notifyDays"];
+
+    var header = "Единен портал за електронно правосъдие (Електронен документ)";
+    var eCase = "Единния портал за електронно правосъдие";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    Здравейте <strong style="color: #444444;">@userName</strong>, <br />
+    В @eCase съществуват <strong style="color: #444444;">@docCount</strong> неподадени документи, по които няма движение последните @draftDays дни.<br/>
+    След изтичане на @notifyDays ден(дни), тези неподадени документи ще бъдат премахнати.
+</p>

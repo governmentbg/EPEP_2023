@@ -1,0 +1,60 @@
+﻿@model Newtonsoft.Json.Linq.JObject
+
+@using System.Configuration
+@using eCase.Common.Helpers
+
+@{
+    string portalUrl = ConfigurationManager.AppSettings["eCase.Web:DomainUrl"];
+    string portalFeedback = string.Format("{0}Feedback", portalUrl);
+    string email = (string)Model["email"];
+    string caseAbbr = (string)Model["caseAbbr"];
+    string courtName = (string)Model["courtName"];
+
+    var header = "Единен портал за електронно правосъдие (Електронни призовки и съобщения)";
+    var eCase = "Единния портал за електронно правосъдие";
+    var helloMessage = "Здравейте, ";
+    var eAccessMessage = "Във връзка с Ваше писмено заявление за получаване на електронни призовки и съобщения по дело ";
+    var iSystemMessage = "чрез информационната система на ";
+    var infoMessage = " Ви информираме, че функционалността е ";
+    var activateMessage = "Активирана.";
+    var eCopyMessage = "Електронното копие на делото е достъпно в ";
+    var profileMessage = "чрез профила, асоцииран с имейл адрес:";
+    var dbCourtMessage = "Моля да имате предвид, че през портала са достъпни само дела, документи, електронни призовки и съобщения, изпратени и заредени в базата данни от съдилищата.";
+    var gapsMessage = "Ако има пропуски или неточности, конкретно към това дело, моля да потърсите съдействие от";
+    var competenceMessage = ", компетентен по него.";
+    var gretting = "Поздрави, ";
+    var team = "Екипът на Единния портал за електронно правосъдие";
+    var answerMessage = "Моля, не отговаряйте на този имейл. Той е изпратен автоматично от служебната поща на системата.";
+    var helpMessage = "При необходимост от съдействие и помощ, моля, използвайте контактите, посочени на ";
+    var form = " или формата за ";
+    var feedback = "Обратна връзка";
+}
+
+<p style="margin-bottom: 15px;"><strong style="color: #444444;">@header</strong></p>
+
+<p style="margin-bottom: 15px;">
+    @helloMessage<br />
+    @eAccessMessage <strong style="color: #444444;">@caseAbbr</strong> @iSystemMessage <strong style="color: #444444;">@courtName</strong> @infoMessage <strong style="color: #444444;">@activateMessage</strong>
+</p>
+
+<p style="margin-bottom: 15px;">
+    @eCopyMessage <a href="@portalUrl">@eCase</a> @profileMessage @email
+</p>
+
+<p style="margin-bottom: 15px;">
+    @dbCourtMessage
+</p>
+
+<p style="margin-bottom: 15px;">
+    @gapsMessage <strong style="color: #444444;">@courtName</strong>@competenceMessage
+</p>
+
+<p style="margin-bottom: 2px; border-bottom: 1px solid black;">
+    @gretting <br />
+    @team
+</p>
+
+<p style="font-size: 13px; margin-top: 0px;">
+    @answerMessage<br />
+    @helpMessage<a href="@portalUrl">@eCase</a>@form<a href="@portalFeedback">@feedback</a>.
+</p>

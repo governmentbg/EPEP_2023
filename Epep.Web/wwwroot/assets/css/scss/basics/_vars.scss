@@ -1,0 +1,47 @@
+//Colors Scheme
+$background-light: #fff6f6;
+$background-light-50: #fefbfb;
+$background-light-25: #fffdfd;
+$background-light-10: #fffefe;
+
+$shadow: #150c04;
+
+$pp-black: #150a1a;
+$pp-black-75: #49444f;
+$pp-black-50: #8a858c;
+$pp-black-25: #c4c2c6;
+$pp-black-10: #e8e6e8;
+
+$primary-dark: #462255;
+$primary-dark-75: #705a7d;
+$primary-dark-50: #9f91a8;
+$primary-dark-25: #cfc8d4;
+$primary-dark-10: #ebe9ee;
+
+$secondary-dark: #aa4465;
+
+$secondary-dark-50: #cca3b2;
+$secondary-dark-25: #e6d1d9;
+$secondary-dark-10: #f5ecf0;
+
+$primary-light: #e4e7ee;
+$primary-light-75: #ebedf2;
+$primary-light-50: #f2f3f7;
+$primary-light-25: #f8f9fb;
+$primary-light-10: #fcfdfd;
+
+$secondary-light: #e2b4a4;
+$secondary-light-50: #eddbd2;
+$secondary-light-25: #f6ece9;
+$secondary-light-10: #fbf8f6;
+
+$success: #547854;
+
+$main-gutter: 1rem;
+
+$step-gradient: linear-gradient(90deg, #462255 1%, #e4e7ee 100%);
+$button-gradient: linear-gradient(270deg, #705a7d 0%, #462255 73.82%);
+
+$box-shadow: 4px 0px 10px rgba(31, 11, 5, 0.1);
+$shadow-1: 0 2px 10px 0 rgba(0, 22, 46, 0.2);
+$shadow-2: 0 2px 20px 0 rgba(0, 22, 46, 0.2);

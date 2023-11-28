@@ -1,0 +1,25 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model CourtListVM
+<li>
+    @if (!string.IsNullOrEmpty(Model.Url))
+    {
+        <a href="@Html.Raw(Model.Url)" title="Интернет страница на @Model.CourtName" target="_blank">@Model.CourtName</a>
+    }
+    else
+    {
+        @Model.CourtName
+    }
+    @if (Model.HasElectronicDocument)
+    {
+        //#462255
+        if (Model.HasElectronicPayment)
+        {
+            <div class="btn u-btn-send-doc" title="Разрешено подаване и плащане на електронни документи"><span class="visually-hidden">възможност за подаване електронни документи</span></div>
+        }
+        else
+        {
+            <div class="btn u-btn-send-doc no-payment" title="Разрешено подаване на електронни документи"><span class="visually-hidden">възможност за подаване електронни документи</span></div>
+        }
+        
+    }
+</li>

@@ -1,0 +1,133 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.ViewModels.Case
+@inject IUserContext userContext;
+@{
+    ViewData["Title"] = "Работен плот";
+}
+
+<main class="page-content">
+    <div class="container">
+        <section class="section">
+            <div class="page-title__container row">
+                <div class="col-auto">
+                    <h1 class="page-title">@ViewData["Title"]</h1>
+                </div>
+            </div>
+
+            <div id="gvNewUsers"></div>
+            @if (userContext.UserType == NomenclatureConstants.UserTypes.GlobalAdmin)
+            {
+                <section class="section">
+                    <div class="section-header">
+                        <div class="row">
+                            <div class="col-auto"><h2 class="section-title section-title--queries">Справки</h2></div>
+                        </div>
+                    </div>
+                    <div class="section-body">
+                        <div class="row list">
+                            <div class="col-md-4 list__item">
+                                <a href="@Url.Action("CourtStat","Report")" class="event-card event-card--queries">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span class="list__label list__label--bold">Вид справка</span>
+                                            <div class="list__output">Брой дела по съд</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                           @* <div class="col-md-4 list__item">
+                                <a href="#" class="event-card event-card--queries">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <span class="list__label list__label--bold">Вид справка</span>
+                                            <div class="list__output">Брой дела по съд</div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>*@
+                        </div>
+                    </div>
+                </section>
+@*
+                <br />
+                <h1 class="section-title">Справки</h1>
+                <br />
+                <h2 class="section-title section-title--xs"><a href="@Url.Action("CourtStat","Report")">Брой дела по съд</a></h2>
+*@
+            }
+
+        </section>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            let gvNewUsers = new GridView({
+                container: '#gvNewUsers',
+                url: '@Url.Action("NewUsersLoadData")',
+                //view_all_url: '@Url.Action("Index","Summon")',
+                data: function () {
+                    return {};
+                },
+                sizeSelector: false,
+                size: 5,
+                //pager: false,
+                grid_title: 'Потребители за потвърждаване',
+                grid_title_class: 'section-title--users',
+                template: '#gvItemNewUsers'
+            });
+        });
+        function comfirmUser(gid) {
+            requestOffcanvas('@Url.Action("ComfimUser","Admin")', { gid: gid }, "offcanvasMain", false, comfirmUserLoad);
+        }
+        function comfirmUserCallback() {
+            hideOffcanvas();
+            gridViewLoadData('#gvNewUsers');
+        }
+        function comfirmUserLoad() {
+            $('#Comfirm').change(function () {
+                switch ($(this).val()) {
+                    case 'true':
+                        $('.comfirm-user-denied').hide();
+                        break;
+                    case 'false':
+                        $('.comfirm-user-denied').show();
+                        break;
+                }
+            }).trigger('change');
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemNewUsers">
+        <li class="list__item">
+            <a href="#" onclick="comfirmUser('{{gid}}');return false;">
+            <div href="#" class="case-card case-card--alert">
+                <div class="case-card__body">
+                    <div class="row">
+
+                            <div class="col-md-2">
+                               <span class="list__label">Вид</span>
+                               <div class="list__output">{{userTypeName}}</div>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="list__label">Имена/Наименование</span>
+                                <div class="list__output">{{fullName}}</div>
+                            </div>
+                            <div class="col-md">
+                                <span class="list__label">Идентификатор</span>
+                                <div class="list__output">{{uic}}</div>
+                            </div>
+                            <div class="col-md">
+                                <span class="list__label">Организация</span>
+                                <div class="list__output">{{orgFullName}}</div>
+                            </div>
+                            <div class="col-md d-flex">
+                                <button onclick="return false;" class="cta-active btn ms-md-auto">Потвърди</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+                        </a>
+        </li>
+    </script>
+
+}

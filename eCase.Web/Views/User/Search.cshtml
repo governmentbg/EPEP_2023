@@ -1,0 +1,179 @@
+﻿@model eCase.Web.Models.User.UserSearchVM
+@using PagedList
+@using PagedList.Mvc;
+@using eCase.Common.Captcha
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Потребители")
+
+@{
+    var queryString = Request.QueryString;
+}
+
+<!-- SEARCH PANEL -->
+<div class="search-panel narrow-fields clearfix">
+    <div class="title">
+        <span>Търсене на</span>
+        <strong>потребители</strong>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="post">
+            @if (!ViewContext.ViewData.ModelState.IsValid)
+            {
+            <!-- VALIDATION -->
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    @Html.ValidationSummary()
+                </div>
+            </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="rw">
+                <div class="lbl">Име:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Name)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Електронна поща:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Username)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Потребителска група:</div>
+                <div class="vl">
+                    @Html.DropDownListFor(m => m.UserGroupId, Model.UserGroups, "Всички", new { @class = "select2" })
+                </div>
+            </div>
+
+            <div class="rw" style="margin-bottom: 15px;">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="ТЪРСИ" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    @if (Model.SearchResults != null)
+    {
+        <div style="left: 20px; bottom: 5px; position: absolute;">
+            По зададените критерии @(Model.SearchResults.TotalItemCount == 1 ? "е намерен" : "са намерени") <b>@eCase.Common.Helpers.DataUtils.IntegerToStringSpace(Model.SearchResults.TotalItemCount)</b> @(Model.SearchResults.TotalItemCount == 1 ? "резултат" : "резултата").
+        </div>
+    }
+</div>
+
+@* show results *@
+@if (Model.SearchResults == null)
+{
+    Model.SearchResults = new PagedList<eCase.Domain.Entities.User>(null, 1, 1);
+}
+
+@if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+{
+    string sortClass = Model.IsAsc ? "sort-asc" : "sort-desc";
+    string actionName = MVC.User.ActionNames.Search;
+    string controllerName = MVC.User.Name;
+
+    <!--TABLE -->
+    <div class="results-table">
+        <div class="results-thead">
+            <div class="results-cell sortable @(Model.Order == UsersOrder.Username ? sortClass : "")">
+                @Html.ActionLink("Електронна поща", actionName, controllerName, Model.GetRouteValues(queryString, null, UsersOrder.Username), null)
+            </div>
+            <div class="results-cell sortable @(Model.Order == UsersOrder.UserGroup ? sortClass : "")">
+                @Html.ActionLink("Потребителска група", actionName, controllerName, Model.GetRouteValues(queryString, null, UsersOrder.UserGroup), null)
+            </div>
+            <div class="results-cell sortable @(Model.Order == UsersOrder.Name ? sortClass : "")">
+                @Html.ActionLink("Име", actionName, controllerName, Model.GetRouteValues(queryString, null, UsersOrder.Name), null)
+            </div>
+            <div class="results-cell sortable @(Model.Order == UsersOrder.Court ? sortClass : "")">
+                @Html.ActionLink("Съд", actionName, controllerName, Model.GetRouteValues(queryString, null, UsersOrder.Court), null)
+            </div>
+            <div class="results-cell sortable @(Model.Order == UsersOrder.IsActive ? sortClass : "")">
+                @Html.ActionLink("Активен", actionName, controllerName, Model.GetRouteValues(queryString, null, UsersOrder.IsActive), null)
+            </div>
+            <div class="results-cell"></div>
+        </div>
+        @foreach (var res in Model.SearchResults)
+        {
+            <div class="results-row">
+                <div class="results-cell">
+                    <span class="hidden-lg">Електронна поща:</span>
+                    <span class="label">@res.Username</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Потребителска група:</span>
+                    <span class="label">@res.UserGroup.Description</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Име:</span>
+                    <span class="label">@res.Name</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Съд:</span>
+                    <span class="label">
+                        @if (res.Court != null)
+                        {
+                            <text>@res.Court.Name</text>
+                        }
+                    </span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg">Активен:</span>
+                    <span class="label">@(res.IsActive ? "Да" : "Не")</span>
+                </div>
+                <div class="results-cell">
+                    <span class="hidden-lg"> </span>
+                    <span class="label">
+                        @Html.ActionLink("Редакция", MVC.User.ActionNames.Edit, MVC.User.Name, new { gid = res.Gid }, new { @class = "btn orange-btn" })
+                    </span>
+                </div>
+            </div>
+        }
+    </div>
+
+    if (Model.SearchResults.PageCount > 1)
+    {
+        <div class="paging clearfix">
+            <span>Страница (@Model.SearchResults.PageNumber/@Model.SearchResults.PageCount):</span>
+            @Html.PagedListPager(Model.SearchResults,
+                        page => Url.Action(actionName
+                            , controllerName
+                            , Model.GetRouteValues(queryString, eCase.Common.Crypto.ConfigurationBasedStringEncrypter.Encrypt(page.ToString())))
+
+                        , new PagedListRenderOptions
+                        {
+                            Display = PagedListDisplayMode.IfNeeded,
+                            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                            LinkToNextPageFormat = ">",
+                            LinkToPreviousPageFormat = "<"
+                        })
+        </div>
+    }
+}
+else
+{
+    <div class="no-results">
+        <img src="@(Url.Content(Links.Content.img.icons.warning_png))" alt="" />
+        <span>Няма намерени резултати</span>
+    </div>
+}
+
+@section scripts
+        {
+    <script>
+        $(document).ready(function () {
+            $('html, body').animate({ scrollTop: ($('.search-panel').height() - $('.gototop').height() / 2) }, 1400, 'easeOutQuint');
+        });
+    </script>
+}
+
+<div style="text-align:right; margin-top:15px; margin-right:15px;">
+    @Html.ActionLink("Добави нов потребител", MVC.User.ActionNames.Create, MVC.User.Name, new { }, new { @class = "btn orange-btn" })
+</div>

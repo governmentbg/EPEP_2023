@@ -1,0 +1,78 @@
+﻿@using Epep.Core.Extensions;
+@using Epep.Core.ViewModels.Common;
+@model List<CourtListVM>
+@{
+    ViewData["Title"] = "Съдилища";
+    var courtTypes = Model.Select(x => new { x.CourtTypeId, x.CourtType }).Distinct();
+}
+
+<main class="page-content">
+    <div class="container">
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+        </div>
+        <div class="row">
+            <div class="col-md">
+                @foreach (var ct in courtTypes.Where(x => x.CourtTypeId == NomenclatureConstants.CourtTypes.Rayonen))
+                {
+                    <br />
+                    <br />
+                    <h3 class="section-title section-title--xs mb-2">@ct.CourtType</h3>
+                    <ul class="u-list">
+                        @foreach (var court in Model.Where(x => x.CourtTypeId == ct.CourtTypeId))
+                        {
+                            <partial name="_CourtItem.cshtml" model="@court" />
+                            @*<li>
+                                @if (!string.IsNullOrEmpty(court.Url))
+                                {
+                                    <a href="@Html.Raw(court.Url)" title="Интернет страница на @court.CourtName" target="_blank">@court.CourtName</a>
+                                }
+                                else
+                                {
+                                    @court.CourtName
+                                }
+                                @if (court.HasElectronicDocument)
+                                {
+                                    <div class="btn u-btn-send-doc"><span class="visually-hidden">възможност за подаване електронни документи</span></div>
+                                }
+                            </li>*@
+                        }
+                    </ul>
+                }
+            </div>
+            <div class="col-md-1">
+            </div>
+            <div class="col-md">
+                @foreach (var ct in courtTypes.Where(x => x.CourtTypeId != NomenclatureConstants.CourtTypes.Rayonen))
+                {
+                    <br />
+                    <br />
+                    <h3 class="section-title section-title--xs mb-2">@ct.CourtType</h3>
+                    <ul class="u-list">
+                        @foreach (var court in Model.Where(x => x.CourtTypeId == ct.CourtTypeId))
+                        {
+                            <partial name="_CourtItem.cshtml" model="@court" />
+                            @*<li>
+                                @if (!string.IsNullOrEmpty(court.Url))
+                                {
+                                    <a href="@Html.Raw(court.Url)" title="Интернет страница на @court.CourtName" target="_blank">@court.CourtName</a>
+                                }
+                                else
+                                {
+                                    @court.CourtName
+                                }
+                                @if (court.HasElectronicDocument)
+                                {
+                                    <div class="btn u-btn-send-doc"><span class="visually-hidden">възможност за подаване електронни документи</span></div>
+                                }
+
+                            </li>*@
+                        }
+                    </ul>
+                }
+
+            </div>
+        </div>
+
+    </div>
+</main>

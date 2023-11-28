@@ -1,0 +1,76 @@
+﻿@using Epep.Core.Models;
+@using Epep.Core.ViewModels.Common;
+@model UserRegistration
+@{
+    ViewData["Title"] = "Достъпи към потребител";
+}
+
+<main class="page-content">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="навигация пътечка">
+            <ul class="breadcrumbs__list">
+                <li><a asp-action="Users" asp-controller="Admin">Потребители</a></li>
+            </ul>
+        </nav>
+
+        <div class="page-title__container row">
+            <div class="col-auto">
+                <h1 class="page-title">@ViewData["Title"]</h1>
+                <h3 class="page-title1">@Model.FullName</h3>
+            </div>
+        </div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('.main-nav__item--lawyers').addClass('active');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@(Url.Action("UserAssignmentsLoadData"))',
+                data: function () {
+                    return {
+                        gid: '@Model.Gid'
+                    };
+                },
+                xlsExport:true,
+                template: '#gridViewItems'
+            });
+        });
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewItems">
+        <li class="list__item">
+            <div class="case-card">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md">
+                            <span class="list__label">Съд</span>
+                            <div class="list__output">{{courtName}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Дело</span>
+                            <div class="list__output">
+                                {{caseKind}} {{caseNumber}}/{{caseYear}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Страна</span>
+                            <div class="list__output">
+                                {{sideName}} ({{sideRoleName}})
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Качество</span>
+                            <div class="list__output">{{assignmentRole}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Добавен на</span>
+                            <div class="list__output">{{dateFormat createDate "DD.MM.YYYY HH:mm"}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+}

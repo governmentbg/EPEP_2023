@@ -1,0 +1,46 @@
+﻿@using Epep.Core.Contracts
+@inject IUserContext userContext;
+@{
+    var isGlobal = userContext.UserType == NomenclatureConstants.UserTypes.GlobalAdmin;
+}
+<aside id="sidebar" class="sidebar">
+    <nav id="mainNav" class="main-nav" aria-label="Основно меню">
+        <ul class="main-nav__list">
+            <li class="main-nav__item">
+                <a role="button" id="navToggler" class="main-nav__toggler btn" aria-expanded="false"><span>Съдържание</span></a>
+            </li>
+            @if (userContext.IsAuthenticated)
+            {
+                <partial name="_LeftAsideProfile" />
+                @if (isGlobal)
+                {
+                    <li class="main-nav__item main-nav__item--dashboard">
+                        <a class="main-nav__link" href="@Url.Action("Desktop","Admin")"><span>Работен плот</span></a>
+                    </li>
+                }
+                <li class="main-nav__item main-nav__item--cases">
+                    <a class="main-nav__link" href="@Url.Action("Index","Case")"><span>Съдебни дела</span></a>
+                </li>
+                @if (isGlobal)
+                {
+                    <li class="main-nav__item main-nav__item--users">
+                        <a class="main-nav__link" href="@Url.Action("Users","Admin")"><span>Потребители</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--lawyers">
+                        <a class="main-nav__link" href="@Url.Action("Index","Lawyer")"><span>Адвокати</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--courts">
+                        <a class="main-nav__link" href="@Url.Action("Courts","Admin")"><span>Съдилища</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--payments">
+                        <a class="main-nav__link main-nav__link--indicator" href="@Url.Action("Index","Pricelist")"><span>Тарифа</span></a>
+                    </li>
+                    <li class="main-nav__item main-nav__item--documents">
+                        <a class="main-nav__link" href="@Url.Action("Auditlog","Admin")"><span>Журнал на промените</span></a>
+                    </li>
+                }
+            }
+            <li></li>
+        </ul>
+    </nav>
+</aside>

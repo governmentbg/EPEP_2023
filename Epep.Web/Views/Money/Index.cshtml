@@ -1,0 +1,105 @@
+﻿@using Epep.Core.ViewModels.Payment;
+@model FilterObligationVM
+@{
+    ViewData["Title"] = "Плащания";
+}
+
+@section offcanvasMain{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на плащане</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.PaymentStatus,"GenericDropDownInt",new{container_class="mb-2",nullVal="-1"})
+            @Html.EditorFor(x=>x.Description,"String",new{container_class="mb-2"})
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+            </div>
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+
+<main class="page-content">
+    <div class="container">
+
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMain" aria-controls="offcanvasMain">Търсене на плащане</button>
+            </div>
+        </div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+
+@section Scripts
+    {
+    <script>
+        $(function () {
+            $('#offcanvasMain').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@(Url.Action("LoadData"))',
+                data: function () {
+                    return {
+                        PaymentStatus: $('#PaymentStatus').val(),
+                        Description: $('#Description').val(),
+                        DateFrom: $('#DateFrom').val(),
+                        DateTo: $('#DateTo').val()
+                    };
+                },
+                template: '#gvItemPayment'
+            });
+        });
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemPayment">
+        <li class="list__item">
+            <div class="case-card case-card--darken">
+                <div class="case-card__body">
+                    <div class="row">
+                            <div class="col-md-1">
+                               <span class="list__label">Дата и час</span>
+                               <div class="list__output">
+                                   {{dateFormat createDate "DD.MM.YYYY HH:mm"}}
+                                   </div>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="case__direction case__direction--outbox" title="Електронен документ"><span></span></div>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="list__label">Съд</span>
+                                <div class="list__output">{{parentDescription}}</div>
+                            </div>
+                            <div class="col-md-3">
+                                <span class="list__label">Документ</span>
+                                <div class="list__output">{{description}}</div>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="list__label">Тип</span>
+                                <div class="list__output">{{obligationTypeName}}</div>
+                            </div>
+                            <div class="col-md-2">
+                                <span class="list__label">Сума</span>
+                                <div class="list__output">{{fixed2 moneyAmount}} {{currencyName}}</div>
+                            </div>
+                            <div class="col-lg-1">
+                               {{#if paymentDate}}
+                                    <span class="list__label">Платено на</span>
+                                    <div class="list__output">
+                                        {{dateFormat paymentDate "DD.MM.YYYY HH:mm"}}
+                                    </div>
+                               {{else}}
+                                    <a href="@Url.Action("Details")/{{gid}}" class="cta-active btn">Плащане</a>
+                                {{/if}}
+                           </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+}

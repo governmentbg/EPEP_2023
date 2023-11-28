@@ -1,0 +1,54 @@
+.drag-and-drop {
+    display: flex;
+    justify-content: center;
+    padding: $main-gutter;
+    margin-bottom: $main-gutter/2;
+    color: $primary-dark-75;
+    font-size: 0.75rem;
+
+    width: 100%;
+    min-height: 286px;
+    border-radius: 4px;
+    border: 2px dashed $primary-light;
+
+    background: url(../images/general/draganddrop.svg) center top 80px no-repeat;
+    background-color: $primary-light-25;
+
+    p {
+        margin-top: auto;
+        text-align: center;
+        width: 80%;
+    }
+    label {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+    input {
+        display: none;
+    }
+
+    &--highlight {
+        border: 2px dashed $primary-dark-50;
+        background-color: $primary-light-50;
+    }
+}
+
+progress {
+    margin: $main-gutter 0;
+    width: 100%;
+    border-radius: 7px;
+    -webkit-appearance: none;
+
+    &::-webkit-progress-bar {
+        height: 5px;
+        border: none;
+        border-radius: 7px;
+        background-color: transparent;
+    }
+
+    &::-webkit-progress-value {
+        border: none;
+        border-radius: 7px;
+        background-color: $primary-dark;
+    }
+}

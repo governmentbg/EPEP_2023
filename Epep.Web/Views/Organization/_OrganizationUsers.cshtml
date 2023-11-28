@@ -1,0 +1,84 @@
+﻿@using Epep.Core.Contracts;
+@inject IUserContext userContext;
+
+<div class="row">
+    <div class="col-lg-12">
+        <button onclick="addUser();return false;" class="btn u-btn-gradient float-end">Добави потребител</button>
+    </div>
+</div>
+<div id="gvUsers"></div>
+<script>
+    $(function () {
+        let gvUsers = new GridView({
+            container: '#gvUsers',
+            url: '@Url.Action("LoadData","Organization")',
+            grid_title: 'Представляващи и юристи',
+            template: '#gvUser',
+            autoload: false
+        });
+    });
+    function addUser() {
+        requestOffcanvasSmall('@Url.Action("OrganizationUserAdd","Organization")', {});
+    }
+    function editUser(gid) {        
+        requestOffcanvasSmall('@Url.Action("OrganizationUserEdit","Organization")', { gid: gid });
+    }
+    function addUserCallback() {
+        hideOffcanvas();
+        gridViewLoadData('#gvUsers');
+    }
+</script>
+<script type="text/x-handlebars-template" id="gvUser">
+    <li class="list__item">        
+        <a href="#" onclick="editUser('{{gid}}');return false;" class="case-card case-card--darken">  
+            <div class="case-card__body {{#compare isActive false}}disabled{{/compare}}">
+                <div class="row">
+                    <div class="col-md">
+                        <span class="list__label">Имена</span>
+                        <div class="list__output">{{fullName}}</div>
+                    </div>
+                    <div class="col-md">
+                        <span class="list__label">Електронна поща</span>
+                        <div class="list__output">{{email}}</div>
+                    </div>
+                    <div class="col-md">
+                        <span class="list__label">Роля</span>
+                        <div class="list__output">
+                            {{#if isRepresentative}}
+                            Представляващ
+                            {{else}}
+                            Юрист
+                            {{/if}}
+                        </div>
+                    </div>
+                    <div class="col-md">
+                        {{#if isRepresentative}}
+                        <span class="list__label">Потвърден</span>
+                        <div class="list__output">
+                            {{#if isComfirmed}}
+                            Потвърден
+                            {{else}}
+                            НЕПОТВЪРДЕН
+                            {{/if}}
+                        </div>
+                        {{/if}}
+                    </div>
+                    <div class="col-md">
+                        <span class="list__label">Активност</span>
+                        <div class="list__output">
+                            {{#if isActive}}
+                                Активен
+                                {{else}}
+                                Деактивиран
+                            {{/if}}
+                        </div>
+                    </div>                    
+                    <div class="ms-auto col-lg-1">
+                        <button onclick="return false;" class="btn u-btn-lupa" title="Преглед"></button>
+                    </div>                   
+                </div>
+            </div>      
+        </a>       
+    </li>
+</script>
+

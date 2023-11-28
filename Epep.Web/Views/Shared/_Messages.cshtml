@@ -1,0 +1,30 @@
+﻿@{
+    var success = TempData["SuccessMessage"];
+    var error = TempData["ErrorMessage"];
+}
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1111">
+    <div id="divToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <strong class="me-auto">ЕПЕП</strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Hello, world! This is a toast message.
+        </div>
+    </div>
+</div>
+
+
+@if (success != null)
+{
+    <script>
+        messageHelper.ShowSuccessMessage('@Html.Raw(success)');
+    </script>
+}
+
+@if (error != null)
+{
+    <script>
+            messageHelper.ShowErrorMessage('@error');
+    </script>
+}

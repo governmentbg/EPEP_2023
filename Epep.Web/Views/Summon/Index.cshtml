@@ -1,0 +1,141 @@
+﻿@using Epep.Core.ViewModels.Case;
+@model FilterSummonVM
+@{
+    ViewData["Title"] = "Съобщения";
+}
+@section offcanvasFilter{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на съобщения</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.CourtId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @Html.EditorFor(x=>x.CaseKindId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @Html.EditorFor(x=>x.SummonKind,"String",new{container_class="mb-2"})
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.RegNumber,"Int32",new{container_class="col-8 mb-2"})
+                @Html.EditorFor(x=>x.RegYear,"GenericDropDownInt",new{container_class="col-4 mb-2"})
+            </div>
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+            </div>
+            @Html.EditorFor(x=>x.Number,"String",new{container_class="mb-2"})
+            @Html.EditorFor(x=>x.NotReadOnly)
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+
+<main class="page-content">
+    <div class="container">
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilter" aria-controls="offcanvasFilter">Търсене на съобщения</button>
+            </div>
+        </div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+
+
+@section Scripts
+    {
+    <script>
+        $(function () {
+            $('#offcanvasFilter').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@(Url.Action("LoadData"))',
+                data: function () {
+                    return {
+                        CourtId: $('#CourtId').val(),
+                        CaseKindId: $('#CaseKindId').val(),
+                        SummonKind: $('#SummonKind').val(),
+                        RegNumber: $('#RegNumber').val(),
+                        RegYear: $('#RegYear').val(),
+                        DateFrom: $('#DateFrom').val(),
+                        DateTo: $('#DateTo').val(),
+                        Number: $('#Number').val(),
+                        NotReadOnly: $('#NotReadOnly').is(':checked')
+                    };
+                },
+                template: '#gvItemSummon'
+            });
+        });
+        function readSummonCallback(){
+            let actionMode = $('#ActionMode').val();
+            if (actionMode == 'reload-summon') {
+                gridViewLoadData('#gvMain');
+            }
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="gvItemSummon">
+        <li class="list__item">
+            <div class="case-card case-card--darken">
+                <div class="case-card__body">
+                    <div class="row">
+                        <a href="#" class="col-md-9" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}',readSummonCallback);return false;" >
+                            <div class="row">
+                                 <div class="col-1 col-md-auto">
+                                     {{#if isRead}}
+                                     <div class="msg-open">
+                                         <span class="visually-hidden">Прочетено съобщение</span>
+                                     </div>
+                                     {{else}}
+                                     <div class="msg-new">
+                                         <span class="visually-hidden">Ново съобщение</span>
+                                     </div>
+                                     {{/if}}
+                                 </div>
+                                <div class="col-md-2">
+                                   <span class="list__label">Получено на</span>
+                                   <div class="list__output">{{dateFormat dateCreated "DD.MM.YYYY HH:mm"}}</div>
+                                </div>
+                                 <div class="col-md-2">
+                                   <span class="list__label">Номер</span>
+                                   <div class="list__output">{{number}}</div>
+                                </div>
+                                 <div class="col-md-2">
+                                   <span class="list__label">Връчено на</span>
+                                   <div class="list__output">{{dateFormat readTime "DD.MM.YYYY HH:mm"}}</div>
+                                </div>
+                                <div class="col-md-2">
+                                    <span class="list__label">Тип</span>
+                                    <div class="list__output">{{summonType}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Вид</span>
+                                    <div class="list__output">{{summonKind}}</div>
+                                </div>
+                                <div class="col-md">
+                                    <span class="list__label">Получател</span>
+                                    <div class="list__output">{{subject}}</div>
+                                </div>
+                            </div>
+                        </a>
+                        <div class="col-md-2">
+                            <span class="list__label">{{courtName}}</span>
+                            <div class="list__output">
+                                <a href="#" onclick="showDetails(@(NomenclatureConstants.SourceTypes.Case),'{{caseGid}}');return false;">
+                                    {{caseInfo}}
+                                </a>
+                            </div>
+                        </div>
+                        {{#if isRead}}
+                            <div class="col-md">
+                                <button onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}');return false;" class="float-end btn u-btn-lupa" aria-labelledby="преглед свързани документи" title="Преглед"></button>
+                            </div>
+                        {{else}}
+                            <div class="col-md"><button onclick="showDetails(@(NomenclatureConstants.SourceTypes.Summon),'{{gid}}');return false;" class="cta-active btn">Прочети</button></div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+}

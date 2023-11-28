@@ -1,0 +1,109 @@
+﻿@using Epep.Core.ViewModels.Common;
+@model FilterCourtVM
+@{
+    ViewData["Title"] = "Съдилища";
+}
+
+@section offcanvasFilter{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на съдилища</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.CourtTypeId,"GenericDropDown",new{container_class="mb-2"})
+            @Html.EditorFor(x=>x.Name,"String",new{container_class="mb-2"})
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+<main class="page-content">
+    <div class="container">
+        <div class="page-title__container row">
+            <div class="col-auto"><h1 class="page-title">@ViewData["Title"]</h1></div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFilter" aria-controls="offcanvasMain">Търсене на съдилища</button>
+            </div>
+        </div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('.main-nav__item--courts').addClass('active');
+            $('#offcanvasFilter').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@(Url.Action("CourtsLoadData"))',
+                data: function () {
+                    return {
+                        CourtTypeId: $('#CourtTypeId').val(),
+                        Name: $('#Name').val()
+                    };
+                },
+                template: '#gridViewItems'
+            });
+        });
+        function editCourt(id) {
+            requestOffcanvasSmall('@Url.Action("CourtEdit")', { id: id });
+        }
+        function editCourtCallback() {
+            hideOffcanvas();
+            gridViewLoadData('#gvMain');
+        }
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewItems">
+        <li class="list__item">
+            <div class="case-card">
+                <div class="case-card__body {{#compare isActive false}}disabled{{/compare}}">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <span class="list__label">Вид</span>
+                            <div class="list__output">{{courtType}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Наименование</span>
+                            <div class="list__output">
+                                <a href="#" onclick="editCourt('{{courtId}}');return false;">{{courtName}}</a>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="list__label">Електронно подаване</span>
+                            <div class="list__output">
+                                {{#compare hasElectronicDocument true}}
+                                    Да
+                                {{/compare}}
+                                {{#compare hasElectronicDocument false}}
+                                    НЕ
+                                {{/compare}}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="list__label">Електронно плащане</span>
+                            <div class="list__output">
+                                {{#compare hasElectronicPayment true}}
+                                    Да
+                                {{/compare}}
+                                {{#compare hasElectronicPayment false}}
+                                    НЕ
+                                {{/compare}}
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="list__label">Интернет страница</span>
+                            <div class="list__output">
+                                {{#if url}}
+                                    <a href="{{{url}}}" target="_blank">страница</a>
+                                {{/if}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+    </script>
+}

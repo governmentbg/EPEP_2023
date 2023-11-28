@@ -1,0 +1,216 @@
+﻿@model eCase.Web.Models.Summon.SummonSearchVM
+@using PagedList
+@using PagedList.Mvc;
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало")
+}, "Съобщения")
+
+@{
+    var queryString = Request.QueryString;
+}
+
+<!-- SEARCH PANEL -->
+<div class="search-panel clearfix">
+    <div class="title">
+        <span>Търсене на</span>
+        <strong>призовка или</strong>
+        <strong>съобщение</strong>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="post">
+            @if (!ViewContext.ViewData.ModelState.IsValid)
+            {
+            <!-- VALIDATION -->
+                <div class="rw">
+                    <div class="lbl"></div>
+                    <div class="vl">
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="rw">
+                <div class="lbl">Съд:</div>
+                <div class="vl">
+                    @Html.DropDownListFor(m => m.CourtCode, Model.Courts, "Всички", new { @class = "select2" })
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Дата от:</div>
+                <div class="vl clearfix">
+                    <div class="col-sm-5 no-padding">
+                        @Html.TextBoxFor(m => m.DateFrom, new { @class = "datepicker" })
+                    </div>
+                    <div class="col-sm-7 no-padding">
+                        <div class="tbl">
+                            <div class="tbl-cell">
+                                Дата до:
+                            </div>
+                            <div class="tbl-cell">
+                                @Html.TextBoxFor(m => m.DateTo, new { @class = "datepicker" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Дело № / Година:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-7 no-padding">
+                        @Html.TextBoxFor(m => m.CaseNumber)
+                    </div>
+                    <div class="separator"> / </div>
+                    <div class="col-sm-4 col-xs-5 no-padding">
+                        @Html.DropDownListFor(m => m.CaseYear, Model.CaseYears, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Вид:</div>
+                <div class="vl">
+                    <div class="col-sm-6 col-xs-7 no-padding">
+                        @Html.DropDownListFor(m => m.Type, Model.Types, "Всички", new { @class = "select2" })
+                    </div>
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <label class="checkbox  @(Model.IsOnlyUnread ? "checked" : "")">
+                        Само непрочетени
+                        @Html.CheckBoxFor(m => m.IsOnlyUnread)
+                    </label>
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="ТЪРСИ" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (ViewData.ModelState.IsValid)
+{
+    if (Model.SearchResults == null)
+    {
+        Model.SearchResults = new PagedList<eCase.Domain.Entities.Summon>(null, 1, 1);
+    }
+
+    if (Model.SearchResults != null && Model.SearchResults.Count > 0)
+    {
+        string sortClass = Model.IsAsc ? "sort-asc" : "sort-desc";
+        string actionName = MVC.Summon.ActionNames.Search;
+        string controllerName = MVC.Summon.Name;
+
+        <!--TABLE -->
+        <div class="results-table">
+            <div class="results-thead">
+                <div class="results-cell sortable @(Model.Order == SummonsOrder.Date ? sortClass : "")">
+                    @Html.ActionLink("Дата", actionName, controllerName, Model.GetRouteValues(queryString, null, SummonsOrder.Date), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == SummonsOrder.Type ? sortClass : "")">
+                    @Html.ActionLink("Вид", actionName, controllerName, Model.GetRouteValues(queryString, null, SummonsOrder.Type), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == SummonsOrder.Side ? sortClass : "")">
+                    @Html.ActionLink("Страна", actionName, controllerName, Model.GetRouteValues(queryString, null, SummonsOrder.Side), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == SummonsOrder.Court ? sortClass : "")">
+                    @Html.ActionLink("Съд", actionName, controllerName, Model.GetRouteValues(queryString, null, SummonsOrder.Court), null)
+                </div>
+                <div class="results-cell sortable @(Model.Order == SummonsOrder.Case ? sortClass : "")">
+                    @Html.ActionLink("Дело", actionName, controllerName, Model.GetRouteValues(queryString, null, SummonsOrder.Case), null)
+                </div>
+                <div class="results-cell"> </div>
+            </div>
+            @foreach (var res in Model.SearchResults)
+            {
+                <div class="results-row @(!res.IsRead ? "unread" : "")">
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дата:</span>
+                        <span class="label">
+                            @Html.DisplayFor(m => res.DateCreated)
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Вид:</span>
+                        <span class="label">
+                            @if (res.SummonType != null)
+                            {
+                                <text>@res.SummonType.Name</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Страна:</span>
+                        <span class="label">@res.Addressee</span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Съд:</span>
+                        <span class="label">
+                            @if (res.Side != null && res.Side.Case != null && res.Side.Case.Court != null)
+                            {
+                                <text>@res.Side.Case.Court.Abbreviation</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg">Дело:</span>
+                        <span class="label">
+                            @if (res.Side != null && res.Side.Case != null)
+                            {
+                                <text>@res.Side.Case.Abbreviation</text>
+                            }
+                        </span>
+                    </div>
+                    <div class="results-cell">
+                        <span class="hidden-lg"> </span>
+                        <span class="label">
+                            @Html.ActionLink("Преглед", MVC.Summon.ActionNames.Details, MVC.Summon.Name, new { gid = res.Gid }, new { @class = "btn orange-btn wait" })
+                        </span>
+                    </div>
+                </div>
+            }
+        </div>
+
+        if (Model.SearchResults.PageCount > 1)
+        {
+            <div class="paging clearfix">
+                <span>Страница (@Model.SearchResults.PageNumber/@Model.SearchResults.PageCount):</span>
+                @Html.PagedListPager(Model.SearchResults,
+                    page => Url.Action(actionName
+                        , controllerName
+                        , Model.GetRouteValues(queryString, eCase.Common.Crypto.ConfigurationBasedStringEncrypter.Encrypt(page.ToString())))
+                        , new PagedListRenderOptions
+                        {
+                            Display = PagedListDisplayMode.IfNeeded,
+                            DisplayEllipsesWhenNotShowingAllPageNumbers = true,
+                            LinkToNextPageFormat = ">",
+                            LinkToPreviousPageFormat = "<"
+                        })
+            </div>
+        }
+    }
+    else
+    {
+        <div class="no-results">
+            <img src="@(Url.Content(Links.Content.img.icons.warning_png))" alt="" />
+            <span>Няма намерени резултати</span>
+        </div>
+    }
+
+    @section scripts
+{
+        <script>
+            $(document).ready(function () {
+                $('html, body').animate({ scrollTop: ($('.search-panel').height() - $('.gototop').height() / 2) }, 1400, 'easeOutQuint');
+            });
+        </script>
+    }
+}

@@ -1,0 +1,443 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<!--<Nullable>enable</Nullable>-->
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Configurations>Debug;Release;Epep.Admin</Configurations>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Content Remove="wwwroot\assets\images\general\send-doc-nopayment.svg" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="Models\GridRequestModel.cs" />
+		<Content Include="Models\GridResponseModel.cs" />
+		<Content Include="regix\vss-epep-regix.p12">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Include="regix\vss-epep-test-regix.p12">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\assets\accessibility\accessibility.js" />
+	  <None Include="wwwroot\assets\accessibility\contrast.svg" />
+	  <None Include="wwwroot\assets\accessibility\dyslexia.svg" />
+	  <None Include="wwwroot\assets\accessibility\fontscale-down.svg" />
+	  <None Include="wwwroot\assets\accessibility\fontscale-up.svg" />
+	  <None Include="wwwroot\assets\accessibility\goto.svg" />
+	  <None Include="wwwroot\assets\accessibility\man-accessibility.svg" />
+	  <None Include="wwwroot\assets\accessibility\reset.svg" />
+	  <None Include="wwwroot\assets\accessibility\text-version.svg" />
+	  <None Include="wwwroot\assets\css\main.scss" />
+	  <None Include="wwwroot\assets\css\scss\basics\_base.scss" />
+	  <None Include="wwwroot\assets\css\scss\basics\_mixins.scss" />
+	  <None Include="wwwroot\assets\css\scss\basics\_typography.scss" />
+	  <None Include="wwwroot\assets\css\scss\basics\_utility.scss" />
+	  <None Include="wwwroot\assets\css\scss\basics\_vars.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_add-new-address.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_breadcrumbs.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_case-card.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_compliant.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_details.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_drag-and-dropp.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_elements.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_epep-calendar.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_event-card.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_heading.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_info-bubble.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_main-nav.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_msg-board.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_pagination.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_registration-form.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_relative-doc.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_step-counter.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_tabs-nav.scss" />
+	  <None Include="wwwroot\assets\css\scss\components\_timeline.scss" />
+	  <None Include="wwwroot\assets\css\scss\layout\_case-single.scss" />
+	  <None Include="wwwroot\assets\css\scss\layout\_footer.scss" />
+	  <None Include="wwwroot\assets\css\scss\layout\_header.scss" />
+	  <None Include="wwwroot\assets\css\scss\layout\_layout.scss" />
+	  <None Include="wwwroot\assets\css\scss\layout\_login-page.scss" />
+	  <None Include="wwwroot\assets\dtpckr\dtpckr.js" />
+	  <None Include="wwwroot\assets\images\branding\gerb.svg" />
+	  <None Include="wwwroot\assets\images\calendar\calendar-item-bkg.svg" />
+	  <None Include="wwwroot\assets\images\calendar\events-Number_of_events=1.svg" />
+	  <None Include="wwwroot\assets\images\calendar\events-Number_of_events=2.svg" />
+	  <None Include="wwwroot\assets\images\calendar\events-Number_of_events=3+.svg" />
+	  <None Include="wwwroot\assets\images\calendar\events-Number_of_events=3.svg" />
+	  <None Include="wwwroot\assets\images\calendar\leave-item-bkg.svg" />
+	  <None Include="wwwroot\assets\images\cases\.DS_Store" />
+	  <None Include="wwwroot\assets\images\cases\archive-normal.svg" />
+	  <None Include="wwwroot\assets\images\cases\archive-selected.svg" />
+	  <None Include="wwwroot\assets\images\cases\case-users-active.svg" />
+	  <None Include="wwwroot\assets\images\cases\case-users-normal.svg" />
+	  <None Include="wwwroot\assets\images\cases\favorite-State=disabled.svg" />
+	  <None Include="wwwroot\assets\images\cases\favorite-State=normal.svg" />
+	  <None Include="wwwroot\assets\images\cases\favorite-State=selected.svg" />
+	  <None Include="wwwroot\assets\images\cases\related-cases-hover.svg" />
+	  <None Include="wwwroot\assets\images\cases\related-cases.svg" />
+	  <None Include="wwwroot\assets\images\cases\team-hover.svg" />
+	  <None Include="wwwroot\assets\images\cases\team.svg" />
+	  <None Include="wwwroot\assets\images\cases\timeline-white.svg" />
+	  <None Include="wwwroot\assets\images\cases\timeline.svg" />
+	  <None Include="wwwroot\assets\images\checkout\.DS_Store" />
+	  <None Include="wwwroot\assets\images\checkout\addtocart.svg" />
+	  <None Include="wwwroot\assets\images\dashboard\calendar-red.svg" />
+	  <None Include="wwwroot\assets\images\dashboard\callout-bkg.svg" />
+	  <None Include="wwwroot\assets\images\dashboard\folder-red.svg" />
+	  <None Include="wwwroot\assets\images\dashboard\messages-red.svg" />
+	  <None Include="wwwroot\assets\images\documents\.DS_Store" />
+	  <None Include="wwwroot\assets\images\documents\add-document.svg" />
+	  <None Include="wwwroot\assets\images\documents\attach.svg" />
+	  <None Include="wwwroot\assets\images\documents\briefcase.svg" />
+	  <None Include="wwwroot\assets\images\documents\delete.svg" />
+	  <None Include="wwwroot\assets\images\documents\Direction=inbox.svg" />
+	  <None Include="wwwroot\assets\images\documents\Direction=internal.svg" />
+	  <None Include="wwwroot\assets\images\documents\Direction=outbox.svg" />
+	  <None Include="wwwroot\assets\images\documents\opendocument-State=hover.svg" />
+	  <None Include="wwwroot\assets\images\documents\opendocument-State=normal.svg" />
+	  <None Include="wwwroot\assets\images\documents\paused.svg" />
+	  <None Include="wwwroot\assets\images\documents\person.svg" />
+	  <None Include="wwwroot\assets\images\documents\search-documents.svg" />
+	  <None Include="wwwroot\assets\images\documents\State_1=new_State_2=received.svg" />
+	  <None Include="wwwroot\assets\images\documents\State_1=new_State_2=unopened.svg" />
+	  <None Include="wwwroot\assets\images\documents\State_1=old_State_2=read.svg" />
+	  <None Include="wwwroot\assets\images\general\.DS_Store" />
+	  <None Include="wwwroot\assets\images\general\add-dark.svg" />
+	  <None Include="wwwroot\assets\images\general\add-file-dark.svg" />
+	  <None Include="wwwroot\assets\images\general\add.svg" />
+	  <None Include="wwwroot\assets\images\general\arrow-left-purple.svg" />
+	  <None Include="wwwroot\assets\images\general\arrow-right-white.svg" />
+	  <None Include="wwwroot\assets\images\general\arrow-white-left.svg" />
+	  <None Include="wwwroot\assets\images\general\briefcase.svg" />
+	  <None Include="wwwroot\assets\images\general\calendar-input.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=maestro_State=hover.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=maestro_State=normal.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=mastercard_State=hover.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=mastercard_State=normal.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=visa_electron_State=hover.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=visa_electron_State=normal.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=visa_State=hover.svg" />
+	  <None Include="wwwroot\assets\images\general\cc-Type=visa_State=normal.svg" />
+	  <None Include="wwwroot\assets\images\general\check-white.svg" />
+	  <None Include="wwwroot\assets\images\general\chevron-down.svg" />
+	  <None Include="wwwroot\assets\images\general\close-btn-red.svg" />
+	  <None Include="wwwroot\assets\images\general\close.svg" />
+	  <None Include="wwwroot\assets\images\general\confirm-users.svg" />
+	  <None Include="wwwroot\assets\images\general\confirm.svg" />
+	  <None Include="wwwroot\assets\images\general\creditcard.svg" />
+	  <None Include="wwwroot\assets\images\general\delete.svg" />
+	  <None Include="wwwroot\assets\images\general\download.svg" />
+	  <None Include="wwwroot\assets\images\general\draganddrop.svg" />
+	  <None Include="wwwroot\assets\images\general\en0green.svg" />
+	  <None Include="wwwroot\assets\images\general\log-in.svg" />
+	  <None Include="wwwroot\assets\images\general\log-out.svg" />
+	  <None Include="wwwroot\assets\images\general\login-btn.svg" />
+	  <None Include="wwwroot\assets\images\general\map-pin.svg" />
+	  <None Include="wwwroot\assets\images\general\nextstep.svg" />
+	  <None Include="wwwroot\assets\images\general\open-doc-white.svg" />
+	  <None Include="wwwroot\assets\images\general\open-doc.svg" />
+	  <None Include="wwwroot\assets\images\general\pagearrows-first-State=active_Type=navigation-2.svg" />
+	  <None Include="wwwroot\assets\images\general\pagearrows-last-State=active_Type=navigation-2-left.svg" />
+	  <None Include="wwwroot\assets\images\general\pagearrows-last-State=active_Type=navigation-2-right.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrows-State=active,_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrows-State=hover_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrows-State=inactive_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrows-State=normal_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrowsright-State=active_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrowsright-State=hover_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrowsright-State=inactive_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pagerarrowsright-State=normal_Type=navigation.svg" />
+	  <None Include="wwwroot\assets\images\general\pause.svg" />
+	  <None Include="wwwroot\assets\images\general\pdf.svg" />
+	  <None Include="wwwroot\assets\images\general\pen-green.svg" />
+	  <None Include="wwwroot\assets\images\general\plus-circle.svg" />
+	  <None Include="wwwroot\assets\images\general\queries-panel.svg" />
+	  <None Include="wwwroot\assets\images\general\queries.svg" />
+	  <None Include="wwwroot\assets\images\general\receives-notifications.svg" />
+	  <None Include="wwwroot\assets\images\general\reset-purple.svg" />
+	  <None Include="wwwroot\assets\images\general\role-administrator.svg" />
+	  <None Include="wwwroot\assets\images\general\role-court-admin.svg" />
+	  <None Include="wwwroot\assets\images\general\role-legal-advisor.svg" />
+	  <None Include="wwwroot\assets\images\general\role-person.svg" />
+	  <None Include="wwwroot\assets\images\general\role-representative.svg" />
+	  <None Include="wwwroot\assets\images\general\select-Direction=down.svg" />
+	  <None Include="wwwroot\assets\images\general\select-Direction=up.svg" />
+	  <None Include="wwwroot\assets\images\general\send-doc-nopayment.svg">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Include="wwwroot\assets\images\general\send-doc.svg" />
+	  <None Include="wwwroot\assets\images\general\State=active_Type=navigation-2.svg" />
+	  <None Include="wwwroot\assets\images\general\State=active_Type=navigation-2_Direction=right.svg" />
+	  <None Include="wwwroot\assets\images\general\State=hover_Type=navigation-2.svg" />
+	  <None Include="wwwroot\assets\images\general\State=hover_Type=navigation-2_Direction=right.svg" />
+	  <None Include="wwwroot\assets\images\general\State=inactive_Type=navigation-2.svg" />
+	  <None Include="wwwroot\assets\images\general\State=inactive_Type=navigation-2_Direction=right.svg" />
+	  <None Include="wwwroot\assets\images\general\State=normal_Type=navigation-2.svg" />
+	  <None Include="wwwroot\assets\images\general\State=normal_Type=navigation-2_Direction=right.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-act-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-act.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-doc-in-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-doc-in.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-doc-out-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-doc-out.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-razpredelenie-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-razpredelenie.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-side-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-side.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-zasedanie-hover.svg" />
+	  <None Include="wwwroot\assets\images\hronologia-icons\timeline-zasedanie.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\.DS_Store" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_calendar.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_cases.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_dashboard.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_documents.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_menu_toggle_close.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_messages.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_messages_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_online_hearings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_payment.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_payment_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\active_settings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\courts-2.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\lawyers-2.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active\users-2.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\active_mycases.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\courts-1.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-calendar.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-cases.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-dashboard.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-documents.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-menu_toggle_open.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-messages.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-messages_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-online_hearings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-payment.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-payment_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\hover-settings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\lawyers-1.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover\users-1.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\hover_mycases.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\courts-3.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\lawyers-3.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-calendar.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-cases.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-dashboard.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-documents.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-menu_toggle_close.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-menu_toggle_open.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-messages.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-messages_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-online_hearings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-payment.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-payment_with_indicator.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\normal-settings.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\toggle-mobile_open.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal\users-3.svg" />
+	  <None Include="wwwroot\assets\images\main-menu\normal_mycases.svg" />
+	  <None Include="wwwroot\assets\images\profile\.DS_Store" />
+	  <None Include="wwwroot\assets\images\profile\see.svg" />
+	  <None Include="wwwroot\assets\images\registration\.DS_Store" />
+	  <None Include="wwwroot\assets\images\registration\fizichesko-lice.svg" />
+	  <None Include="wwwroot\assets\images\registration\juridichesko-lice.svg" />
+	  <None Include="wwwroot\assets\images\registration\juridichesko-lice2.svg" />
+	  <None Include="wwwroot\assets\images\registration\signature-bckgrnd.svg" />
+	  <None Include="wwwroot\assets\images\registration\signature.svg" />
+	  <None Include="wwwroot\assets\images\timeline\doc.svg" />
+	  <None Include="wwwroot\assets\images\timeline\secret.svg" />
+	  <None Include="wwwroot\assets\images\timeline\side.svg" />
+	  <None Include="wwwroot\assets\images\timeline\sitting.svg" />
+	  <None Include="wwwroot\assets\scripts\bootstrap.bundle.min.js" />
+	  <None Include="wwwroot\assets\scripts\calendar.js" />
+	  <None Include="wwwroot\assets\scripts\calendar.min.js" />
+	  <None Include="wwwroot\assets\scripts\drag-drop.js" />
+	  <None Include="wwwroot\assets\scripts\index.js" />
+	  <None Include="wwwroot\assets\scripts\jquery.min.js" />
+	  <None Include="wwwroot\assets\scripts\locales-all.min.js" />
+	  <None Include="wwwroot\assets\scripts\locales\af.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-dz.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-kw.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-ly.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-ma.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-sa.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar-tn.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ar.js" />
+	  <None Include="wwwroot\assets\scripts\locales\az.js" />
+	  <None Include="wwwroot\assets\scripts\locales\bg.js" />
+	  <None Include="wwwroot\assets\scripts\locales\bn.js" />
+	  <None Include="wwwroot\assets\scripts\locales\bs.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ca.js" />
+	  <None Include="wwwroot\assets\scripts\locales\cs.js" />
+	  <None Include="wwwroot\assets\scripts\locales\cy.js" />
+	  <None Include="wwwroot\assets\scripts\locales\da.js" />
+	  <None Include="wwwroot\assets\scripts\locales\de-at.js" />
+	  <None Include="wwwroot\assets\scripts\locales\de.js" />
+	  <None Include="wwwroot\assets\scripts\locales\el.js" />
+	  <None Include="wwwroot\assets\scripts\locales\en-au.js" />
+	  <None Include="wwwroot\assets\scripts\locales\en-gb.js" />
+	  <None Include="wwwroot\assets\scripts\locales\en-nz.js" />
+	  <None Include="wwwroot\assets\scripts\locales\eo.js" />
+	  <None Include="wwwroot\assets\scripts\locales\es-us.js" />
+	  <None Include="wwwroot\assets\scripts\locales\es.js" />
+	  <None Include="wwwroot\assets\scripts\locales\et.js" />
+	  <None Include="wwwroot\assets\scripts\locales\eu.js" />
+	  <None Include="wwwroot\assets\scripts\locales\fa.js" />
+	  <None Include="wwwroot\assets\scripts\locales\fi.js" />
+	  <None Include="wwwroot\assets\scripts\locales\fr-ca.js" />
+	  <None Include="wwwroot\assets\scripts\locales\fr-ch.js" />
+	  <None Include="wwwroot\assets\scripts\locales\fr.js" />
+	  <None Include="wwwroot\assets\scripts\locales\gl.js" />
+	  <None Include="wwwroot\assets\scripts\locales\he.js" />
+	  <None Include="wwwroot\assets\scripts\locales\hi.js" />
+	  <None Include="wwwroot\assets\scripts\locales\hr.js" />
+	  <None Include="wwwroot\assets\scripts\locales\hu.js" />
+	  <None Include="wwwroot\assets\scripts\locales\hy-am.js" />
+	  <None Include="wwwroot\assets\scripts\locales\id.js" />
+	  <None Include="wwwroot\assets\scripts\locales\is.js" />
+	  <None Include="wwwroot\assets\scripts\locales\it.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ja.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ka.js" />
+	  <None Include="wwwroot\assets\scripts\locales\kk.js" />
+	  <None Include="wwwroot\assets\scripts\locales\km.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ko.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ku.js" />
+	  <None Include="wwwroot\assets\scripts\locales\lb.js" />
+	  <None Include="wwwroot\assets\scripts\locales\lt.js" />
+	  <None Include="wwwroot\assets\scripts\locales\lv.js" />
+	  <None Include="wwwroot\assets\scripts\locales\mk.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ms.js" />
+	  <None Include="wwwroot\assets\scripts\locales\nb.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ne.js" />
+	  <None Include="wwwroot\assets\scripts\locales\nl.js" />
+	  <None Include="wwwroot\assets\scripts\locales\nn.js" />
+	  <None Include="wwwroot\assets\scripts\locales\pl.js" />
+	  <None Include="wwwroot\assets\scripts\locales\pt-br.js" />
+	  <None Include="wwwroot\assets\scripts\locales\pt.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ro.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ru.js" />
+	  <None Include="wwwroot\assets\scripts\locales\si-lk.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sk.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sl.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sm.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sq.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sr-cyrl.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sr.js" />
+	  <None Include="wwwroot\assets\scripts\locales\sv.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ta-in.js" />
+	  <None Include="wwwroot\assets\scripts\locales\th.js" />
+	  <None Include="wwwroot\assets\scripts\locales\tr.js" />
+	  <None Include="wwwroot\assets\scripts\locales\ug.js" />
+	  <None Include="wwwroot\assets\scripts\locales\uk.js" />
+	  <None Include="wwwroot\assets\scripts\locales\uz.js" />
+	  <None Include="wwwroot\assets\scripts\locales\vi.js" />
+	  <None Include="wwwroot\assets\scripts\locales\zh-cn.js" />
+	  <None Include="wwwroot\assets\scripts\locales\zh-tw.js" />
+	  <None Include="wwwroot\assets\uploads\WCAG2Checklist.pdf" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="BundlerMinifier.Core" Version="3.2.449" />
+		<PackageReference Include="IdStampITAuthentication" Version="6.0.1" />
+		<PackageReference Include="IO.RegixClient" Version="1.0.9" />
+		<PackageReference Include="IO.SignTools" Version="1.0.39" />
+		<PackageReference Include="IO.Timestamp.Client" Version="2.0.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.10" />
+		<PackageReference Include="Microsoft.DotNet.PlatformAbstractions" Version="3.1.6" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+		<PackageReference Include="Microsoft.NETCore.App" Version="2.0.0" />
+		<PackageReference Include="QRCoder" Version="1.4.3" />
+		<PackageReference Include="Razor.Templating.Core" Version="1.8.0" />
+		<PackageReference Include="Rotativa.AspNetCore" Version="1.2.0" />
+		<PackageReference Include="Serilog.AspNetCore" Version="6.1.0" />
+		<PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Epep.Core\Epep.Core.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Update="wwwroot\css\prod\site.min.css">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\gridview\gridview.js">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\lib\jquery\dist\jquery.min.js">
+			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
+		</Content>
+		<Content Update="regix\regix_map_actual_state.json">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltoimage">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltoimage.exe">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltopdf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltopdf.exe">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\bin\wkhtmltoimage">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\bin\wkhtmltopdf">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\include\wkhtmltox\dllbegin.inc">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\include\wkhtmltox\dllend.inc">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\include\wkhtmltox\image.h">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\include\wkhtmltox\pdf.h">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\lib\libwkhtmltox.so">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\lib\libwkhtmltox.so.0">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\lib\libwkhtmltox.so.0.12">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\lib\libwkhtmltox.so.0.12.4">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\share\man\man1\wkhtmltoimage.1.gz">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+		<Content Update="wwwroot\Rotativa\wkhtmltox\share\man\man1\wkhtmltopdf.1.gz">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="logs\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="regix\regix-vss-test.p12">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="regix\regix-vss.p12">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	  <None Update="regix\vss-3des-epep-prod.pfx">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
+
+</Project>

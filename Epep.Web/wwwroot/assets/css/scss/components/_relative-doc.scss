@@ -1,0 +1,41 @@
+.relative-doc {
+    &__container {
+        position: sticky;
+        top: 0;
+        // height: 0;
+        // overflow: hidden;
+        background-color: $primary-light-25;
+
+        .heading {
+            margin-bottom: 0;
+            padding-top: $main-gutter/2;
+            padding-bottom: $main-gutter/2;
+        }
+    }
+
+    &__list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+
+        // justify-content: space-between;
+        padding-left: 0;
+        margin-bottom: 0;
+        list-style: none;
+
+        li {
+            width: 100%;
+
+            .info-bubble {
+                display: block;
+                width: 100%;
+            }
+        }
+    }
+    &__item {
+        // border-bottom: 1px dashed $primary-dark-25;
+        border-right: 1px dashed $primary-dark-25;
+
+        margin-bottom: 10px;
+    }
+}

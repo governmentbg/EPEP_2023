@@ -1,0 +1,101 @@
+﻿@using Epep.Core.Contracts;
+@using Epep.Core.Models;
+@using Epep.Core.ViewModels.Case
+@model FilterLawyerViewVM
+@{
+    ViewData["Title"] = "Достъп до дела по Закона за адвокатурата";
+    var lawyer = (Lawyer)ViewBag.lawyer;
+}
+
+@section offcanvasMain{
+    <div class="details__header offcanvas-header">
+        <h5 id="searchOffcanvasLabel" class="section-title">Търсене на достъп</h5>
+    </div>
+    <div class="details__body offcanvas-body">
+        <button type="button" class="btn u-btn u-btn-pill u-btn--grey ms-auto oc-clear" data-bs-dismiss="offcanvas">Изчисти и затвори</button>
+        <form action="" class="epep-form">
+            @Html.EditorFor(x=>x.CourtId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            @Html.EditorFor(x=>x.CaseKindId,"GenericDropDown",new{container_class="mb-2",select2=true})
+@*            @Html.EditorFor(x=>x.DocNumber,"Int32",new{container_class="mb-2"})
+*@            <div class="row g-2">
+                @Html.EditorFor(x=>x.RegNumber,"Int32",new{container_class="col-8 mb-2"})
+                @Html.EditorFor(x=>x.RegYear,"GenericDropDownInt",new{container_class="col-4 mb-2"})
+            </div>
+            <div class="row g-2">
+                @Html.EditorFor(x=>x.DateFrom,"DateTimeNull",new{container_class="col-6 mb-2"})
+                @Html.EditorFor(x=>x.DateTo,"DateTimeNull",new{container_class="col-6 mb-2"})
+            </div>
+            <div class="mt-4">
+                <button type="button" onclick="gridViewLoadData('#gvMain');" class="btn u-btn u-btn-pill ms-auto oc-submit" data-bs-dismiss="offcanvas">Търси</button>
+            </div>
+        </form>
+    </div>
+}
+<main class="page-content">
+    <div class="container">
+        <nav class="breadcrumbs" aria-label="навигация пътечка">
+            <ul class="breadcrumbs__list">
+                <li><a asp-action="Index" asp-controller="Lawyer">Адвокати</a></li>
+            </ul>
+        </nav>
+        <div class="page-title__container row">
+            <div class="col-auto">
+                <h1 class="page-title">@ViewData["Title"]</h1>
+                <h3>@lawyer.Name, @lawyer.Number</h3>
+            </div>
+            <div class="col-auto">
+                <button class="btn u-btn u-btn-pill" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMain" aria-controls="offcanvasMain">Търсене на достъп</button>
+            </div>
+        </div>
+        <div id="gvFocusCases"></div>
+        <div id="gvMain"></div>
+    </div>
+</main>
+@section Scripts{
+    <script>
+        $(function () {
+            $('#offcanvasMain').addClass('off-small');
+            let gvMain = new GridView({
+                container: '#gvMain',
+                url: '@Url.Action("LawyerViewLoadData")',
+                data: function () {
+                    return {
+                        CourtId: $('#CourtId').val(),
+                        CaseKindId: $('#CaseKindId').val(),
+                        RegNumber: $('#RegNumber').val(),
+                        RegYear: $('#RegYear').val(),
+                        DateFrom: $('#DateFrom').val(),
+                        DateTo: $('#DateTo').val(),
+                        LawyerGid:'@lawyer.Gid'
+                    };
+                },
+                xlsExport: true,
+                template: '#gridViewItems'
+            });
+        });
+    </script>
+    <script type="text/x-handlebars-template" id="gridViewItems">
+        <li class="list__item">
+            <div class="case-card">
+                <div class="case-card__body">
+                    <div class="row">
+                        <div class="col-md">
+                            <span class="list__label">Съд</span>
+                            <div class="list__output">{{courtName}}</div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Дело</span>
+                            <div class="list__output">
+                                {{caseKind}} {{caseNumber}}/{{caseYear}}
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <span class="list__label">Достъпено на</span>
+                            <div class="list__output">{{dateFormat viewDate "DD.MM.YYYY HH:mm"}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </script>
+}

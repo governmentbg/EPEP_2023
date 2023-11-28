@@ -1,0 +1,97 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model DocumentListVM
+@{
+    Layout = "~/Views/Shared/_BlankLayout.cshtml";
+}
+<div class="tbl">
+    <label>Съд</label>
+    <span>@Model.CourtName</span>
+</div>
+@if (Model.CaseInfo != null)
+{
+    <div class="tbl">
+        <label>Дело</label>
+        <span>@Model.CaseInfo.TypeName @Model.CaseInfo.Number/@Model.CaseInfo.Year</span>
+    </div>
+}
+<div class="tbl">
+    <label>Документ</label>
+    <span>@Model.DocumentTypeName</span>
+</div>
+<h1>ЕЛЕКТРОНЕН ПАКЕТ</h1>
+@if (!string.IsNullOrEmpty(Model.NumberApply) && Model.DateApply.HasValue)
+{
+    <h3>@($"{Model.NumberApply} / {Model.DateApply:dd.MM.yyyy г.}")</h3>
+}
+
+
+@if (!string.IsNullOrEmpty(Model.PricelistName))
+{
+    <div class="tbl">
+        <label>Тарифа</label>
+        <span>@Model.PricelistName</span>
+    </div>
+}
+@if (Model.BaseAmount > 0.001M)
+{
+    <div class="tbl">
+        <label>Материален интерес</label>
+        <span>@Model.BaseAmount.Value.ToString("N2") @Model.Currency</span>
+    </div>
+}
+@if (Model.TaxAmount > 0.001M)
+{
+    <div class="tbl">
+        <label>Държавна такса</label>
+        <span>@Model.TaxAmount.Value.ToString("N2") @Model.Currency</span>
+    </div>
+}
+
+<div class="tbl">
+    <label>Свързани лица</label>
+    @foreach (var side in Model.Sides)
+    {
+        <span class="list">@side.FullName, @side.UIC</span>
+        <span class="info">@side.SideInvolvementKindName</span>
+    }
+</div>
+
+@if (!string.IsNullOrEmpty(Model.Description))
+{
+    <div class="tbl">
+        <label>Описание</label>
+        <span>@Model.Description</span>
+    </div>
+}
+
+@if (Model.Files.Any())
+{
+    <div class="tbl">
+        <label>Прикачени файлове</label>
+        @foreach (var file in Model.Files)
+        {
+            <span class="list">@file.FileName</span>
+            if (!string.IsNullOrEmpty(file.SignersInfo))
+            {
+                <span class="info">@file.SignersInfo</span>
+
+            }
+        }
+    </div>
+}
+@if (Model.DocumentKind == NomenclatureConstants.DocumentKinds.Initial)
+{
+    <p class="content">@NomenclatureConstants.InitDocumentSummonConsent</p>
+}
+@if (Model.DocumentKind == NomenclatureConstants.DocumentKinds.SideDoc)
+{
+    <p class="content">
+        Декларирам, че при отпадане на качеството ми на страна/представител по дело, ще уведомя съда, за да се прекрати предоставения ми достъп до него.
+    </p>
+    <p class="content">
+        Известна ми е отговорността по чл. 313, ал.1 от НК при деклариране на неверни данни.
+    </p>
+}
+<div class="footer">
+    Този документ е генериран от <a href="https://ecase.justice.bg">Eдинния портал за електронно правосъдие</a>.
+</div>

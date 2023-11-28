@@ -1,0 +1,58 @@
+﻿@using Epep.Core.ViewModels.Document;
+@model ElectronicDocumentVM
+<div class="row">
+    <div class="col-lg-4">
+        <h3 class="section-title section-title--xs mb-3">Данни за документа</h3>
+        <form id="frmDocumentData" action="@Url.Action("Edit")" method="post">
+            @Html.HiddenFor(x=>x.SaveMode)
+            @Html.HiddenFor(x=>x.DocumentKind)
+            @if (Model.DocumentKind != NomenclatureConstants.DocumentKinds.Initial)
+            {
+                @Html.HiddenFor(x=>x.CourtId)
+                @Html.HiddenFor(x=>x.CourtName)
+                @Html.HiddenFor(x=>x.CaseInfo)
+                @Html.HiddenFor(x=>x.SideInfo)
+                @Html.HiddenFor(x=>x.CourtName)
+                @Html.DisplayFor(x=>x.CourtName,"obj",new{container_class="mb-2"})
+                @if (!string.IsNullOrEmpty(Model.CaseInfo))
+                {
+                    @Html.DisplayFor(x=>x.CaseInfo,"obj",new{container_class="mb-2"})
+                }
+@*                @if (!string.IsNullOrEmpty(Model.SideInfo))
+                {
+                    @Html.DisplayFor(x=>x.SideInfo,"obj",new{container_class="mb-2"})
+                }
+*@            }
+            else
+            {
+                @Html.EditorFor(x=>x.CourtId,"GenericDropDown",new{container_class="mb-2",select2=true})
+            }
+            @Html.EditorFor(x=>x.ElectronicDocumentTypeId,"GenericDropDown",new{container_class="mb-2"})
+            @Html.EditorFor(x=>x.BaseAmount,"Decimal",new{container_class="mb-2"})
+            @Html.EditorFor(x=>x.MoneyPricelistId,"GenericDropDown",new{container_class="mb-2"})
+            @Html.EditorFor(x=>x.Description,"Textarea",new{container_class="mb-2",rows=4,placeholder="Въведете кратко описание на документа"})
+            @if (Model.DocumentKind == NomenclatureConstants.DocumentKinds.Initial)
+            {
+                <p>@NomenclatureConstants.InitDocumentSummonConsent</p>
+            }
+        </form>
+    </div>
+    <div class="col-lg-4">
+        <label for="drop_zone" class="list__output mt-4 mb-2">Прикачване на файлове</label>
+        <form action="@Url.Action("FileUpload",new{gid=Model.Gid})" id="frmUpload" method="post" enctype="multipart/form-data">
+            <div id="drop_zone" class="drag-and-drop">
+                <p>
+                    Пуснете файловете тук <input type="file" id="uploadFile" name="uploadFile" onchange="console.log(this.value); return false;"><label for="uploadFile">или изберете от вашия компютър</label>
+                    <progress id="progress-bar" max="100" value="0"></progress>
+                </p>
+            </div>
+        </form>
+        <p class="list__label">Можете да прикачите неограничен брой файлове към документа. Допустимите формати са .pdf, .pdf.p7s, .p7s, .doc.p7s, .docx.p7s, .xls.p7s, .xlsx.p7s, .jpg.p7s, .jpeg.p7s, .png.p7s, .tiff.p7s и .gif.p7s с максимален размер до 50 Mb.</p>
+    </div>
+    <div class="col-lg-4">
+        <h3 class="section-title section-title--xs mb-5">Прикачени файлове</h3>
+        <div id="divFileList"></div>
+        <br />
+        <span asp-validation-for="@Model.FileError" class="text-danger"></span>
+    </div>
+</div>

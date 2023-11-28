@@ -1,0 +1,63 @@
+﻿@model eCase.Web.Models.Lawyer.LawyerCreateVM
+
+@Html.Breadcrumb(new List<BreadcrumbItem>()
+{
+    new BreadcrumbItem(Url.Action(MVC.Home.ActionNames.Index, MVC.Home.Name), "Начало"),
+    new BreadcrumbItem(Url.Action(MVC.Lawyer.ActionNames.Search, MVC.Lawyer.Name), "Регистър адвокати")
+}, "Нов адвокат")
+
+<!-- SEARCH PANEL -->
+<div class="search-panel narrow-fields clearfix">
+    <div class="title">
+        <span>Добави нов</span>
+        <strong>адвокат</strong>
+    </div>
+    <div class="search-form-wrapper">
+        <form class="search-form" method="post">
+            @if (!ViewContext.ViewData.ModelState.IsValid)
+            {
+                <!-- VALIDATION -->
+                <div class="rw">
+                    <div class="lbl"></div>
+                    <div class="vl">
+                        @Html.ValidationSummary()
+                    </div>
+                </div>
+            }
+
+            @Html.AntiForgeryToken()
+            <div class="rw">
+                <div class="lbl">Номер:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Number)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Име:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.Name)
+                </div>
+            </div>
+            <div class="rw">
+                <div class="lbl">Вид адвокат:</div>
+                <div class="vl">
+                    @Html.DropDownListFor(m => m.LawyerTypeId, Model.LawyerTypes, "", new { @class = "select2" })
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl">Колегия:</div>
+                <div class="vl">
+                    @Html.TextBoxFor(m => m.College)
+                </div>
+            </div>
+
+            <div class="rw">
+                <div class="lbl"></div>
+                <div class="vl">
+                    <input type="submit" class="search-submit" value="СЪЗДАЙ" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
